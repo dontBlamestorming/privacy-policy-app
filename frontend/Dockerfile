@@ -4,7 +4,7 @@ WORKDIR /front
 
 ADD package.json package.json
 
-RUN npm install --production --quiet
+RUN npm install --production --quite
 
 COPY . .
 
