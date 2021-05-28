@@ -15,8 +15,8 @@ services:
     environment: 
         MYSQL_DATABASE: ${DJANGO_DB_NAME}
         MYSQL_USER: ${DJANGO_DB_USER}
-        MYSQL_PASSWORD: ${DJANGO_DB_PASSWORD}
-        MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+        MYSQL_ROOT_PASSWORD: ${DJANGO_DB_PASSWORD}
+        # MYSQL_RANDOM_ROOT_PASSWORD: "yes"
     volumes:
       - mysql-data:/var/lib/mysql
 
