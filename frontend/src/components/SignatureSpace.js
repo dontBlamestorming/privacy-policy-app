@@ -7,13 +7,18 @@ import appStore from '../stores/appStore'
 
 import CanvasDraw from 'react-canvas-draw'
 import canvasBackground from '../assets/canvas.png'
+import { makeStyles, useTheme } from '@material-ui/core'
 
 const SignatureSpace = observer(({ form, setForm, canvasRef }) => {
+  const classes = useStyles()
+  const theme = useTheme()
+
   const completeSign = () => {
     const signature = canvasRef.current.canvas.drawing
 
     signature.toBlob(data => setForm({ ...form, signature: data }))
   }
+
   return (
     <>
       <CanvasDraw
@@ -23,9 +28,8 @@ const SignatureSpace = observer(({ form, setForm, canvasRef }) => {
           backgroundPosition: 'center center',
           backgroundRepeat: 'no-repeat',
           marginBottom: '0.75rem',
+          width: '100%',
         }}
-        canvasWidth={780}
-        canvasHeight={420}
         hideGrid
         hideInterface={false}
         brushRadius={1}
@@ -36,15 +40,7 @@ const SignatureSpace = observer(({ form, setForm, canvasRef }) => {
       />
 
       <Button
-        style={{
-          width: '100%',
-          height: '3.125rem',
-          marginTop: '0.75px',
-          color: '#ffffff',
-          backgroundColor: '#30bbc3',
-          fontSize: '1.563rem',
-          lineHeight: 1.28,
-        }}
+        className={classes.button}
         onClick={() => canvasRef.current.clear()}
       >
         다시 서명
@@ -52,5 +48,17 @@ const SignatureSpace = observer(({ form, setForm, canvasRef }) => {
     </>
   )
 })
+
+const useStyles = makeStyles(theme => ({
+  button: {
+    width: '100%',
+    height: '3.125rem',
+    marginTop: '0.75px',
+    color: '#ffffff',
+    backgroundColor: '#30bbc3',
+    fontSize: '1.563rem',
+    lineHeight: 1.28,
+  },
+}))
 
 export default SignatureSpace

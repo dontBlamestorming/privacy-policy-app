@@ -21,15 +21,13 @@ from .models import Image, PrivacyPolicyForm
 
 
 class FormFilesSerializer(serializers.ModelSerializer):
-    # file = FileUrlField()
-
     class Meta:
         model = Image
         fields = ["id", "file"]
 
 
 class FormSerializer(serializers.ModelSerializer):
-    files = FormFilesSerializer(source="image_set.all", many=True)
+    files = FormFilesSerializer(source="image_set.all", many=True, required=False)
 
     class Meta:
         model = PrivacyPolicyForm

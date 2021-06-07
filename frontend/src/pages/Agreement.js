@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import {
   Container,
+  Hidden,
   Button,
   Grid,
   Paper,
@@ -41,6 +42,7 @@ const initialForm = {
 
 const Agreement = observer(() => {
   const [form, setForm] = useState(initialForm)
+  console.log('BirthDay', form.birthDay)
   const classes = useStyles()
   const canvasRef = useRef(null)
 
@@ -49,16 +51,18 @@ const Agreement = observer(() => {
 
     const data = new FormData()
 
-    data.append('receiver', userStore.user.user_id)
+    data.append('receiver', userStore.user.id)
     data.append('studio', userStore.user.studio_id)
     data.append('name', form.name)
     data.append('email', form.email)
     data.append('gender', form.gender)
-    data.append('birthday', form.birthday)
+    data.append('birthDay', form.birthDay)
     data.append('phone', form.phone)
     data.append('sign', form.signature, 'sign.png')
 
-    API.post('/forms/create', data, {
+    console.log('DATA', data.get('birthday'))
+
+    API.post('/forms', data, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -82,24 +86,21 @@ const Agreement = observer(() => {
 
           <form className={classes.form} onSubmit={onSubmit}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Paper style={{ borderRadius: '3.125rem' }}>
-                  <FormControlLabel
-                    classes={{ label: classes.form_label }}
-                    style={{ marginLeft: '3.813rem' }}
-                    required
-                    control={
+              {/* 동의조항 1 */}
+              <Grid item xs>
+                <Paper className={classes.termsInputBox}>
+                  <Grid container justify="center">
+                    <Grid item md={2}>
                       <Radio
                         icon={
                           <CheckCircleOutlineIcon
-                            style={{ fill: '#30bbc3', fontSize: '3.125rem' }}
+                            className={classes.inputBoxIcon}
                           />
                         }
                         checkedIcon={
-                          <CheckCircleIcon
-                            style={{ fill: '#30bbc3', fontSize: '3.125rem' }}
-                          />
+                          <CheckCircleIcon className={classes.inputBoxIcon} />
                         }
+                        required
                         checked={form.collectingPrivacy}
                         onClick={e =>
                           setForm({
@@ -108,47 +109,47 @@ const Agreement = observer(() => {
                           })
                         }
                       />
-                    }
-                    label="(필수) 개인정보 수집 및 이용 동의"
-                  />
+                    </Grid>
+
+                    <Grid className={classes.form_label} item md={10}>
+                      <span>(필수) 개인정보 수집 및 이용동의</span>
+                    </Grid>
+                  </Grid>
                 </Paper>
               </Grid>
+              {/* 동의조항 2 */}
               <Grid item xs={12}>
-                <Paper
-                  style={{
-                    borderRadius: '3.125rem',
-                  }}
-                >
-                  <FormControlLabel
-                    classes={{ label: classes.form_label }}
-                    style={{ marginLeft: '3.813rem' }}
-                    required
-                    control={
+                <Paper className={classes.termsInputBox}>
+                  <Grid container justify="center">
+                    <Grid item md={2}>
                       <Radio
                         icon={
                           <CheckCircleOutlineIcon
-                            style={{ fill: '#30bbc3', fontSize: '3.125rem' }}
+                            className={classes.inputBoxIcon}
                           />
                         }
-                        checked={form.providingPrivacy}
                         checkedIcon={
-                          <CheckCircleIcon
-                            style={{ fill: '#30bbc3', fontSize: '3.125rem' }}
-                          />
+                          <CheckCircleIcon className={classes.inputBoxIcon} />
                         }
+                        required
+                        checked={form.providingPrivacy}
                         onClick={e =>
                           setForm({
                             ...form,
                             providingPrivacy: !form.providingPrivacy,
                           })
                         }
-                        color="primary"
                       />
-                    }
-                    label="(필수) 제 3자(써머캣) 정보 제공 동의"
-                  />
+                    </Grid>
+
+                    <Grid className={classes.form_label} item md={10}>
+                      <span>(필수) 제 3자(써머캣) 정보 제공 동의</span>
+                    </Grid>
+                  </Grid>
                 </Paper>
               </Grid>
+
+              {/* Terms Notice */}
               <Grid item xs={12}>
                 <p style={{ textAlign: 'center', fontSize: '1.375rem' }}>
                   ※ 위 개인정보수집·이용에 대한 동의를 거부할 권리가 있습니다.{' '}
@@ -157,31 +158,27 @@ const Agreement = observer(() => {
                   진행){' '}
                 </p>
               </Grid>
+
+              {/* 이름 Input Box */}
               <Grid item xs={12}>
-                <Paper
-                  style={{
-                    borderRadius: '0.625rem',
-                  }}
-                >
+                <Paper className={classes.infoInputBox}>
                   <Grid
+                    className={classes.infoInputWrapper}
                     container
-                    justify="space-between"
-                    style={{ fontSize: '1.5rem' }}
+                    alignItems="center"
                   >
-                    <Grid item style={{ margin: '2.688rem 3.813rem' }}>
-                      <div>성명</div>
+                    <Grid item md={4} style={{ paddingRight: '100px' }}>
+                      <span>성명</span>
                     </Grid>
-                    <Grid item style={{ margin: '2.688rem 3.813rem' }}>
+                    <Grid item md={8}>
                       <Input
                         style={{ fontSize: '1.375rem' }}
                         value={form.name}
                         autoComplete="name"
                         disableUnderline
-                        inputProps={{ style: { textAlign: 'right' } }}
                         name="name"
                         placeholder="이름을 입력해 주세요."
                         required
-                        fullWidth
                         autoFocus
                         onChange={e =>
                           setForm({ ...form, name: e.target.value })
@@ -191,32 +188,29 @@ const Agreement = observer(() => {
                   </Grid>
                 </Paper>
               </Grid>
+
+              {/* 출생연도 */}
               <Grid item xs={12}>
-                <Paper
-                  style={{
-                    borderRadius: '0.625rem',
-                  }}
-                >
+                <Paper className={classes.infoInputBox}>
                   <Grid
+                    className={classes.infoInputWrapper}
                     container
-                    justify="space-between"
-                    style={{ fontSize: '1.5rem' }}
+                    justify="center"
+                    alignItems="center"
                   >
-                    <Grid item style={{ margin: '2.688rem 3.813rem' }}>
-                      <div>출생연도</div>
+                    <Grid item md={4}>
+                      <span>출생연도</span>
                     </Grid>
-                    <Grid item style={{ margin: '2.688rem 3.813rem' }}>
+                    <Grid item md={8}>
                       <Input
                         style={{ fontSize: '1.375rem' }}
                         value={form.birthDay}
-                        autoComplete="birthday"
+                        autoComplete="birthDay"
                         disableUnderline
-                        inputProps={{ style: { textAlign: 'right' } }}
                         type="date"
-                        name="birthday"
+                        name="birthDay"
                         placeholder="출생연도를 선택해주세요."
                         required
-                        fullWidth
                         autoFocus
                         onChange={e =>
                           setForm({ ...form, birthDay: e.target.value })
@@ -226,31 +220,28 @@ const Agreement = observer(() => {
                   </Grid>
                 </Paper>
               </Grid>
+
+              {/* 휴대폰 번호 */}
               <Grid item xs={12}>
-                <Paper
-                  style={{
-                    borderRadius: '0.625rem',
-                  }}
-                >
+                <Paper className={classes.infoInputBox}>
                   <Grid
+                    className={classes.infoInputWrapper}
                     container
-                    justify="space-between"
-                    style={{ fontSize: '1.5rem' }}
+                    justify="center"
+                    alignItems="center"
                   >
-                    <Grid item style={{ margin: '2.688rem 3.813rem' }}>
-                      <div>휴대폰 번호</div>
+                    <Grid item md={4}>
+                      <span>휴대폰 번호</span>
                     </Grid>
-                    <Grid item style={{ margin: '2.688rem 3.813rem' }}>
+                    <Grid item md={8}>
                       <Input
                         style={{ fontSize: '1.375rem' }}
                         value={form.phone}
                         autoComplete="phone"
                         disableUnderline
-                        inputProps={{ style: { textAlign: 'right' } }}
                         name="phone"
                         placeholder="휴대폰 번호를 입력해 주세요."
                         required
-                        fullWidth
                         autoFocus
                         onChange={e =>
                           setForm({ ...form, phone: e.target.value })
@@ -260,22 +251,21 @@ const Agreement = observer(() => {
                   </Grid>
                 </Paper>
               </Grid>
+
+              {/* 성별 */}
               <Grid item xs={12}>
-                <Paper
-                  style={{
-                    borderRadius: '0.625rem',
-                  }}
-                >
+                <Paper className={classes.infoInputBox}>
                   <Grid
+                    className={classes.infoInputWrapper}
                     container
-                    justify="space-between"
-                    style={{ fontSize: '1.5rem' }}
+                    justify="center"
+                    alignItems="center"
                   >
-                    <Grid item style={{ margin: '2.688rem 3.813rem' }}>
+                    <Grid item md={4}>
                       <span>성별</span>
                     </Grid>
 
-                    <Grid item style={{ margin: '2.688rem 3.813rem' }}>
+                    <Grid item md={8}>
                       <FormControl component="fieldset">
                         <RadioGroup
                           classes={{ root: classes.root }}
@@ -291,18 +281,12 @@ const Agreement = observer(() => {
                               <Radio
                                 icon={
                                   <CheckCircleOutlineIcon
-                                    style={{
-                                      fill: '#30bbc3',
-                                      fontSize: '3.125rem',
-                                    }}
+                                    className={classes.inputBoxIcon}
                                   />
                                 }
                                 checkedIcon={
                                   <CheckCircleIcon
-                                    style={{
-                                      fill: '#30bbc3',
-                                      fontSize: '3.125rem',
-                                    }}
+                                    className={classes.inputBoxIcon}
                                   />
                                 }
                               />
@@ -315,18 +299,12 @@ const Agreement = observer(() => {
                               <Radio
                                 icon={
                                   <CheckCircleOutlineIcon
-                                    style={{
-                                      fill: '#30bbc3',
-                                      fontSize: '3.125rem',
-                                    }}
+                                    className={classes.inputBoxIcon}
                                   />
                                 }
                                 checkedIcon={
                                   <CheckCircleIcon
-                                    style={{
-                                      fill: '#30bbc3',
-                                      fontSize: '3.125rem',
-                                    }}
+                                    className={classes.inputBoxIcon}
                                   />
                                 }
                               />
@@ -339,33 +317,28 @@ const Agreement = observer(() => {
                   </Grid>
                 </Paper>
               </Grid>
+
+              {/* 이메일 주소 */}
               <Grid item xs={12}>
-                <Paper
-                  style={{
-                    borderRadius: '0.625rem',
-                  }}
-                >
+                <Paper className={classes.infoInputBox}>
                   <Grid
+                    className={classes.infoInputWrapper}
                     container
-                    justify="space-between"
-                    style={{ fontSize: '1.5rem' }}
+                    justify="center"
+                    alignItems="center"
                   >
-                    <Grid item style={{ margin: '2.688rem 3.813rem' }}>
-                      <div>이메일 주소</div>
+                    <Grid item md={4}>
+                      <span>이메일 주소</span>
                     </Grid>
-                    <Grid item style={{ margin: '2.688rem 3.813rem' }}>
+                    <Grid item md={8}>
                       <Input
                         style={{ fontSize: '1.375rem' }}
                         value={form.email}
                         autoComplete="email"
                         disableUnderline
-                        inputProps={{
-                          style: { textAlign: 'right' },
-                        }}
                         name="email"
                         placeholder="이메일을 입력해 주세요."
                         required
-                        fullWidth
                         autoFocus
                         onChange={e =>
                           setForm({ ...form, email: e.target.value })
@@ -375,6 +348,8 @@ const Agreement = observer(() => {
                   </Grid>
                 </Paper>
               </Grid>
+
+              {/* 싸인 스페이스 */}
               <Grid item xs={12}>
                 <SignatureSpace
                   form={form}
@@ -390,7 +365,7 @@ const Agreement = observer(() => {
               >
                 <Grid item>
                   <Button
-                    classes={{ root: classes.bacgroundBtn }}
+                    classes={{ root: classes.backgroundBtn }}
                     type="submit"
                     variant="contained"
                   >
@@ -413,24 +388,40 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     minHeight: '100vh',
     backgroundColor: '#f1eff0',
+
+    [theme.breakpoints.up('md')]: {
+      marginBottom: '10.625rem',
+    },
   },
   paper: {
     width: '48.75rem',
     marginTop: '3.45rem',
+    textAlign: 'center',
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
+  termsInputBox: { backgroundColor: '#ffffff', borderRadius: '3.125rem' },
+  infoInputBox: {
+    // height: '6.875rem',
+    borderRadius: '0.625rem',
+    fontSize: '1.5rem',
+  },
+  infoInputWrapper: {
+    height: '6.875rem',
+  },
+  inputBoxIcon: { fill: '#30bbc3', fontSize: '3.125rem' },
+
   form_label: {
-    marginLeft: '8.438rem',
+    // marginLeft: '8.438rem',
+    alignSelf: 'center',
     fontSize: '1.625rem',
   },
   // 성별 입력 - FormGroup(override)
   root: {
     flexDirection: 'row',
   },
-  bacgroundBtn: {
+  backgroundBtn: {
     borderRadius: '3.125rem',
     fontSize: '1.531rem',
     width: '10.375rem',

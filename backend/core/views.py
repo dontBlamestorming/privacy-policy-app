@@ -72,6 +72,8 @@ class FormImageView(
 
 
 class ImageView(RetrieveModelMixin, viewsets.GenericViewSet):
+    """PSD file 다운로드"""
+
     queryset = Image.objects.all()
     serializer_class = ImageViewSerailizer
     permission_classes = [IsStudioManager]

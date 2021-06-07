@@ -9,30 +9,28 @@ import { observer } from 'mobx-react-lite'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
-import ListItem from '@material-ui/core/ListItem'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import ListItemText from '@material-ui/core/ListItemText'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import IconButton from '@material-ui/core/IconButton'
-import { Grid, Paper, List, Button } from '@material-ui/core'
+import { Grid, Button, Container, makeStyles } from '@material-ui/core'
+
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined'
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined'
+import GetAppIcon from '@material-ui/icons/GetApp'
 
 import adminHomeMainImg from '../assets/admin_home_2x.png'
+import uploadImage from '../assets/upload_icon.png'
 
 import API from '../api'
 
 const AgreementDetail = observer(() => {
-  const [uploadedImage, setUploadedImage] = useState([])
+  const [images, setImages] = useState([])
   const [url, setURL] = useState('')
   const form = agreementStore.formDetail
-  const { name, phone, gender, email, birthday, upload } = form
-  // TypeError: Cannot destructure property 'name' of 'form' as it is null.
+  const classes = useStyles()
 
   useEffect(() => {
     const files = agreementStore.formDetail.files
 
-    setUploadedImage(files)
+    setImages(files)
   }, [])
 
   const updateImageList = () => {
@@ -40,7 +38,7 @@ const AgreementDetail = observer(() => {
 
     API.get(`/forms/image/${id}`)
       .then(res => {
-        setUploadedImage(res.data)
+        setImages(res.data)
         agreementStore.formDetail(res.data)
       })
       .catch(error => console.log(error))
@@ -64,19 +62,19 @@ const AgreementDetail = observer(() => {
       .catch(error => console.log(error))
   }
 
-  const download = ({ id }) => {
+  const downloadFile = ({ id }) => {
     API.get(`/forms/download/${id}`)
       .then(res => {
-        console.log(res.data[0].file)
-        setURL(res.data[0].file)
+        const url = res.data[0].file
 
-        // const binary = []
-        // binary.push(res.data)
-        // const bolbedData = new Blob(binary, { type: 'image/png' })
-        // const url = URL.createObjectURL(bolbedData)
-        // console.log(url)
-        // downloadFileFromURL(url)
-        // URL.revokeObjectURL(url)
+        const link = document.createElementNS(
+          'http://www.w3.org/1999/xhtml',
+          'a',
+        )
+        link.href = url
+        link.download = url.split('/').pop()
+        link.click()
+        link.remove()
       })
       .catch(error => {
         throw error
@@ -107,148 +105,220 @@ const AgreementDetail = observer(() => {
   return (
     <>
       <Header />
-      <Grid container md={12} style={{ height: 'calc(100vh - 327px)' }}>
-        <Grid item sm />
-        <Grid container item sm={9}>
-          <Paper
-            style={{
-              width: '100%',
-              height: '10.125rem',
-              backgroundImage: `url(${adminHomeMainImg})`,
-              backgroundRepeat: 'no-repeat',
-              backgroundSize: 'cover',
-              backgroundPosition: '0 -50px',
-            }}
-          >
-            <Grid
-              container
-              xs
-              style={{ marginTop: '10.125rem', backgroundColor: '#f1eff0' }}
-            >
-              <Grid
-                container
-                item
-                sm={6}
-                style={{ height: '35.875rem' }}
-                direction="column"
-                justify="center"
-                alignItems="center"
-              >
-                <Grid item xs>
-                  <Paper style={{ marginTop: '3rem' }}>
-                    <input
-                      id="uploadBtn"
-                      accept="image/psd"
-                      multiple
-                      type="file"
-                      style={{ display: 'none' }}
-                      onChange={event => uploadFile(event)}
-                    />
-                    <label htmlFor="uploadBtn">
-                      <Button
-                        component="span"
-                        style={{
-                          width: '336px',
-                          borderRadius: '0.625',
-                          backgroundColor: '#ffffff',
-                          padding: '5.625rem 7rem',
-                        }}
-                      >
-                        PSD 파일 업로드
-                      </Button>
-                    </label>
-                  </Paper>
-                </Grid>
-                <Grid item xs>
-                  <List>
-                    {uploadedImage.map((image, index) => (
-                      <ListItem
-                        style={{
-                          width: '36.188rem',
-                          borderBottom: '0.5rem solid #f1eff0',
-                          backgroundColor: '#fff',
-                          borderRadius: '10px',
-                        }}
-                      >
-                        <ListItemAvatar>
-                          <a href={url} download>
-                            <InsertPhotoOutlinedIcon
-                              onClick={() => download(image)}
-                            />
-                          </a>
-                        </ListItemAvatar>
 
-                        <ListItemText />
-                        <ListItemSecondaryAction>
-                          <IconButton onClick={() => deleteFile(image)}>
-                            <DeleteForeverOutlinedIcon />
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    ))}
-                  </List>
-                </Grid>
-              </Grid>
+      <Container className={classes.container}>
+        <Grid className={classes.mainImage} />
 
-              <Grid container item sm={6} style={{ marginTop: '2.875rem' }}>
-                <Box title="성명" text={name} />
-                <Box title="출생연도" text={birthday} />
-                <Box title="휴대폰 번호" text={phone} />
-                <Box title="성별" text={gender} />
-                <Box title="이메일 주소" text={email} />
-              </Grid>
-            </Grid>
-          </Paper>
+        <Grid className={classes.content} container>
+          <Grid item md={6} sm={6} xs={12}>
+            <UploadField
+              images={images}
+              uploadFile={uploadFile}
+              deleteFile={deleteFile}
+              downloadFile={downloadFile}
+              url={url}
+            />
+          </Grid>
+
+          <Grid container justify="center" item md={6} sm={6} xs={12}>
+            <InfoField form={form} />
+          </Grid>
         </Grid>
+      </Container>
 
-        <Grid item sm />
-      </Grid>
       <Footer />
     </>
   )
 })
 
-const Box = ({ title, text }) => (
-  <Paper
-    style={{
-      borderRadius: '0.625rem',
-      backgroundColor: '#ffffff',
-      width: '40rem',
-      height: '5.688rem',
-    }}
-  >
-    <Grid
-      container
-      xs
-      justify="space-between"
-      alignItems="center"
-      style={{ height: '100%' }}
-    >
+const UploadField = ({ images, uploadFile, deleteFile, downloadFile, url }) => {
+  const classes = useStyles()
+
+  return (
+    <Grid className={classes.uploadField} justify="center" container>
       <Grid
+        container
         item
-        style={{
-          paddingLeft: '3.5rem',
-          fontSize: '1.375rem',
-          fontWeight: 600,
-          color: '#111e3f',
-        }}
+        justify="center"
+        alignItems="center"
+        md={12}
+        sm={12}
+        style={{ height: '40%' }}
       >
-        {title}
+        <Grid className={classes.uploadButton} md={4} item>
+          <Button style={{ width: '100%', height: '100%' }}>
+            <input
+              id="upload"
+              accept="image/psd"
+              multiple
+              type="file"
+              style={{ display: 'none' }}
+              onChange={event => uploadFile(event)}
+            />
+            <label htmlFor="upload">
+              <img src={uploadImage} alt="업로드 아이콘" />
+              <p
+                style={{
+                  fontSize: '1.375rem',
+                  borderRadius: '0.625',
+                  backgroundColor: '#ffffff',
+                  margin: '0 0',
+                }}
+              >
+                PSD 파일 업로드
+              </p>
+            </label>
+          </Button>
+        </Grid>
       </Grid>
-      <Grid
-        item
-        style={{
-          paddingRight: '3.5rem',
-          fontSize: '1.375rem',
-          fontWeight: 600,
-          color: '#111e3f',
-          opacity: 0.8,
-        }}
-      >
-        {text}
+      <Grid item md={11} sm={12} style={{ height: '60%' }}>
+        {images.map(image => (
+          <Item
+            image={image}
+            deleteFile={deleteFile}
+            downloadFile={downloadFile}
+            url={url}
+          />
+        ))}
       </Grid>
     </Grid>
-  </Paper>
-)
+  )
+}
+
+const Item = ({ image, deleteFile, downloadFile }) => {
+  const classes = useStyles()
+  const filename = image.file.split('/').pop()
+
+  return (
+    <Grid
+      className={classes.uploadedList}
+      container
+      md={12}
+      sm={12}
+      justify="space-between"
+    >
+      <Grid item style={{ marginLeft: '30px' }}>
+        <IconButton>
+          <InsertPhotoOutlinedIcon className={classes.uploaded_icon} />
+        </IconButton>
+        <span>{filename}</span>
+      </Grid>
+      <Grid item style={{ marginRight: '30px' }}>
+        <IconButton onClick={() => downloadFile(image)}>
+          <GetAppIcon className={classes.uploaded_icon} />
+        </IconButton>
+        <IconButton onClick={() => deleteFile(image)}>
+          <DeleteForeverOutlinedIcon className={classes.uploaded_icon} />
+        </IconButton>
+      </Grid>
+    </Grid>
+  )
+}
+
+const InfoField = ({ form }) => {
+  const { name, phone, gender, email, birthday } = form
+  const classes = useStyles()
+
+  return (
+    <Grid className={classes.infoField} container alignItems="center" md={11}>
+      <Field title="성명" text={name} />
+      <Field title="전화번호" text={phone} />
+      <Field title="성별" text={gender} />
+      <Field title="이메일" text={email} />
+      <Field title="생년월일" text={birthday} />
+    </Grid>
+  )
+}
+
+const Field = ({ title, text }) => {
+  const classes = useStyles()
+
+  return (
+    <Grid
+      className={classes.field}
+      container
+      item
+      justify="space-between"
+      alignItems="center"
+      md={12}
+      sm={12}
+    >
+      <Grid item>
+        <span className={classes.field_title}>{title}</span>
+      </Grid>
+      <Grid item>
+        <span className={classes.field_text}>{text}</span>
+      </Grid>
+    </Grid>
+  )
+}
+
+const useStyles = makeStyles(theme => ({
+  container: {
+    height: 'calc(100vh - 285px)',
+
+    [theme.breakpoints.down('sm')]: {
+      height: 'calc(100vh)',
+      padding: '0 0',
+    },
+  },
+  mainImage: {
+    maxWidth: '100%',
+    height: '25%',
+    backgroundImage: `url(${adminHomeMainImg})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: '50% 50%',
+    [theme.breakpoints.down('sm')]: {
+      padding: '0 0',
+      height: '200px',
+    },
+  },
+  content: {
+    height: '70%',
+    backgroundColor: '#f1eff0',
+  },
+  uploadField: {
+    height: '100%',
+  },
+  uploadButton: {
+    height: '200px',
+    backgroundColor: '#ffffff',
+    borderRadius: '10px',
+    // '&::hover': { cursor: 'pointer' },
+  },
+  uploadedList: {
+    borderRadius: '10px',
+    backgroundColor: '#ffffff',
+    marginBottom: '10px',
+  },
+  uploaded_icon: {
+    color: '#30bbc3',
+    fontSize: '2rem',
+  },
+  infoField: {
+    height: '100%',
+    padding: '10px 0',
+  },
+  field: {
+    height: '16%',
+    backgroundColor: '#ffffff',
+    borderRadius: '1.625rem',
+    [theme.breakpoints.down('sm')]: {},
+  },
+  field_title: {
+    paddingLeft: '3.5rem',
+    fontSize: '1.375rem',
+    fontWeight: 600,
+    color: '#111e3f',
+  },
+  field_text: {
+    paddingRight: '3.5rem',
+    fontSize: '1.375rem',
+    fontWeight: 600,
+    color: '#111e3f',
+    opacity: 0.8,
+  },
+}))
 
 export default AgreementDetail

@@ -5,7 +5,14 @@ import { Link } from 'react-router-dom'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
-import { Grid, Button, Paper, makeStyles } from '@material-ui/core'
+import {
+  Grid,
+  Button,
+  makeStyles,
+  Hidden,
+  useTheme,
+  useMediaQuery,
+} from '@material-ui/core'
 
 import userStore from '../stores/userStore'
 
@@ -14,52 +21,120 @@ import adminHomeMainImg from '../assets/admin_home_2x.png'
 const AdminHome = () => {
   const classes = useStyles()
   const studio = userStore.user ? userStore.user.studio : ''
+  const theme = useTheme()
+  const matcheSM = useMediaQuery(theme.breakpoints.down('sm'))
 
   return (
     <>
       <Header />
-      <Grid container md={12} style={{ height: 'calc(100vh - 327px)' }}>
-        <Grid item sm />
+      {/* <Container maxWidth="xl" > */}
+      <Grid container className={classes.container}>
+        <Hidden smDown>
+          <Grid item md />
+        </Hidden>
+        <Grid container item md={9}>
+          <Grid
+            container
+            className={classes.mainImage}
+            item
+            md={12}
+            sm={12}
+            xs={12}
+          >
+            <Grid item>
+              <p className={classes.paperGreeting}>
+                Welcome
+                {matcheSM ? <br /> : null}
+                {studio},
+              </p>
+            </Grid>
 
-        <Grid container item sm={9}>
-          <Paper className={classes.paperImage}>
-            <p className={classes.paperGreeting}>Welcome {studio},</p>
+            <Hidden smDown>
+              <Grid container direction="column" justify="flex-end">
+                <Grid container justify="space-evenly">
+                  <Grid>
+                    <Link to="/agreement" style={{ textDecoration: 'none' }}>
+                      <Button
+                        className={classes.button}
+                        style={{ display: 'absolute', top: '100px' }}
+                      >
+                        동의서 웹
+                      </Button>
+                    </Link>
+                  </Grid>
+                  <Grid>
+                    <Link
+                      to="/admin/agreements"
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <Button
+                        className={classes.button}
+                        style={{ display: 'absolute', top: '100px' }}
+                      >
+                        동의자 명단
+                      </Button>
+                    </Link>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Hidden>
+          </Grid>
 
-            <Grid
-              container
-              item
-              justify="center"
-              style={{ marginTop: '8.75rem' }}
-            >
-              <Grid item style={{ marginRight: '4.5rem' }}>
-                <Link to="/form" style={{ textDecoration: 'none' }}>
-                  <Button className={classes.button}>동의서 보기</Button>
+          <Grid
+            className={classes.buttonContainer}
+            container
+            item
+            md={12}
+            sm={12}
+            xs={12}
+            justify="space-evenly"
+          >
+            <Hidden mdUp>
+              <Grid item>
+                <Link to="/agreement" style={{ textDecoration: 'none' }}>
+                  <Button className={classes.button}>동의서 태블릿</Button>
                 </Link>
               </Grid>
-
-              <Grid item style={{ marginLeft: '4.5rem' }}>
-                <Link to="/list" style={{ textDecoration: 'none' }}>
+              <Grid item>
+                <Link to="/admin/agreements" style={{ textDecoration: 'none' }}>
                   <Button className={classes.button}>동의자 명단</Button>
                 </Link>
               </Grid>
-            </Grid>
-          </Paper>
+            </Hidden>
+          </Grid>
         </Grid>
-
-        <Grid item sm />
+        <Hidden smDown>
+          <Grid item md />
+        </Hidden>
       </Grid>
+      {/* </Container> */}
       <Footer />
     </>
   )
 }
 
-const useStyles = makeStyles(() => ({
-  paperImage: {
+const useStyles = makeStyles(theme => ({
+  container: {
+    height: 'calc(100vh - 300px)',
+  },
+  // wrapper: {
+  //   // maxHeight: '70%',
+  //   [theme.breakpoints.down('sm')]: {
+  //     // height: '50%',
+  //     margintLeft: '0',
+  //   },
+  // },
+  mainImage: {
     width: '100%',
-    height: '31.375rem',
+    height: '73%',
     backgroundImage: `url(${adminHomeMainImg})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
+    backgroundPosition: '50% 50%',
+
+    [theme.breakpoints.down('xs')]: {
+      height: '50%',
+    },
   },
   paperGreeting: {
     fontSize: '5rem',
@@ -69,6 +144,11 @@ const useStyles = makeStyles(() => ({
     lineHeight: 1.14,
     letterSpacing: '-0.125rem',
     color: '#ffffff',
+    [theme.breakpoints.down('xs')]: {
+      marginTop: '8.938rem',
+      marginLeft: '1.75rem',
+      fontSize: '4.375rem',
+    },
   },
   button: {
     width: '23.688rem',
@@ -78,6 +158,24 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#30bbc3',
     borderRadius: '5.925rem',
     fontWeight: 'bold',
+
+    [theme.breakpoints.down('sm')]: {
+      width: '18.75rem',
+      height: '9.438rem',
+      fontSize: '1.875rem',
+      boxShadow: '0px 15px 30px 0 rgba(35, 27, 27, 0.17)',
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: '23.125rem',
+      height: '8.75rem',
+      fontSize: '1.875rem',
+      boxShadow: '0px 15px 30px 0 rgba(35, 27, 27, 0.17)',
+    },
+  },
+  buttonContainer: {
+    [theme.breakpoints.down('xs')]: {
+      maxHeight: '50%',
+    },
   },
 }))
 
