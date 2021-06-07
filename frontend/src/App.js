@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { Router, Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 import LoginForm from './pages/LoginForm'
 import Agreement from './pages/Agreement'
@@ -9,12 +9,15 @@ import AgreementDetail from './pages/AgreementDetail'
 import AgreementList from './pages/AgreementList'
 import AdminHome from './pages/AdminHome'
 
-// import Header from './components/Header';
 import AuthRoute from './components/AuthRoute'
 import Loading from './components/Loading'
 
 import appStore from './stores/appStore'
 import userStore from './stores/userStore'
+
+// import { Grid } from '@material-ui/core'
+
+import styled from 'styled-components'
 
 const App = observer(() => {
   const [initialized, setInitialized] = useState(true)
@@ -26,27 +29,42 @@ const App = observer(() => {
   return !initialized ? (
     <Loading />
   ) : (
-    <div className="App">
+    <Body>
       <Switch>
         <Route exact path="/" render={props => <LoginForm {...props} />} />
-        <AuthRoute path="/form" render={props => <Agreement {...props} />} />
-        <AuthRoute path="/manager" render={props => <AdminHome {...props} />} />
         <AuthRoute
-          path="/detail"
+          path="/agreement"
+          render={props => <Agreement {...props} />}
+        />
+        <AuthRoute
+          exact
+          path="/admin"
+          render={props => <AdminHome {...props} />}
+        />
+        <AuthRoute
+          path="/admin/agreements"
+          render={props => <AgreementList {...props} />}
+        />
+        <AuthRoute
+          path="/admin/agreement/detail"
           render={props => <AgreementDetail {...props} />}
         />
-        <AuthRoute
-          path="/list"
-          render={props => <AgreementList {...props} />}
-        />
-        <AuthRoute
-          path="/list"
-          render={props => <AgreementList {...props} />}
-        />
       </Switch>
+
       {appStore.isLoading && <Loading />}
-    </div>
+    </Body>
   )
 })
+
+const Body = styled.div`
+  // display: flex;
+  // flex-direction: column;
+  // @media (max-width: 960px) {
+  //   min-height: 100vh;
+  // }
+  @media (max-width: 480px) {
+    min-height: 100vh;
+  }
+`
 
 export default App
