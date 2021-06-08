@@ -2,7 +2,12 @@ from django.contrib import admin
 from .models import *
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .forms import UserChangeForm, UserCreationForm, StudioCreationForm, StudioChangeForm
+from .forms import (
+    UserChangeForm,
+    UserCreationForm,
+    StudioCreationForm,
+    StudioChangeForm,
+)
 
 
 class UserAdmin(BaseUserAdmin):
@@ -10,23 +15,36 @@ class UserAdmin(BaseUserAdmin):
     add_form = UserCreationForm
 
     # Todo list_dispaly && fieldsets need update!!!
-    list_display = ('email', 'name', 'studio', 'is_studio_manager')
+    list_display = ("email", "name", "studio", "is_studio_manager", "is_studio_staff")
     # list_filter = ('is_admin',)
 
     fieldsets = (
-        (None, {'fields': ('email', 'name', 'password', 'studio')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_studio_manager')}),
+        (None, {"fields": ("email", "name", "password", "studio")}),
+        (
+            "Permissions",
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_studio_manager",
+                    "is_studio_staff",
+                )
+            },
+        ),
     )
 
     add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2', 'name', 'studio')}
-         ),
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": ("email", "password1", "password2", "name", "studio"),
+            },
+        ),
     )
 
-    search_fields = ('email', 'name', 'studio', 'is_studio_manager')
-    ordering = ('studio',)
+    search_fields = ("email", "name", "studio", "is_studio_manager", "is_studio_staff")
+    ordering = ("studio",)
     filter_horizontal = ()
 
 
