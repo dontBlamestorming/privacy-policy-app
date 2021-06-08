@@ -50,7 +50,7 @@ const LoginForm = observer(() => {
   }
 
   if (userStore.user) {
-    const path = userStore.user.is_studio_manager ? '/admin' : '/agreement'
+    const path = userStore.user.is_studio_manager ? '/studio' : '/agreement'
 
     return <Redirect to={path} />
   }
