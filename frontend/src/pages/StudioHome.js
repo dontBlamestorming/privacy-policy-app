@@ -96,7 +96,10 @@ const StudioHome = () => {
                 </Link>
               </Grid>
               <Grid item>
-                <Link to="/admin/agreements" style={{ textDecoration: 'none' }}>
+                <Link
+                  to="/studio/agreements"
+                  style={{ textDecoration: 'none' }}
+                >
                   <Button className={classes.button}>동의자 명단</Button>
                 </Link>
               </Grid>

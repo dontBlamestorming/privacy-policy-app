@@ -10,7 +10,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 
 import IconButton from '@material-ui/core/IconButton'
-import { Grid, Button, Container, makeStyles, Input } from '@material-ui/core'
+import { Grid, Button, Container, makeStyles } from '@material-ui/core'
 
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined'
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined'
@@ -22,7 +22,7 @@ import uploadImage from '../assets/upload_icon.png'
 import API from '../api'
 
 const AgreementDetail = observer(() => {
-  const [images, setImages] = useState([])
+  const [files, setFiles] = useState([])
   const [url, setURL] = useState('')
   const form = agreementStore.formDetail
 
@@ -31,19 +31,8 @@ const AgreementDetail = observer(() => {
   useEffect(() => {
     const files = agreementStore.formDetail.files
 
-    setImages(files)
+    setFiles(files)
   }, [])
-
-  const updateImageList = () => {
-    const id = agreementStore.formDetail.id
-
-    API.get(`/forms/image/${id}`)
-      .then(res => {
-        setImages(res.data)
-        agreementStore.formDetail(res.data)
-      })
-      .catch(error => console.log(error))
-  }
 
   const uploadFile = event => {
     const data = new FormData()
@@ -58,7 +47,10 @@ const AgreementDetail = observer(() => {
       },
     })
       .then(res => {
-        if (res.status === 201) updateImageList()
+        if (res.status === 201) {
+          const uploadedFile = res.data
+          setFiles([...files, uploadedFile])
+        }
       })
       .catch(error => console.log(error))
   }
@@ -82,23 +74,11 @@ const AgreementDetail = observer(() => {
       })
   }
 
-  async function downloadFileFromURL(url) {
-    try {
-      const link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a')
-      link.href = url
-      link.download = url.split('/').pop()
-      link.click()
-      link.remove()
-    } catch (e) {
-      throw e
-    }
-  }
-
   const deleteFile = ({ id }) => {
     API.delete(`/forms/image/${id}`)
       .then(res => {
-        console.log(res.statusText)
-        updateImageList()
+        const updatedFiles = files.filter(file => file.id !== id)
+        setFiles(updatedFiles)
       })
       .catch(error => console.log(error))
   }
@@ -113,7 +93,7 @@ const AgreementDetail = observer(() => {
         <Grid className={classes.content} container>
           <Grid item md={6} sm={6} xs={12}>
             <UploadField
-              images={images}
+              files={files}
               uploadFile={uploadFile}
               deleteFile={deleteFile}
               downloadFile={downloadFile}
@@ -132,7 +112,7 @@ const AgreementDetail = observer(() => {
   )
 })
 
-const UploadField = ({ images, uploadFile, deleteFile, downloadFile, url }) => {
+const UploadField = ({ files, uploadFile, deleteFile, downloadFile, url }) => {
   const fileInput = useRef(null)
 
   const classes = useStyles()
@@ -194,7 +174,7 @@ const UploadField = ({ images, uploadFile, deleteFile, downloadFile, url }) => {
         </Grid>
       </Grid>
       <Grid item md={11} sm={12} style={{ height: '60%' }}>
-        {images.map(image => (
+        {files.map(image => (
           <Item
             image={image}
             deleteFile={deleteFile}
