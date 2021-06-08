@@ -9,7 +9,6 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import {
   Container,
-  Hidden,
   Button,
   Grid,
   Paper,
@@ -42,7 +41,6 @@ const initialForm = {
 
 const Agreement = observer(() => {
   const [form, setForm] = useState(initialForm)
-  console.log('BirthDay', form.birthDay)
   const classes = useStyles()
   const canvasRef = useRef(null)
 
@@ -60,21 +58,24 @@ const Agreement = observer(() => {
     data.append('phone', form.phone)
     data.append('sign', form.signature, 'sign.png')
 
-    console.log('DATA', data.get('birthday'))
-
-    API.post('/forms', data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-      .then(res => {
-        if (res.status === 201) {
-          alert('정상적으로 제출되었습니다. 감사합니다.')
-          setForm(initialForm)
-          canvasRef.current.clear()
-        }
+    if (form.collectingPrivacy && form.providingPrivacy) {
+      API.post('/forms', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       })
-      .catch(error => console.log(error))
+        .then(res => {
+          if (res.status === 201) {
+            alert('정상적으로 제출되었습니다. 감사합니다.')
+            setForm(initialForm)
+            canvasRef.current.clear()
+          }
+        })
+        .catch(error => console.log(error))
+    } else {
+      alert('개인정보 수집이용 및 정보제공 동의를 부탁드립니다.')
+      // 스크롤을 동의서쪽으로 이동시켜야됨
+    }
   }
 
   return (

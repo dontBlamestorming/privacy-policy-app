@@ -18,7 +18,7 @@ import userStore from '../stores/userStore'
 
 import adminHomeMainImg from '../assets/admin_home_2x.png'
 
-const AdminHome = () => {
+const StudioHome = () => {
   const classes = useStyles()
   const studio = userStore.user ? userStore.user.studio : ''
   const theme = useTheme()
@@ -64,7 +64,7 @@ const AdminHome = () => {
                   </Grid>
                   <Grid>
                     <Link
-                      to="/admin/agreements"
+                      to="/studio/agreements"
                       style={{ textDecoration: 'none' }}
                     >
                       <Button
@@ -179,4 +179,4 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default AdminHome
+export default StudioHome

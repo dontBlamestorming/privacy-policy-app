@@ -8,14 +8,7 @@ import DataTable from '../components/DataTable'
 
 import { observer } from 'mobx-react-lite'
 
-import {
-  Container,
-  Grid,
-  Paper,
-  Button,
-  makeStyles,
-  Hidden,
-} from '@material-ui/core'
+import { Container, Grid, makeStyles } from '@material-ui/core'
 
 import adminHomeMainImg from '../assets/admin_home_2x.png'
 
@@ -27,19 +20,7 @@ const AgreementList = observer(() => {
       <Header />
 
       <Container className={classes.container}>
-        <Grid container className={classes.mainImage}>
-          <Hidden smDown>
-            <Grid container item justify="space-evenly">
-              <Link to="/agreements" style={{ textDecoration: 'none' }}>
-                <Button className={classes.button}>동의서 보기</Button>
-              </Link>
-
-              <Link to="/agreements" style={{ textDecoration: 'none' }}>
-                <Button className={classes.button}>개인정보이용동의서</Button>
-              </Link>
-            </Grid>
-          </Hidden>
-        </Grid>
+        <Grid container className={classes.mainImage} />
 
         <Grid
           className={classes.dataTableWrapper}
@@ -69,6 +50,7 @@ const useStyles = makeStyles(theme => ({
   },
   mainImage: {
     maxWidth: '100%',
+    height: '30%',
     backgroundImage: `url(${adminHomeMainImg})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
@@ -77,19 +59,6 @@ const useStyles = makeStyles(theme => ({
       padding: '0 0',
       height: '200px',
     },
-  },
-  button: {
-    display: 'absolute',
-    top: '100px',
-    width: '23.688rem',
-    height: '11.875rem',
-    color: '#ffffff',
-    fontSize: '2.188rem',
-    backgroundColor: '#30bbc3',
-    borderRadius: '1.25rem',
-    fontWeight: 'bold',
-    marginTop: '6rem',
-    boxShadow: '0px 15px 30px 0 rgba(35, 27, 27, 0.17)',
   },
   dataTableWrapper: {
     marginBottom: '20px',
