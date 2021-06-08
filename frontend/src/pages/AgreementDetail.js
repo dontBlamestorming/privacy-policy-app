@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import userStore from '../stores/userStore'
 import agreementStore from '../stores/agreementStore'
@@ -10,7 +10,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 
 import IconButton from '@material-ui/core/IconButton'
-import { Grid, Button, Container, makeStyles } from '@material-ui/core'
+import { Grid, Button, Container, makeStyles, Input } from '@material-ui/core'
 
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined'
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined'
@@ -25,6 +25,7 @@ const AgreementDetail = observer(() => {
   const [images, setImages] = useState([])
   const [url, setURL] = useState('')
   const form = agreementStore.formDetail
+
   const classes = useStyles()
 
   useEffect(() => {
@@ -132,6 +133,8 @@ const AgreementDetail = observer(() => {
 })
 
 const UploadField = ({ images, uploadFile, deleteFile, downloadFile, url }) => {
+  const fileInput = useRef(null)
+
   const classes = useStyles()
 
   return (
@@ -146,29 +149,48 @@ const UploadField = ({ images, uploadFile, deleteFile, downloadFile, url }) => {
         style={{ height: '40%' }}
       >
         <Grid className={classes.uploadButton} md={4} item>
-          <Button style={{ width: '100%', height: '100%' }}>
-            <input
-              id="upload"
-              accept="image/psd"
-              multiple
-              type="file"
-              style={{ display: 'none' }}
-              onChange={event => uploadFile(event)}
-            />
-            <label htmlFor="upload">
-              <img src={uploadImage} alt="업로드 아이콘" />
-              <p
+          <Button
+            style={{ height: '100%' }}
+            fullWidth
+            onClick={() => fileInput.current.click()}
+          >
+            <Grid container>
+              <Grid item md={12}>
+                <img src={uploadImage} alt="업로드 아이콘" />
+              </Grid>
+              <Grid
+                item
+                md={12}
                 style={{
                   fontSize: '1.375rem',
                   borderRadius: '0.625',
-                  backgroundColor: '#ffffff',
                   margin: '0 0',
                 }}
               >
                 PSD 파일 업로드
-              </p>
-            </label>
+              </Grid>
+            </Grid>
+            {/* <img src={uploadImage} alt="업로드 아이콘" />
+            <p
+              style={{
+                fontSize: '1.375rem',
+                borderRadius: '0.625',
+                margin: '0 0',
+              }}
+            >
+              PSD 파일 업로드
+            </p> */}
           </Button>
+
+          <input
+            id="upload"
+            accept="image/psd"
+            multiple
+            type="file"
+            style={{ display: 'none' }}
+            onChange={event => uploadFile(event)}
+            ref={fileInput}
+          />
         </Grid>
       </Grid>
       <Grid item md={11} sm={12} style={{ height: '60%' }}>

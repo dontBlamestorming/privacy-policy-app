@@ -11,7 +11,7 @@ import { observer } from 'mobx-react-lite'
 import userStore from '../stores/userStore'
 
 import API from '../api/index'
-import { makeStyles, useTheme, useMediaQuery } from '@material-ui/core'
+import { useTheme, useMediaQuery } from '@material-ui/core'
 
 const headCells = [
   {
@@ -48,7 +48,7 @@ const DataTable = observer(() => {
     const detail = agreementStore.formLists[rowData['id'] - 1]
 
     agreementStore.setFormDetails(detail)
-    history.push('/admin/agreement/detail')
+    history.push('/studio/agreement/detail')
   }
 
   useEffect(() => {
@@ -67,17 +67,15 @@ const DataTable = observer(() => {
         data={agreementStore.formLists ? genFormLists() : []}
         style={{
           padding: '0 0',
-          marginTop: matcheSM ? '0' : '9.688rem',
+          marginTop: matcheSM ? '0' : '4.688rem',
           boxShadow: 'none',
         }}
         options={{
           showTitle: false,
-          // paging: false,
+          paging: false,
           // minBodyHeight: '50.875rem',
           // maxBodyHeight: '50.875rem',
-          // minBodyHeight: '100px',
-          // maxBodyHeight: '680px',
-          // paginationType: 'stepped',
+          paginationType: 'stepped',
           headerStyle: {
             fontSize: '1.25rem',
             fontWeight: 500,
@@ -87,7 +85,6 @@ const DataTable = observer(() => {
           rowStyle: {
             padding: '0 0',
             borderRadius: '0.625rem',
-            // fontSize: '1.25rem',
             fontWeight: 500,
             color: '111e3f',
             margin: '3px 3px !important',
@@ -105,14 +102,5 @@ const DataTable = observer(() => {
     </>
   )
 })
-
-const useStyles = makeStyles(theme => ({
-  table: {
-    // marginTop: '9.688rem',
-    [theme.breakpoints.down('sm')]: {
-      // marginTop: '0',
-    },
-  },
-}))
 
 export default DataTable

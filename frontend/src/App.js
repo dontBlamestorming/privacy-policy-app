@@ -3,19 +3,17 @@ import React, { useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Route, Switch } from 'react-router-dom'
 
-import LoginForm from './pages/LoginForm'
+import StudioHome from './pages/StudioHome'
 import Agreement from './pages/Agreement'
-import AgreementDetail from './pages/AgreementDetail'
 import AgreementList from './pages/AgreementList'
-import AdminHome from './pages/AdminHome'
+import AgreementDetail from './pages/AgreementDetail'
+import LoginForm from './pages/LoginForm'
 
 import AuthRoute from './components/AuthRoute'
 import Loading from './components/Loading'
 
 import appStore from './stores/appStore'
 import userStore from './stores/userStore'
-
-// import { Grid } from '@material-ui/core'
 
 import styled from 'styled-components'
 
@@ -38,15 +36,15 @@ const App = observer(() => {
         />
         <AuthRoute
           exact
-          path="/admin"
-          render={props => <AdminHome {...props} />}
+          path="/studio"
+          render={props => <StudioHome {...props} />}
         />
         <AuthRoute
-          path="/admin/agreements"
+          path="/studio/agreements"
           render={props => <AgreementList {...props} />}
         />
         <AuthRoute
-          path="/admin/agreement/detail"
+          path="/studio/agreement/detail"
           render={props => <AgreementDetail {...props} />}
         />
       </Switch>
