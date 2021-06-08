@@ -50,7 +50,18 @@ const LoginForm = observer(() => {
   }
 
   if (userStore.user) {
-    const path = userStore.user.is_studio_manager ? '/studio' : '/agreement'
+    let path
+
+    if (userStore.user.is_studio_staff) {
+      path = '/agreement'
+    } else if (userStore.user.is_studio_manager) {
+      path = '/studio'
+    } else {
+      // 현재는 슈퍼유저인 경우 여기로 들어옴
+      path = '/studio'
+    }
+
+    console.log('PATH', path)
 
     return <Redirect to={path} />
   }

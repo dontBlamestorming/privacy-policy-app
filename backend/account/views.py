@@ -10,7 +10,7 @@ from .serializers import AuthTokenSerializer
 
 
 class LoginView(ObtainAuthToken):
-    permission_classes = []  # 왜 명시적으로 이걸...??
+    permission_classes = []  
     # permission_classes = [AllowAny]
     serializer_class = AuthTokenSerializer
 
@@ -36,5 +36,6 @@ class ProfileView(APIView):  # serializer로 바꾸는게 좋다
                 "studio_id": request.user.studio_id,
                 "studio": request.user.studio.name if request.user.studio else "",
                 "is_studio_manager": request.user.is_studio_manager,
+                "is_studio_staff": request.user.is_studio_staff,
             }
         )
