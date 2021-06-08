@@ -23,7 +23,6 @@ import API from '../api'
 
 const AgreementDetail = observer(() => {
   const [files, setFiles] = useState([])
-  console.log('STATE', files)
   const [url, setURL] = useState('')
   const form = agreementStore.formDetail
 
@@ -34,20 +33,6 @@ const AgreementDetail = observer(() => {
 
     setFiles(files)
   }, [])
-
-  // const updateFileList = () => {
-  //   const id = agreementStore.formDetail.id
-  //   console.log('Form Detail', agreementStore.formDetail)
-
-  //   API.get(`/forms/image/${id}`)
-  //     .then(res => {
-  //       res.data = 업로드 된 후의 모델 필드를 리턴
-  //       console.log('Update Detail', res.data)
-  //       setFiles(res.data)
-  //       agreementStore.formDetail(res.data)
-  //     })
-  //     .catch(error => console.log(error))
-  // }
 
   const uploadFile = event => {
     const data = new FormData()
