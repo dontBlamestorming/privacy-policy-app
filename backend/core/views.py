@@ -40,9 +40,13 @@ class FormViewSet(
             permission_classes = []
         return [permission() for permission in permission_classes]
 
+    def get_queryset(self):
+        studio = self.request.user.studio
+
+        return PrivacyPolicyForm.objects.filter(studio=studio)
+
 
 class FormImageView(
-    RetrieveModelMixin,
     CreateModelMixin,
     DestroyModelMixin,
     viewsets.GenericViewSet,
@@ -53,11 +57,6 @@ class FormImageView(
     serializer_class = CreateImageSerializer
     permission_classes = [IsStudioManager]
 
-    @action(
-        detail=True,
-        methods=["post", "delete"],
-        name="Form",
-    )
     def filter_queryset(self, queryset):
         form_pk = self.request.query_params.get("form")
 
@@ -71,7 +70,7 @@ class FormImageView(
         return Response(serializer.data)
 
 
-class ImageView(RetrieveModelMixin, viewsets.GenericViewSet):
+class ImageView(viewsets.GenericViewSet):
     """PSD file 다운로드"""
 
     queryset = Image.objects.all()

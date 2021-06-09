@@ -52,10 +52,11 @@ const DataTable = observer(() => {
   }
 
   useEffect(() => {
-    API.get('/forms', {
-      is_studio_manager: userStore.user.is_studio_manager,
-    })
-      .then(res => agreementStore.setFormLists(res.data))
+    // 해당 사용자의 Studio에서만 받은 Form을 Return하도록.
+    API.get('/forms')
+      .then(res => {
+        agreementStore.setFormLists(res.data)
+      })
       .catch(error => console.log(error))
   }, [])
 
@@ -89,9 +90,7 @@ const DataTable = observer(() => {
             color: '111e3f',
             margin: '3px 3px !important',
             borderBottom: '0.25rem solid #f1eff0',
-            [theme.breakpoints.down('sm')]: {
-              border: '1px solid pink',
-            },
+            [theme.breakpoints.down('sm')]: {},
           },
           searchFieldStyle: {
             maxWidth: '100%',

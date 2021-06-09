@@ -21,7 +21,5 @@ class IsStudioManager(permissions.BasePermission):
     def has_permission(self, request, view):
         is_superuser = request.user.is_superuser
         is_manager = request.user.is_studio_manager
-        print("is_superuser", request.user.is_superuser)
-        print("is_manager", request.user.is_studio_manager)
 
         return is_superuser or is_manager

@@ -37,7 +37,7 @@ class UserStore {
       storage.setItem(TOKEN_KEY, token)
 
       this.user = res.data
-      console.log(this.user)
+      console.log('USER', this.user)
     } catch (e) {
       throw e
     }

@@ -19,6 +19,10 @@ import {
   FormControlLabel,
 } from '@material-ui/core'
 
+import DateFnsUtils from '@date-io/date-fns'
+import ko from 'date-fns/locale/ko'
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
+
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 
@@ -41,6 +45,7 @@ const initialForm = {
 
 const Agreement = observer(() => {
   const [form, setForm] = useState(initialForm)
+  const [selectedDate, handleDateChange] = useState(new Date())
   const classes = useStyles()
   const canvasRef = useRef(null)
 
@@ -74,7 +79,6 @@ const Agreement = observer(() => {
         .catch(error => console.log(error))
     } else {
       alert('개인정보 수집이용 및 정보제공 동의를 부탁드립니다.')
-      // 스크롤을 동의서쪽으로 이동시켜야됨
     }
   }
 
@@ -88,9 +92,9 @@ const Agreement = observer(() => {
           <form className={classes.form} onSubmit={onSubmit}>
             <Grid container spacing={2}>
               {/* 동의조항 1 */}
-              <Grid item xs>
+              <Grid item md={12} xs={12}>
                 <Paper className={classes.termsInputBox}>
-                  <Grid container justify="center">
+                  <Grid container justify="space-evenly" md={11}>
                     <Grid item md={2}>
                       <Radio
                         icon={
@@ -112,16 +116,16 @@ const Agreement = observer(() => {
                       />
                     </Grid>
 
-                    <Grid className={classes.form_label} item md={10}>
+                    <Grid className={classes.form_label} item md={9}>
                       <span>(필수) 개인정보 수집 및 이용동의</span>
                     </Grid>
                   </Grid>
                 </Paper>
               </Grid>
               {/* 동의조항 2 */}
-              <Grid item xs={12}>
+              <Grid item md={12} xs={12}>
                 <Paper className={classes.termsInputBox}>
-                  <Grid container justify="center">
+                  <Grid container justify="space-evenly" md={11}>
                     <Grid item md={2}>
                       <Radio
                         icon={
@@ -143,7 +147,7 @@ const Agreement = observer(() => {
                       />
                     </Grid>
 
-                    <Grid className={classes.form_label} item md={10}>
+                    <Grid className={classes.form_label} item md={9}>
                       <span>(필수) 제 3자(써머캣) 정보 제공 동의</span>
                     </Grid>
                   </Grid>
@@ -161,14 +165,17 @@ const Agreement = observer(() => {
               </Grid>
 
               {/* 이름 Input Box */}
-              <Grid item xs={12}>
+              <Grid item md={12} xs={12}>
                 <Paper className={classes.infoInputBox}>
                   <Grid
                     className={classes.infoInputWrapper}
                     container
+                    justify="space-evenly"
                     alignItems="center"
+                    md={11}
+                    xs={11}
                   >
-                    <Grid item md={4} style={{ paddingRight: '100px' }}>
+                    <Grid item md={3}>
                       <span>성명</span>
                     </Grid>
                     <Grid item md={8}>
@@ -190,20 +197,48 @@ const Agreement = observer(() => {
                 </Paper>
               </Grid>
 
-              {/* 출생연도 */}
-              <Grid item xs={12}>
+              {/* 생년월일 */}
+              <Grid item md={12} xs={12}>
                 <Paper className={classes.infoInputBox}>
                   <Grid
                     className={classes.infoInputWrapper}
                     container
-                    justify="center"
+                    justify="space-evenly"
                     alignItems="center"
+                    md={11}
+                    xs={11}
                   >
-                    <Grid item md={4}>
-                      <span>출생연도</span>
+                    <Grid item md={3}>
+                      <span>생년월일</span>
                     </Grid>
                     <Grid item md={8}>
-                      <Input
+                      <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ko}>
+                        <DatePicker
+                          disableFuture
+                          // orientation="landscape"
+                          // variant="inline"
+                          // disableToolbar
+                          inputVariant="standard"
+                          openTo="year"
+                          format="yyyy/MM/dd"
+                          views={['year', 'month', 'date']}
+                          // variant="inline"
+                          value={selectedDate}
+                          onChange={value => {
+                            const year = value.getFullYear()
+                            const month = ('0' + (1 + value.getMonth())).slice(
+                              -2,
+                            )
+                            const day = ('0' + value.getDate()).slice(-2)
+                            setForm({
+                              ...form,
+                              birthDay: `${year}-${month}-${day}`,
+                            })
+                            handleDateChange(value)
+                          }}
+                        />
+                      </MuiPickersUtilsProvider>
+                      {/* <Input
                         style={{ fontSize: '1.375rem' }}
                         value={form.birthDay}
                         autoComplete="birthDay"
@@ -216,22 +251,24 @@ const Agreement = observer(() => {
                         onChange={e =>
                           setForm({ ...form, birthDay: e.target.value })
                         }
-                      />
+                      /> */}
                     </Grid>
                   </Grid>
                 </Paper>
               </Grid>
 
               {/* 휴대폰 번호 */}
-              <Grid item xs={12}>
+              <Grid item md={12} xs={12}>
                 <Paper className={classes.infoInputBox}>
                   <Grid
                     className={classes.infoInputWrapper}
                     container
-                    justify="center"
+                    justify="space-evenly"
                     alignItems="center"
+                    md={11}
+                    xs={11}
                   >
-                    <Grid item md={4}>
+                    <Grid item md={3}>
                       <span>휴대폰 번호</span>
                     </Grid>
                     <Grid item md={8}>
@@ -254,15 +291,17 @@ const Agreement = observer(() => {
               </Grid>
 
               {/* 성별 */}
-              <Grid item xs={12}>
+              <Grid item md={12} xs={12}>
                 <Paper className={classes.infoInputBox}>
                   <Grid
                     className={classes.infoInputWrapper}
                     container
-                    justify="center"
+                    justify="space-evenly"
                     alignItems="center"
+                    md={11}
+                    xs={11}
                   >
-                    <Grid item md={4}>
+                    <Grid item md={3}>
                       <span>성별</span>
                     </Grid>
 
@@ -320,15 +359,17 @@ const Agreement = observer(() => {
               </Grid>
 
               {/* 이메일 주소 */}
-              <Grid item xs={12}>
+              <Grid item md={12} xs={12}>
                 <Paper className={classes.infoInputBox}>
                   <Grid
                     className={classes.infoInputWrapper}
                     container
-                    justify="center"
+                    justify="space-evenly"
                     alignItems="center"
+                    md={11}
+                    xs={11}
                   >
-                    <Grid item md={4}>
+                    <Grid item md={3}>
                       <span>이메일 주소</span>
                     </Grid>
                     <Grid item md={8}>
