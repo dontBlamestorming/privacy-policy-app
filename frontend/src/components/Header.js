@@ -9,14 +9,16 @@ import {
   useTheme,
   IconButton,
 } from '@material-ui/core'
+
+import { Link } from 'react-router-dom'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import HomeIcon from '@material-ui/icons/Home'
 
 import userStore from '../stores/userStore'
 import { useHistory } from 'react-router-dom'
 
 const Header = () => {
-  const history = useHistory()
   const classes = useStyles()
   const theme = useTheme()
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'))
@@ -29,14 +31,22 @@ const Header = () => {
       justify="center"
       alignItems="center"
     >
-      <Grid container justify="space-between" alignItems="center" md={11}>
-        <Button
-          className={classes.buttonLeft}
-          onClick={() => history.goBack()}
-          startIcon={<ArrowBackIosIcon />}
-        >
-          뒤로가기
-        </Button>
+      <Grid
+        container
+        justify="space-between"
+        alignItems="center"
+        md={11}
+        sm={11}
+        xs={11}
+      >
+        <Link to="/studio">
+          <IconButton
+            // className={classes.buttonLeft}
+            className={classes.icon}
+          >
+            <HomeIcon />
+          </IconButton>
+        </Link>
 
         <Hidden smDown>
           <Button
@@ -44,7 +54,7 @@ const Header = () => {
             onClick={() => userStore.logout()}
           >
             <Grid container direction="column">
-              <span className={classes.text} style={{}}>
+              <span className={classes.text}>
                 hello {userStore.user.name}님!
               </span>
               <Typography>LOGOUT</Typography>
@@ -67,10 +77,12 @@ const useStyles = makeStyles(theme => ({
   container: {
     height: '133px',
     [theme.breakpoints.down('sm')]: {
-      height: '55px',
+      height: '60px',
     },
   },
   buttonLeft: {
+    color: '#30bbc3',
+
     [theme.breakpoints.down('sm')]: {},
   },
   buttonRight: {
