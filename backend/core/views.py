@@ -41,9 +41,7 @@ class FormViewSet(
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
-        studio = self.request.user.studio
-
-        return PrivacyPolicyForm.objects.filter(studio=studio)
+        return PrivacyPolicyForm.objects.filter(studio=self.request.user.studio)
 
 
 class FormImageView(

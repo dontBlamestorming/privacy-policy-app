@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import MaterialTable from 'material-table'
 
@@ -13,20 +13,24 @@ import userStore from '../stores/userStore'
 import API from '../api/index'
 import { useTheme, useMediaQuery } from '@material-ui/core'
 
-const headCells = [
-  {
-    title: 'date',
-    field: 'date',
-    align: 'center',
-  },
-  { title: 'name', field: 'name', align: 'center', sorting: 'false' },
-  { title: 'phone', field: 'phone', align: 'center' },
-  { title: 'gender', field: 'gender', align: 'center' },
-  { title: 'email', field: 'email', align: 'center' },
-  // { title: 'upload', field: 'upload', align: 'center' },
-]
+// const headCells = [
+//   { title: 'date', field: 'date', align: 'center' },
+//   { title: 'name', field: 'name', align: 'center', sorting: 'false' },
+//   { title: 'phone', field: 'phone', align: 'center' },
+//   { title: 'gender', field: 'gender', align: 'center' },
+//   { title: 'email', field: 'email', align: 'center' },
+//   { title: 'upload', field: 'upload', align: 'center' },
+// ]
 
 const DataTable = observer(() => {
+  const [headCells, setHeadCells] = useState([
+    { title: 'date', field: 'date', align: 'center' },
+    { title: 'name', field: 'name', align: 'center', sorting: 'false' },
+    { title: 'phone', field: 'phone', align: 'center' },
+    { title: 'gender', field: 'gender', align: 'center' },
+    { title: 'email', field: 'email', align: 'center' },
+    { title: 'upload', field: 'upload', align: 'center' },
+  ])
   const history = useHistory()
   const theme = useTheme()
   const matcheSM = useMediaQuery(theme.breakpoints.down('sm'))
@@ -83,15 +87,15 @@ const DataTable = observer(() => {
             color: '111e3f',
             borderBottom: '0.5rem solid #f1eff0',
           },
-          rowStyle: {
-            padding: '0 0',
-            borderRadius: '0.625rem',
-            fontWeight: 500,
-            color: '111e3f',
-            margin: '3px 3px !important',
-            borderBottom: '0.25rem solid #f1eff0',
-            [theme.breakpoints.down('sm')]: {},
-          },
+          // rowStyle: {
+          //   padding: '0 0',
+          //   borderRadius: '0.625rem',
+          //   fontWeight: 500,
+          //   color: '111e3f',
+          //   margin: '3px 3px !important',
+          //   borderBottom: '0.25rem solid #f1eff0',
+          //   [theme.breakpoints.down('sm')]: {},
+          // },
           searchFieldStyle: {
             maxWidth: '100%',
             borderBottom: '0.5rem solid #f1eff0',

@@ -31,6 +31,7 @@ const App = observer(() => {
       <Switch>
         <Route exact path="/" render={props => <LoginForm {...props} />} />
         <AuthRoute
+          exact
           path="/agreement"
           render={props => <Agreement {...props} />}
         />
@@ -40,13 +41,19 @@ const App = observer(() => {
           render={props => <StudioHome {...props} />}
         />
         <AuthRoute
-          path="/studio/agreements"
+          exact
+          path="/agreements"
           render={props => <AgreementList {...props} />}
         />
         <AuthRoute
+          exact
           path="/studio/agreement/detail"
           render={props => <AgreementDetail {...props} />}
         />
+        {/* <Route
+          path="/"
+          render={props => <div>페이지를 찾을 수 없습니다.</div>}
+        /> */}
       </Switch>
 
       {appStore.isLoading && <Loading />}

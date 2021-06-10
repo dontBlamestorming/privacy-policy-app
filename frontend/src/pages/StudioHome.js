@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 import Header from '../components/Header'
 import Footer from '../components/Footer'
@@ -53,6 +53,14 @@ const StudioHome = () => {
               <Grid container direction="column" justify="flex-end">
                 <Grid container justify="space-evenly">
                   <Grid>
+                    {/* <Link to="/agreement" style={{ textDecoration: 'none' }}>
+                      <Button
+                        className={classes.button}
+                        style={{ display: 'absolute', top: '100px' }}
+                      >
+                        동의서 웹
+                      </Button>
+                    </Link> */}
                     <Link to="/agreement" style={{ textDecoration: 'none' }}>
                       <Button
                         className={classes.button}
@@ -63,10 +71,7 @@ const StudioHome = () => {
                     </Link>
                   </Grid>
                   <Grid>
-                    <Link
-                      to="/studio/agreements"
-                      style={{ textDecoration: 'none' }}
-                    >
+                    <Link to="/agreements" style={{ textDecoration: 'none' }}>
                       <Button
                         className={classes.button}
                         style={{ display: 'absolute', top: '100px' }}
@@ -74,6 +79,20 @@ const StudioHome = () => {
                         동의자 명단
                       </Button>
                     </Link>
+                    {/* <Redirect
+                      to={location => {
+                        console.log(location)
+                        return { ...location, pathname: '/agreements' }
+                      }}
+                      style={{ textDecoration: 'none' }}
+                    >
+                    <Button
+                      className={classes.button}
+                      style={{ display: 'absolute', top: '100px' }}
+                    >
+                      동의자 명단
+                    </Button>
+                    </Redirect> */}
                   </Grid>
                 </Grid>
               </Grid>
