@@ -1,16 +1,23 @@
 import React, { useState } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import { Button, Hidden } from '@material-ui/core'
+import {
+  Dialog,
+  DialogActions,
+  Button,
+  Hidden,
+  Paper,
+  Grid,
+  makeStyles,
+  useTheme,
+} from '@material-ui/core'
 
 import CanvasDraw from 'react-canvas-draw'
 import canvasBackground from '../assets/canvas.png'
-import { makeStyles, useTheme } from '@material-ui/core'
 
 const SignatureSpace = observer(({ form, setForm, canvasRef }) => {
   const [open, setOpen] = useState(false)
+  const [signURL, setSignURL] = useState(null)
 
   const classes = useStyles()
   const theme = useTheme()
@@ -18,7 +25,13 @@ const SignatureSpace = observer(({ form, setForm, canvasRef }) => {
   const completeSign = () => {
     const signature = canvasRef.current.canvas.drawing
 
-    signature.toBlob(data => setForm({ ...form, signature: data }))
+    signature.toBlob(data => {
+      const objectURL = URL.createObjectURL(data)
+
+      setSignURL(objectURL)
+
+      setForm({ ...form, signature: data })
+    })
   }
 
   return (
@@ -35,7 +48,13 @@ const SignatureSpace = observer(({ form, setForm, canvasRef }) => {
       </Hidden>
       {/* mobile */}
       <Hidden mdUp>
-        <Button className={classes.button} onClick={() => setOpen(true)}>
+        <Button
+          className={classes.button}
+          onClick={() => {
+            URL.revokeObjectURL(signURL)
+            setOpen(true)
+          }}
+        >
           (필수)서명하기
         </Button>
         <MobileCanvas
@@ -44,6 +63,15 @@ const SignatureSpace = observer(({ form, setForm, canvasRef }) => {
           completeSign={completeSign}
           canvasRef={canvasRef}
         />
+        <Grid container justify="center" style={{ marginTop: '39px' }}>
+          <Grid item sm={6} xs={5}>
+            {signURL ? (
+              <Paper style={{ borderRadius: '10px' }}>
+                <img className={classes.signImage} src={`${signURL}`} />
+              </Paper>
+            ) : null}
+          </Grid>
+        </Grid>
       </Hidden>
     </>
   )
@@ -52,14 +80,29 @@ const SignatureSpace = observer(({ form, setForm, canvasRef }) => {
 const MobileCanvas = ({ open, setOpen, completeSign, canvasRef }) => {
   return (
     <Dialog open={open} fullWidth onClose={() => setOpen(false)}>
-      <Canvas completeSign={completeSign} canvasRef={canvasRef} />
-      <DialogActions>
-        <Button color="primary" onClick={() => canvasRef.current.clear()}>
-          다시하기
-        </Button>
-        <Button color="primary" onClick={() => setOpen(false)}>
-          완료
-        </Button>
+      <Canvas canvasRef={canvasRef} />
+      <DialogActions style={{ padding: '0 0' }}>
+        <Grid
+          container
+          justify="space-evenly"
+          style={{ backgroundColor: '#30bbc3' }}
+        >
+          <Button
+            style={{ color: '#ffffff', fontSize: '1.3rem' }}
+            onClick={() => canvasRef.current.clear()}
+          >
+            다시하기
+          </Button>
+          <Button
+            style={{ color: '#ffffff', fontSize: '1.3rem' }}
+            onClick={() => {
+              completeSign()
+              setOpen(false)
+            }}
+          >
+            완료
+          </Button>
+        </Grid>
       </DialogActions>
     </Dialog>
   )
@@ -82,15 +125,19 @@ const Canvas = ({ completeSign, canvasRef }) => {
       hideGrid
       hideInterface={false}
       brushRadius={1}
-      brushColor={'#000'}
+      brushColor="#000"
       lazyRadius={0}
-      onChange={completeSign}
+      onChange={completeSign ? completeSign : null}
       ref={canvasRef}
     />
   )
 }
 
 const useStyles = makeStyles(theme => ({
+  signImage: {
+    maxWidth: '100%',
+    height: 'auto',
+  },
   button: {
     width: '100%',
     height: '3.125rem',

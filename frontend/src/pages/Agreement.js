@@ -45,6 +45,7 @@ const initialForm = {
 
 const Agreement = observer(() => {
   const [form, setForm] = useState(initialForm)
+
   const [selectedDate, handleDateChange] = useState(new Date())
   const classes = useStyles()
   const canvasRef = useRef(null)
