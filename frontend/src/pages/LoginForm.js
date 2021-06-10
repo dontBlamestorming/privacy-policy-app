@@ -61,8 +61,6 @@ const LoginForm = observer(() => {
       path = '/studio'
     }
 
-    console.log('PATH', path)
-
     return <Redirect to={path} />
   }
 
