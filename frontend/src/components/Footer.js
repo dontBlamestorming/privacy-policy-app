@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import {
+  Container,
   Grid,
   Hidden,
   makeStyles,
@@ -24,80 +25,84 @@ const Footer = () => {
   const matchesXS = useMediaQuery(theme.breakpoints.down('xs'))
 
   return (
-    <Grid container className={classes.container}>
-      <Hidden smDown xsDown>
+    <Container maxWidth="xl" style={{ padding: '0 0' }}>
+      <Grid container className={classes.container} justify="center">
+        {/* <Hidden smDown xsDown>
         <Grid item md />
-      </Hidden>
+      </Hidden> */}
 
-      <Grid
-        className={classes.content}
-        container
-        item
-        md={9}
-        alignItems="center"
-        style={{ paddingLeft: '39px', paddingTop: '22px' }}
-      >
-        <Grid container md={3} sm={4}>
-          <Grid item xs={8}>
-            <Link to="/">{matchesXS ? <LogoMobile /> : <LogoDesktop />}</Link>
+        <Grid
+          className={classes.content}
+          container
+          item
+          md={9}
+          alignItems="center"
+          style={{ paddingLeft: '39px', paddingTop: '22px' }}
+        >
+          <Grid container md={3} sm={4}>
+            <Grid item xs={8}>
+              <Link to="/">{matchesXS ? <LogoMobile /> : <LogoDesktop />}</Link>
+            </Grid>
+
+            {/* Icons */}
+            <Hidden mdUp>
+              <Grid item className={classes.icons}>
+                <SNSLinks />
+              </Grid>
+            </Hidden>
           </Grid>
 
-          {/* Icons */}
-          <Hidden mdUp>
-            <Grid item className={classes.icons}>
+          {/* Large view Icons */}
+          <Hidden smDown xsDown>
+            <Grid item md={3}>
               <SNSLinks />
             </Grid>
           </Hidden>
-        </Grid>
 
-        {/* Large view Icons */}
-        <Hidden smDown xsDown>
-          <Grid item md={3}>
-            <SNSLinks />
-          </Grid>
-        </Hidden>
+          {/* Info */}
+          <Hidden xsDown>
+            <Grid item md={3} sm={5}>
+              <Text>주식회사 써머캣</Text>
+              <Text>사업자 등록번호 115-86-01644</Text>
+              <Text>서울특별시 강남구 강남대로 310, 유니온센터 1003호</Text>
 
-        {/* Info */}
-        <Hidden xsDown>
-          <Grid item md={3} sm={5}>
-            <Text>주식회사 써머캣</Text>
-            <Text>사업자 등록번호 115-86-01644</Text>
-            <Text>서울특별시 강남구 강남대로 310, 유니온센터 1003호</Text>
+              <Hidden mdUp>대표|강예슬 정우철, 개인정보담당자|정우철</Hidden>
 
-            <Hidden mdUp>대표|강예슬 정우철, 개인정보담당자|정우철</Hidden>
+              <Hidden smDown xsDown>
+                <Text>대표|강예슬, 정우철</Text>
+                <Text>개인정보담당자|정우철</Text>
+                <Text>
+                  © 2019-2021. Summercat. Co.,Ltd. all rights reserved
+                </Text>
+              </Hidden>
+            </Grid>
+          </Hidden>
 
-            <Hidden smDown xsDown>
-              <Text>대표|강예슬, 정우철</Text>
-              <Text>개인정보담당자|정우철</Text>
+          {/* Notice */}
+          <Grid className={classes.notice} item md={3} sm={3} xs={4}>
+            <Hidden xsDown>
+              <Text>이용약관</Text>
+              <Text>개인정보취급방침</Text>
+            </Hidden>
+
+            <Hidden smUp>
+              <Text>이용약관 | 개인정보취급방침 | info@summercat.co</Text>
               <Text>© 2019-2021. Summercat. Co.,Ltd. all rights reserved</Text>
             </Hidden>
+
+            <Hidden xsDown>
+              <Text>이메일|info@summercat.co</Text>
+              <Text>TEL|(+82) 02-3453-7469</Text>
+              <Text>FAX|(+82) 02-3453-7470</Text>
+            </Hidden>
           </Grid>
-        </Hidden>
-
-        {/* Notice */}
-        <Grid className={classes.notice} item md={3} sm={3} xs={4}>
-          <Hidden xsDown>
-            <Text>이용약관</Text>
-            <Text>개인정보취급방침</Text>
-          </Hidden>
-
-          <Hidden smUp>
-            <Text>이용약관 | 개인정보취급방침 | info@summercat.co</Text>
-            <Text>© 2019-2021. Summercat. Co.,Ltd. all rights reserved</Text>
-          </Hidden>
-
-          <Hidden xsDown>
-            <Text>이메일|info@summercat.co</Text>
-            <Text>TEL|(+82) 02-3453-7469</Text>
-            <Text>FAX|(+82) 02-3453-7470</Text>
-          </Hidden>
         </Grid>
-      </Grid>
 
-      <Hidden smDown xsDown>
+        {/* <Hidden smDown xsDown>
         <Grid item md />
-      </Hidden>
-    </Grid>
+      </Hidden> */}
+      </Grid>
+    </Container>
   )
 }
 
@@ -151,6 +156,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: 'auto',
 
     [theme.breakpoints.down('sm')]: {
+      height: '198px',
       backgroundColor: '#ffffff',
     },
   },

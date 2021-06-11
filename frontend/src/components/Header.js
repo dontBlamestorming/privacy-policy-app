@@ -1,6 +1,7 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import {
+  Container,
   Button,
   Hidden,
   makeStyles,
@@ -24,52 +25,58 @@ const Header = () => {
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'))
 
   return (
-    <Grid
-      container
-      className={classes.container}
-      md={12}
-      justify="center"
-      alignItems="center"
-    >
+    <Container maxWidth="xl" style={{ padding: '0 0' }}>
       <Grid
         container
-        justify="space-between"
+        className={classes.container}
+        md={12}
+        justify="center"
         alignItems="center"
-        md={11}
-        sm={11}
-        xs={11}
       >
-        <Link to="/studio">
-          <IconButton
-            // className={classes.buttonLeft}
-            className={classes.icon}
-          >
-            <HomeIcon />
-          </IconButton>
-        </Link>
+        <Grid
+          container
+          item
+          justify="space-between"
+          alignItems="center"
+          md={11}
+          sm={11}
+          xs={11}
+        >
+          <Link to="/studio">
+            <IconButton
+              // className={classes.buttonLeft}
+              className={classes.icon}
+            >
+              <HomeIcon />
+            </IconButton>
+          </Link>
 
-        <Hidden smDown>
-          <Button
-            className={classes.buttonRight}
-            onClick={() => userStore.logout()}
-          >
-            <Grid container direction="column">
-              <span className={classes.text}>
-                hello {userStore.user.name}님!
-              </span>
-              <Typography>LOGOUT</Typography>
-            </Grid>
-          </Button>
-        </Hidden>
+          <Hidden smDown>
+            <Button
+              className={classes.buttonRight}
+              onClick={() => userStore.logout()}
+            >
+              <Grid container direction="column">
+                <span className={classes.text}>
+                  hello {userStore.user.name}님!
+                </span>
+                <Typography>LOGOUT</Typography>
+              </Grid>
+            </Button>
+          </Hidden>
 
-        <Hidden mdUp>
-          <IconButton style={{ padding: '0 0' }}>
-            <span className={classes.text_mobile}>LOGOUT</span>
-            <ExitToAppIcon className={classes.icon} />
-          </IconButton>
-        </Hidden>
+          <Hidden mdUp>
+            <IconButton
+              style={{ padding: '0 0' }}
+              onClick={() => userStore.logout()}
+            >
+              <span className={classes.text_mobile}>LOGOUT</span>
+              <ExitToAppIcon className={classes.icon} />
+            </IconButton>
+          </Hidden>
+        </Grid>
       </Grid>
-    </Grid>
+    </Container>
   )
 }
 

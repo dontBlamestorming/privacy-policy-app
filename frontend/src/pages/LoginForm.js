@@ -8,14 +8,13 @@ import { observer } from 'mobx-react-lite'
 import Footer from '../components/Footer'
 
 import {
+  Container,
   Button,
   makeStyles,
   TextField,
   Typography,
   Grid,
   Paper,
-  Box,
-  Hidden,
   useMediaQuery,
   useTheme,
 } from '@material-ui/core/'
@@ -31,7 +30,7 @@ const LoginForm = observer(() => {
   })
   const classes = useStyles()
   const theme = useTheme()
-  const matches = useMediaQuery(theme.breakpoints.down('sm'))
+  const matchesSM = useMediaQuery(theme.breakpoints.down('sm'))
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -65,27 +64,14 @@ const LoginForm = observer(() => {
   }
 
   return (
-    // <div style={{ display: 'flex', flexDirection: 'column' }}>
     <>
-      <form onSubmit={handleSubmit}>
-        <Grid container className={classes.container}>
-          <Hidden smDown xsDown>
-            <Grid item md />
-          </Hidden>
-
-          <Grid
-            container
-            direction={matches ? 'column' : 'row'}
-            item
-            md={9}
-            sm={12}
-            xs
-          >
+      <Container maxWidth="xl" style={{ padding: '0 0' }}>
+        <Grid container className={classes.container} justify="center">
+          <Grid container item md={9}>
             <Grid
               className={classes.loginSection}
               container
-              direction="column"
-              justify="center"
+              justify={matchesSM ? 'center' : null}
               alignContent="center"
               item
               md={6}
@@ -93,7 +79,7 @@ const LoginForm = observer(() => {
               xs
             >
               {/* Title */}
-              <Grid item>
+              <Grid item md={8}>
                 <Typography
                   className={classes.title}
                   variant="h2"
@@ -111,16 +97,18 @@ const LoginForm = observer(() => {
               </Grid>
 
               {/* Login  */}
-              <Grid item className={classes.loginField}>
-                <Box style={{ marginTop: '1.313rem' }}>
+              <Grid
+                onSubmit={handleSubmit}
+                component="form"
+                md={8}
+                justify="center"
+              >
+                <Grid container item className={classes.loginField}>
                   <TextField
                     label="Your ID"
                     type="text"
                     placeholder="Enter your ID"
                     className={classes.inputField}
-                    style={{ width: '100%' }}
-                    value={form.email}
-                    onChange={e => setForm({ ...form, email: e.target.value })}
                     InputLabelProps={{
                       shrink: true,
                       focused: false,
@@ -129,14 +117,13 @@ const LoginForm = observer(() => {
                     InputProps={{
                       classes: { underline: classes.inputOnFocued },
                     }}
+                    value={form.email}
+                    onChange={e => setForm({ ...form, email: e.target.value })}
                   />
-                </Box>
-              </Grid>
-              <Grid item className={classes.passwordField}>
-                <Box>
+
                   <TextField
                     label="Password"
-                    type="password"
+                    type="Password"
                     placeholder="Enter your password"
                     className={classes.inputField}
                     InputLabelProps={{
@@ -152,36 +139,33 @@ const LoginForm = observer(() => {
                       setForm({ ...form, password: e.target.value })
                     }
                   />
-                </Box>
-              </Grid>
-              <Grid item>
-                <Box display="flex" justifyContent="center" alignItems="center">
-                  <Button
-                    classes={{ root: classes.signInBtn }}
-                    type="submit"
-                    variant="outlined"
-                    color="primary"
-                  >
-                    Sign In
-                  </Button>
-                </Box>
+                </Grid>
+
+                <Grid container md={12} justify="center">
+                  <Grid item>
+                    <Button
+                      classes={{ root: classes.signInBtn }}
+                      type="submit"
+                      variant="outlined"
+                      color="primary"
+                    >
+                      Sign In
+                    </Button>
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
 
             {/* Image */}
-            <Grid className={classes.imageSection} item md={6} sm xs>
+            <Grid className={classes.imageSection} item md={6} sm={12} xs={12}>
               <Paper className={classes.mainImage} />
             </Grid>
           </Grid>
-
-          <Hidden smDown xsDown>
-            <Grid item md />
-          </Hidden>
         </Grid>
-      </form>
+      </Container>
+
       <Footer />
     </>
-    // </div>
   )
 })
 
@@ -209,11 +193,12 @@ const useStyles = makeStyles(theme => ({
       display: 'none',
     },
   },
-  loginField: {
-    [theme.breakpoints.down('sm')]: {
-      width: '60%',
-    },
-  },
+  // loginField: {
+  //   [theme.breakpoints.down('sm')]: {
+  //     margin: '0 auto',
+  //     width: '100%',
+  //   },
+  // },
   passwordField: {
     [theme.breakpoints.down('sm')]: {
       width: '60%',
