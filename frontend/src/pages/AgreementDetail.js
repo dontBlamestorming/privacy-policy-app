@@ -91,7 +91,8 @@ const AgreementDetail = observer(() => {
         <Grid className={classes.mainImage} />
 
         <Grid className={classes.content} container>
-          <Grid item md={6} sm={6} xs={12}>
+          {/* Upload Button */}
+          <Grid item md={6} sm={12} xs={12}>
             <UploadField
               files={files}
               uploadFile={uploadFile}
@@ -101,7 +102,8 @@ const AgreementDetail = observer(() => {
             />
           </Grid>
 
-          <Grid container justify="center" item md={6} sm={6} xs={12}>
+          {/* Form Detail */}
+          <Grid container justify="center" item md={6} sm={12} xs={12}>
             <InfoField form={form} />
           </Grid>
         </Grid>
@@ -114,19 +116,18 @@ const AgreementDetail = observer(() => {
 
 const UploadField = ({ files, uploadFile, deleteFile, downloadFile, url }) => {
   const fileInput = useRef(null)
-
   const classes = useStyles()
 
   return (
     <Grid className={classes.uploadField} justify="center" container>
       <Grid
+        className={classes.uploadFieldWrapper}
         container
         item
         justify="center"
         alignItems="center"
         md={12}
         sm={12}
-        style={{ height: '40%' }}
       >
         <Grid className={classes.uploadButton} md={4} item>
           <Button
@@ -135,12 +136,13 @@ const UploadField = ({ files, uploadFile, deleteFile, downloadFile, url }) => {
             onClick={() => fileInput.current.click()}
           >
             <Grid container>
-              <Grid item md={12}>
+              <Grid item md={12} sm={12}>
                 <img src={uploadImage} alt="업로드 아이콘" />
               </Grid>
               <Grid
                 item
                 md={12}
+                sm={12}
                 style={{
                   fontSize: '1.375rem',
                   borderRadius: '0.625',
@@ -150,16 +152,6 @@ const UploadField = ({ files, uploadFile, deleteFile, downloadFile, url }) => {
                 PSD 파일 업로드
               </Grid>
             </Grid>
-            {/* <img src={uploadImage} alt="업로드 아이콘" />
-            <p
-              style={{
-                fontSize: '1.375rem',
-                borderRadius: '0.625',
-                margin: '0 0',
-              }}
-            >
-              PSD 파일 업로드
-            </p> */}
           </Button>
 
           <input
@@ -282,6 +274,12 @@ const useStyles = makeStyles(theme => ({
   },
   uploadField: {
     height: '100%',
+  },
+  uploadFieldWrapper: {
+    height: '40%',
+    [theme.breakpoints.down('sm')]: {
+      height: '100%',
+    },
   },
   uploadButton: {
     height: '200px',
