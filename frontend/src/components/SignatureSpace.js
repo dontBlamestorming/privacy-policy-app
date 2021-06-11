@@ -12,7 +12,7 @@ import {
   useTheme,
 } from '@material-ui/core'
 
-import CanvasDraw from 'react-canvas-draw'
+import CanvasDraw from '../components/CanvasDraw'
 import canvasBackground from '../assets/canvas.png'
 
 const SignatureSpace = observer(({ form, setForm, canvasRef }) => {
@@ -29,7 +29,6 @@ const SignatureSpace = observer(({ form, setForm, canvasRef }) => {
       const objectURL = URL.createObjectURL(data)
 
       setSignURL(objectURL)
-
       setForm({ ...form, signature: data })
     })
   }
@@ -46,6 +45,7 @@ const SignatureSpace = observer(({ form, setForm, canvasRef }) => {
           다시 서명
         </Button>
       </Hidden>
+
       {/* mobile */}
       <Hidden mdUp>
         <Button
@@ -79,32 +79,36 @@ const SignatureSpace = observer(({ form, setForm, canvasRef }) => {
 
 const MobileCanvas = ({ open, setOpen, completeSign, canvasRef }) => {
   return (
-    <Dialog open={open} fullWidth onClose={() => setOpen(false)}>
-      <Canvas canvasRef={canvasRef} />
-      <DialogActions style={{ padding: '0 0' }}>
-        <Grid
-          container
-          justify="space-evenly"
-          style={{ backgroundColor: '#30bbc3' }}
-        >
-          <Button
-            style={{ color: '#ffffff', fontSize: '1.3rem' }}
-            onClick={() => canvasRef.current.clear()}
+    <>
+      <Dialog open={open} fullWidth onClose={e => setOpen(false)}>
+        <DialogActions style={{ padding: '0 0' }}>
+          <Grid
+            container
+            justify="space-evenly"
+            style={{ backgroundColor: '#30bbc3' }}
           >
-            다시하기
-          </Button>
-          <Button
-            style={{ color: '#ffffff', fontSize: '1.3rem' }}
-            onClick={() => {
-              completeSign()
-              setOpen(false)
-            }}
-          >
-            완료
-          </Button>
-        </Grid>
-      </DialogActions>
-    </Dialog>
+            <Canvas completeSign={completeSign} canvasRef={canvasRef} />
+
+            <Button
+              style={{ color: '#ffffff', fontSize: '1.3rem' }}
+              onClick={() => canvasRef.current.clear()}
+            >
+              다시하기
+            </Button>
+            <Button
+              style={{ color: '#ffffff', fontSize: '1.3rem' }}
+              onClick={() => {
+                completeSign()
+                setOpen(false)
+              }}
+              onClick={() => setOpen(false)}
+            >
+              완료
+            </Button>
+          </Grid>
+        </DialogActions>
+      </Dialog>
+    </>
   )
 }
 

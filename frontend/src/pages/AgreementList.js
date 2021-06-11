@@ -19,16 +19,11 @@ const AgreementList = observer(() => {
     <>
       <Header />
 
-      <Container className={classes.container}>
-        <Grid container className={classes.mainImage} />
+      <Container className={classes.container} style={{ padding: '0 0' }}>
+        <Grid item className={classes.mainImage} />
 
-        <Grid
-          className={classes.dataTableWrapper}
-          container
-          item
-          justify="center"
-        >
-          <Grid className={classes.dataTable} item sm={10} xs={10}>
+        <Grid className={classes.dataTableWrapper} container justify="center">
+          <Grid className={classes.dataTable} sm={10} xs={10}>
             <DataTable />
           </Grid>
         </Grid>
@@ -61,10 +56,12 @@ const useStyles = makeStyles(theme => ({
     },
   },
   dataTableWrapper: {
+    height: '68%',
     marginBottom: '20px',
     backgroundColor: '#f1eff0',
   },
   dataTable: {
+    height: '30%',
     [theme.breakpoints.down('sm')]: {
       margin: '66px 0 115px 0',
     },

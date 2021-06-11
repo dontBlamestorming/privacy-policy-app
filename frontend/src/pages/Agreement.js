@@ -32,6 +32,8 @@ import userStore from '../stores/userStore'
 
 import API from '../api/index'
 
+import CanvasDraw from '../components/CanvasDraw'
+
 const initialForm = {
   name: '',
   email: '',
@@ -45,7 +47,6 @@ const initialForm = {
 
 const Agreement = observer(() => {
   const [form, setForm] = useState(initialForm)
-
   const [selectedDate, handleDateChange] = useState(new Date())
   const classes = useStyles()
   const canvasRef = useRef(null)
@@ -188,7 +189,6 @@ const Agreement = observer(() => {
                         name="name"
                         placeholder="이름을 입력해 주세요."
                         required
-                        autoFocus
                         onChange={e =>
                           setForm({ ...form, name: e.target.value })
                         }
@@ -248,7 +248,6 @@ const Agreement = observer(() => {
                         name="birthDay"
                         placeholder="출생연도를 선택해주세요."
                         required
-                        autoFocus
                         onChange={e =>
                           setForm({ ...form, birthDay: e.target.value })
                         }
@@ -281,7 +280,6 @@ const Agreement = observer(() => {
                         name="phone"
                         placeholder="휴대폰 번호를 입력해 주세요."
                         required
-                        autoFocus
                         onChange={e =>
                           setForm({ ...form, phone: e.target.value })
                         }
@@ -307,7 +305,7 @@ const Agreement = observer(() => {
                     </Grid>
 
                     <Grid item md={8}>
-                      <FormControl component="fieldset">
+                      <FormControl component="fieldset" required>
                         <RadioGroup
                           classes={{ root: classes.root }}
                           name="gender"
@@ -382,7 +380,6 @@ const Agreement = observer(() => {
                         name="email"
                         placeholder="이메일을 입력해 주세요."
                         required
-                        autoFocus
                         onChange={e =>
                           setForm({ ...form, email: e.target.value })
                         }

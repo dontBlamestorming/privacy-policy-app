@@ -1,11 +1,12 @@
 import React from 'react'
 
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
 import {
+  Container,
   Grid,
   Button,
   makeStyles,
@@ -27,109 +28,84 @@ const StudioHome = () => {
   return (
     <>
       <Header />
-      {/* <Container maxWidth="xl" > */}
-      <Grid container className={classes.container}>
-        <Hidden smDown>
-          <Grid item md />
-        </Hidden>
-        <Grid container item md={9}>
-          <Grid
-            container
-            className={classes.mainImage}
-            item
-            md={12}
-            sm={12}
-            xs={12}
-          >
-            <Grid item>
-              <p className={classes.paperGreeting}>
-                Welcome
-                {matcheSM ? <br /> : null}
-                {studio},
-              </p>
-            </Grid>
+      <Container maxWidth="xl" style={{ padding: '0 0' }}>
+        <Grid container className={classes.container}>
+          <Hidden smDown>
+            <Grid item md />
+          </Hidden>
+          <Grid container item md={9}>
+            <Grid
+              container
+              className={classes.mainImage}
+              item
+              md={12}
+              sm={12}
+              xs={12}
+            >
+              <Grid item>
+                <p className={classes.paperGreeting}>
+                  Welcome
+                  {matcheSM ? <br /> : ' '}
+                  {studio},
+                </p>
+              </Grid>
 
-            <Hidden smDown>
-              <Grid container direction="column" justify="flex-end">
-                <Grid container justify="space-evenly">
-                  <Grid>
-                    {/* <Link to="/agreement" style={{ textDecoration: 'none' }}>
-                      <Button
-                        className={classes.button}
-                        style={{ display: 'absolute', top: '100px' }}
-                      >
-                        동의서 웹
-                      </Button>
-                    </Link> */}
-                    <Link to="/agreement" style={{ textDecoration: 'none' }}>
-                      <Button
-                        className={classes.button}
-                        style={{ display: 'absolute', top: '100px' }}
-                      >
-                        동의서 웹
-                      </Button>
-                    </Link>
-                  </Grid>
-                  <Grid>
-                    <Link to="/agreements" style={{ textDecoration: 'none' }}>
-                      <Button
-                        className={classes.button}
-                        style={{ display: 'absolute', top: '100px' }}
-                      >
-                        동의자 명단
-                      </Button>
-                    </Link>
-                    {/* <Redirect
-                      to={location => {
-                        console.log(location)
-                        return { ...location, pathname: '/agreements' }
-                      }}
-                      style={{ textDecoration: 'none' }}
-                    >
-                    <Button
-                      className={classes.button}
-                      style={{ display: 'absolute', top: '100px' }}
-                    >
-                      동의자 명단
-                    </Button>
-                    </Redirect> */}
+              <Hidden smDown>
+                <Grid container direction="column" justify="flex-end">
+                  <Grid container justify="space-evenly">
+                    <Grid>
+                      <Link to="/agreement" style={{ textDecoration: 'none' }}>
+                        <Button
+                          className={classes.button}
+                          style={{ display: 'absolute', top: '100px' }}
+                        >
+                          동의서 보기
+                        </Button>
+                      </Link>
+                    </Grid>
+                    <Grid>
+                      <Link to="/agreements" style={{ textDecoration: 'none' }}>
+                        <Button
+                          className={classes.button}
+                          style={{ display: 'absolute', top: '100px' }}
+                        >
+                          동의자 명단
+                        </Button>
+                      </Link>
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-            </Hidden>
-          </Grid>
+              </Hidden>
+            </Grid>
 
-          <Grid
-            className={classes.buttonContainer}
-            container
-            item
-            md={12}
-            sm={12}
-            xs={12}
-            justify="space-evenly"
-          >
-            <Hidden mdUp>
-              <Grid item>
-                <Link to="/agreement" style={{ textDecoration: 'none' }}>
-                  <Button className={classes.button}>동의서 태블릿</Button>
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link
-                  to="/studio/agreements"
-                  style={{ textDecoration: 'none' }}
-                >
-                  <Button className={classes.button}>동의자 명단</Button>
-                </Link>
-              </Grid>
-            </Hidden>
+            <Grid
+              className={classes.buttonContainer}
+              container
+              item
+              md={12}
+              sm={12}
+              xs={12}
+              justify="space-evenly"
+            >
+              <Hidden mdUp>
+                <Grid item>
+                  <Link to="/agreement" style={{ textDecoration: 'none' }}>
+                    <Button className={classes.button}>동의서 보기</Button>
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link to="/agreements" style={{ textDecoration: 'none' }}>
+                    <Button className={classes.button}>동의자 명단</Button>
+                  </Link>
+                </Grid>
+              </Hidden>
+            </Grid>
           </Grid>
+          <Hidden smDown>
+            <Grid item md />
+          </Hidden>
         </Grid>
-        <Hidden smDown>
-          <Grid item md />
-        </Hidden>
-      </Grid>
-      {/* </Container> */}
+      </Container>
       <Footer />
     </>
   )
@@ -178,7 +154,7 @@ const useStyles = makeStyles(theme => ({
     color: '#ffffff',
     fontSize: '2.188rem',
     backgroundColor: '#30bbc3',
-    borderRadius: '5.925rem',
+    borderRadius: '20px',
     fontWeight: 'bold',
 
     [theme.breakpoints.down('sm')]: {
