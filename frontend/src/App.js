@@ -50,10 +50,10 @@ const App = observer(() => {
           path="/studio/agreement/detail"
           render={props => <AgreementDetail {...props} />}
         />
-        {/* <Route
+        <Route
           path="/"
           render={props => <div>페이지를 찾을 수 없습니다.</div>}
-        /> */}
+        />
       </Switch>
 
       {appStore.isLoading && <Loading />}
@@ -62,11 +62,11 @@ const App = observer(() => {
 })
 
 const Body = styled.div`
-  // display: flex;
-  // flex-direction: column;
-  // @media (max-width: 960px) {
-  //   min-height: 100vh;
-  // }
+  display: flex;
+  flex-direction: column;
+  @media (max-width: 960px) {
+    min-height: 100vh;
+  }
   @media (max-width: 480px) {
     min-height: 100vh;
   }
