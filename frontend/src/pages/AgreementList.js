@@ -1,9 +1,5 @@
 import React, { useEffect } from 'react'
 
-import { Link } from 'react-router-dom'
-
-import Header from '../components/Header'
-import Footer from '../components/Footer'
 import DataTable from '../components/DataTable'
 
 import { observer } from 'mobx-react-lite'
@@ -17,8 +13,6 @@ const AgreementList = observer(() => {
 
   return (
     <>
-      <Header />
-
       <Container className={classes.container} style={{ padding: '0 0' }}>
         <Grid item className={classes.mainImage} />
 
@@ -28,8 +22,6 @@ const AgreementList = observer(() => {
           </Grid>
         </Grid>
       </Container>
-
-      <Footer />
     </>
   )
 })

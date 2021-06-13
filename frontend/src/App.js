@@ -3,8 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Route, Switch } from 'react-router-dom'
 
+import Header from './pages/Header'
+import Footer from './pages/Footer'
+
 import StudioHome from './pages/StudioHome'
-import Agreement from './pages/Agreement'
+import Agreement from './pages/Agreement/Agreement'
 import AgreementList from './pages/AgreementList'
 import AgreementDetail from './pages/AgreementDetail'
 import LoginForm from './pages/LoginForm'
@@ -14,8 +17,6 @@ import Loading from './components/Loading'
 
 import appStore from './stores/appStore'
 import userStore from './stores/userStore'
-
-import styled from 'styled-components'
 
 const App = observer(() => {
   const [initialized, setInitialized] = useState(true)
@@ -27,7 +28,16 @@ const App = observer(() => {
   return !initialized ? (
     <Loading />
   ) : (
-    <Body>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: 'calc(100vh - 26px)',
+        // minHeight: '100vh',
+      }}
+    >
+      {userStore.user !== null ? <Header /> : null}
+
       <Switch>
         <Route exact path="/" render={props => <LoginForm {...props} />} />
         <AuthRoute
@@ -55,21 +65,11 @@ const App = observer(() => {
           render={props => <div>페이지를 찾을 수 없습니다.</div>}
         />
       </Switch>
+      <Footer />
 
       {appStore.isLoading && <Loading />}
-    </Body>
+    </div>
   )
 })
-
-const Body = styled.div`
-  display: flex;
-  flex-direction: column;
-  @media (max-width: 960px) {
-    min-height: 100vh;
-  }
-  @media (max-width: 480px) {
-    min-height: 100vh;
-  }
-`
 
 export default App

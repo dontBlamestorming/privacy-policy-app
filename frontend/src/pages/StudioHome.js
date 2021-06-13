@@ -2,9 +2,6 @@ import React from 'react'
 
 import { Link } from 'react-router-dom'
 
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-
 import {
   Container,
   Grid,
@@ -20,14 +17,13 @@ import userStore from '../stores/userStore'
 import adminHomeMainImg from '../assets/admin_home_2x.png'
 
 const StudioHome = () => {
-  const classes = useStyles()
   const studio = userStore.user ? userStore.user.studio : ''
+  const classes = useStyles()
   const theme = useTheme()
   const matcheSM = useMediaQuery(theme.breakpoints.down('sm'))
 
   return (
     <>
-      <Header />
       <Container maxWidth="xl" style={{ padding: '0 0' }}>
         <Grid container className={classes.container}>
           <Hidden smDown>
@@ -106,14 +102,13 @@ const StudioHome = () => {
           </Hidden>
         </Grid>
       </Container>
-      <Footer />
     </>
   )
 }
 
 const useStyles = makeStyles(theme => ({
   container: {
-    height: 'calc(100vh - 300px)',
+    // height: 'calc(100vh - 170px)',
   },
   // wrapper: {
   //   // maxHeight: '70%',
@@ -156,6 +151,10 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#30bbc3',
     borderRadius: '20px',
     fontWeight: 'bold',
+    boxShadow: '0px 15px 30px 0 rgba(35, 27, 27, 0.17)',
+    '&:hover': {
+      backgroundColor: '#30bbc3',
+    },
 
     [theme.breakpoints.down('sm')]: {
       width: '18.75rem',
