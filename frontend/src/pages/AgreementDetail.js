@@ -54,6 +54,7 @@ const AgreementDetail = observer(() => {
     API.get(`/forms/download/${id}`)
       .then(res => {
         const url = res.data[0].file
+        console.log('File URL', url)
 
         const link = document.createElementNS(
           'http://www.w3.org/1999/xhtml',
