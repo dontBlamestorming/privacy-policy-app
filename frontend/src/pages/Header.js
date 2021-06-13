@@ -1,34 +1,30 @@
 import React from 'react'
-import Grid from '@material-ui/core/Grid'
+
 import {
   Container,
+  Grid,
   Button,
   Hidden,
   makeStyles,
   Typography,
-  useMediaQuery,
-  useTheme,
   IconButton,
 } from '@material-ui/core'
 
 import { Link } from 'react-router-dom'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import HomeIcon from '@material-ui/icons/Home'
 
 import userStore from '../stores/userStore'
-import { useHistory } from 'react-router-dom'
 
 const Header = () => {
   const classes = useStyles()
-  const theme = useTheme()
-  const matchesSM = useMediaQuery(theme.breakpoints.down('sm'))
 
   return (
-    <Container maxWidth="xl" style={{ padding: '0 0' }}>
+    <Container className={classes.container} maxWidth="xl">
       <Grid
         container
-        className={classes.container}
+        className={classes.wrapper}
         md={12}
         justify="center"
         alignItems="center"
@@ -43,10 +39,7 @@ const Header = () => {
           xs={11}
         >
           <Link to="/studio">
-            <IconButton
-              // className={classes.buttonLeft}
-              className={classes.icon}
-            >
+            <IconButton className={classes.icon} disableRipple>
               <HomeIcon />
             </IconButton>
           </Link>
@@ -81,7 +74,8 @@ const Header = () => {
 }
 
 const useStyles = makeStyles(theme => ({
-  container: {
+  container: { padding: '0 0' },
+  wrapper: {
     height: '133px',
     [theme.breakpoints.down('sm')]: {
       height: '60px',
@@ -89,11 +83,6 @@ const useStyles = makeStyles(theme => ({
   },
   buttonLeft: {
     color: '#30bbc3',
-
-    [theme.breakpoints.down('sm')]: {},
-  },
-  buttonRight: {
-    [theme.breakpoints.down('sm')]: {},
   },
   text: {
     fontSize: '1.625rem',
@@ -114,6 +103,9 @@ const useStyles = makeStyles(theme => ({
     color: '#ffffff',
     backgroundColor: '#111e3f',
     borderRadius: '10px',
+    '&:hover': {
+      backgroundColor: '#30bbc3',
+    },
     [theme.breakpoints.down('xs')]: {
       width: '33px',
       height: '33px',

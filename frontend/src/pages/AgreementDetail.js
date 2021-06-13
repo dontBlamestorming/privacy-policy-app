@@ -2,12 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import userStore from '../stores/userStore'
 import agreementStore from '../stores/agreementStore'
-import appStore from '../stores/appStore'
 
 import { observer } from 'mobx-react-lite'
-
-import Header from '../components/Header'
-import Footer from '../components/Footer'
 
 import IconButton from '@material-ui/core/IconButton'
 import { Grid, Button, Container, makeStyles } from '@material-ui/core'
@@ -23,10 +19,9 @@ import API from '../api'
 
 const AgreementDetail = observer(() => {
   const [files, setFiles] = useState([])
-  const [url, setURL] = useState('')
-  const form = agreementStore.formDetail
-
   const classes = useStyles()
+  const form = agreementStore.formDetail
+  const { name, phone, gender, email, birthday } = form
 
   useEffect(() => {
     const files = agreementStore.formDetail.files
@@ -85,69 +80,82 @@ const AgreementDetail = observer(() => {
 
   return (
     <>
-      <Header />
-
       <Container className={classes.container}>
         <Grid className={classes.mainImage} />
-
         <Grid className={classes.content} container>
-          {/* Upload Button */}
-          <Grid item md={6} sm={12} xs={12}>
-            <UploadField
+          {/* File Manage Field */}
+          <Grid
+            className={classes.content__fileManageField}
+            container
+            item
+            justify="center"
+            md={6}
+            sm={12}
+            xs={12}
+          >
+            <FileManageField
               files={files}
               uploadFile={uploadFile}
               deleteFile={deleteFile}
               downloadFile={downloadFile}
-              url={url}
             />
           </Grid>
 
           {/* Form Detail */}
-          <Grid container justify="center" item md={6} sm={12} xs={12}>
-            <InfoField form={form} />
+          <Grid
+            className={classes.content__formDetailField}
+            container
+            justify="center"
+            item
+            md={6}
+            sm={12}
+            xs={12}
+          >
+            <Grid
+              className={classes.infoField}
+              container
+              alignItems="center"
+              md={11}
+              sm={10}
+              xs={11}
+            >
+              <Field title="성명" text={name} />
+              <Field title="전화번호" text={phone} />
+              <Field title="성별" text={gender} />
+              <Field title="이메일" text={email} />
+              <Field title="생년월일" text={birthday} />
+            </Grid>
           </Grid>
         </Grid>
       </Container>
-
-      <Footer />
     </>
   )
 })
 
-const UploadField = ({ files, uploadFile, deleteFile, downloadFile, url }) => {
+const FileManageField = ({ files, uploadFile, deleteFile, downloadFile }) => {
   const fileInput = useRef(null)
   const classes = useStyles()
 
   return (
-    <Grid className={classes.uploadField} justify="center" container>
-      <Grid
-        className={classes.uploadFieldWrapper}
-        container
-        item
-        justify="center"
-        alignItems="center"
-        md={12}
-        sm={12}
-      >
-        <Grid className={classes.uploadButton} md={4} item>
+    <>
+      {/* Upload Field */}
+      <Grid container justify="center" alignItems="center">
+        <Grid className={classes.uploadButton} md={4} sm={4} xs={6} item>
           <Button
             style={{ height: '100%' }}
             fullWidth
             onClick={() => fileInput.current.click()}
           >
             <Grid container>
-              <Grid item md={12} sm={12}>
+              <Grid item md={12} sm={12} xs={12}>
                 <img src={uploadImage} alt="업로드 아이콘" />
               </Grid>
               <Grid
+                className={classes.uploadButton__text}
                 item
                 md={12}
                 sm={12}
-                style={{
-                  fontSize: '1.375rem',
-                  borderRadius: '0.625',
-                  margin: '0 0',
-                }}
+                xs={12}
               >
                 PSD 파일 업로드
               </Grid>
@@ -165,17 +173,18 @@ const UploadField = ({ files, uploadFile, deleteFile, downloadFile, url }) => {
           />
         </Grid>
       </Grid>
-      <Grid item md={11} sm={12} style={{ height: '60%' }}>
+
+      {/* File List Field */}
+      <Grid item md={11} sm={10} xs={10}>
         {files.map(image => (
           <Item
             image={image}
             deleteFile={deleteFile}
             downloadFile={downloadFile}
-            url={url}
           />
         ))}
       </Grid>
-    </Grid>
+    </>
   )
 }
 
@@ -205,21 +214,6 @@ const Item = ({ image, deleteFile, downloadFile }) => {
           <DeleteForeverOutlinedIcon className={classes.uploaded_icon} />
         </IconButton>
       </Grid>
-    </Grid>
-  )
-}
-
-const InfoField = ({ form }) => {
-  const { name, phone, gender, email, birthday } = form
-  const classes = useStyles()
-
-  return (
-    <Grid className={classes.infoField} container alignItems="center" md={11}>
-      <Field title="성명" text={name} />
-      <Field title="전화번호" text={phone} />
-      <Field title="성별" text={gender} />
-      <Field title="이메일" text={email} />
-      <Field title="생년월일" text={birthday} />
     </Grid>
   )
 }
@@ -258,35 +252,37 @@ const useStyles = makeStyles(theme => ({
   },
   mainImage: {
     maxWidth: '100%',
-    height: '25%',
+    height: '20%',
     backgroundImage: `url(${adminHomeMainImg})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: '50% 50%',
+
     [theme.breakpoints.down('sm')]: {
       padding: '0 0',
       height: '200px',
     },
   },
   content: {
-    height: '70%',
+    height: '80%',
     backgroundColor: '#f1eff0',
-  },
-  uploadField: {
-    height: '100%',
   },
   uploadFieldWrapper: {
     height: '40%',
-    [theme.breakpoints.down('sm')]: {
-      height: '100%',
-    },
+
+    [theme.breakpoints.down('sm')]: {},
   },
   uploadButton: {
     height: '200px',
     backgroundColor: '#ffffff',
     borderRadius: '10px',
-    // '&::hover': { cursor: 'pointer' },
   },
+  uploadButton__text: {
+    fontSize: '1.375rem',
+    borderRadius: '0.625',
+    margin: '0 0',
+  },
+
   uploadedList: {
     borderRadius: '10px',
     backgroundColor: '#ffffff',
@@ -304,6 +300,7 @@ const useStyles = makeStyles(theme => ({
     height: '16%',
     backgroundColor: '#ffffff',
     borderRadius: '1.625rem',
+
     [theme.breakpoints.down('sm')]: {},
   },
   field_title: {
@@ -311,6 +308,10 @@ const useStyles = makeStyles(theme => ({
     fontSize: '1.375rem',
     fontWeight: 600,
     color: '#111e3f',
+
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: '1.5rem',
+    },
   },
   field_text: {
     paddingRight: '3.5rem',
@@ -318,6 +319,9 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 600,
     color: '#111e3f',
     opacity: 0.8,
+    [theme.breakpoints.down('sm')]: {
+      paddingRight: '1.5rem',
+    },
   },
 }))
 

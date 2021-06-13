@@ -1,9 +1,7 @@
 import React, { useState, useRef } from 'react'
 
-import Header from '../components/Header'
-import SignatureSpace from '../components/SignatureSpace'
-import NoticeTable from '../components/NoticeTable'
-import Footer from '../components/Footer'
+import SignatureSpace from '../../components/SignatureSpace'
+import NoticeTable from './NoticeTable'
 
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -21,6 +19,7 @@ import {
 
 import DateFnsUtils from '@date-io/date-fns'
 import ko from 'date-fns/locale/ko'
+
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
@@ -28,11 +27,11 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 
 import { observer } from 'mobx-react-lite'
 
-import userStore from '../stores/userStore'
+import userStore from '../../stores/userStore'
 
-import API from '../api/index'
+import API from '../../api/index'
 
-import CanvasDraw from '../components/CanvasDraw'
+import CanvasDraw from '../../components/CanvasDraw'
 
 const initialForm = {
   name: '',
@@ -86,7 +85,6 @@ const Agreement = observer(() => {
 
   return (
     <>
-      <Header />
       <Container className={classes.container} component="main">
         <div className={classes.paper}>
           <NoticeTable />
@@ -417,7 +415,6 @@ const Agreement = observer(() => {
           </form>
         </div>
       </Container>
-      <Footer />
     </>
   )
 })

@@ -9,6 +9,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@material-ui/core'
+
 import styled from 'styled-components'
 
 import logoDesktop from '../assets/footer_logo_desktop.png'
@@ -25,21 +26,18 @@ const Footer = () => {
   const matchesXS = useMediaQuery(theme.breakpoints.down('xs'))
 
   return (
-    <Container maxWidth="xl" style={{ padding: '0 0' }}>
-      <Grid container className={classes.container} justify="center">
-        {/* <Hidden smDown xsDown>
-        <Grid item md />
-      </Hidden> */}
-
+    <Container maxWidth="xl">
+      <Grid container justify="center" className={classes.container}>
         <Grid
           className={classes.content}
           container
           item
-          md={9}
+          md={10}
+          justify="space-evenly"
           alignItems="center"
-          style={{ paddingLeft: '39px', paddingTop: '22px' }}
         >
-          <Grid container md={3} sm={4}>
+          {/* Logo */}
+          <Grid container item md={3} sm={4}>
             <Grid item xs={8}>
               <Link to="/">{matchesXS ? <LogoMobile /> : <LogoDesktop />}</Link>
             </Grid>
@@ -52,7 +50,6 @@ const Footer = () => {
             </Hidden>
           </Grid>
 
-          {/* Large view Icons */}
           <Hidden smDown xsDown>
             <Grid item md={3}>
               <SNSLinks />
@@ -65,10 +62,9 @@ const Footer = () => {
               <Text>주식회사 써머캣</Text>
               <Text>사업자 등록번호 115-86-01644</Text>
               <Text>서울특별시 강남구 강남대로 310, 유니온센터 1003호</Text>
+              <Text>대표|강예슬 정우철, 개인정보담당자|정우철</Text>
 
-              <Hidden mdUp>대표|강예슬 정우철, 개인정보담당자|정우철</Hidden>
-
-              <Hidden smDown xsDown>
+              <Hidden mdUp smDown xsDown>
                 <Text>대표|강예슬, 정우철</Text>
                 <Text>개인정보담당자|정우철</Text>
                 <Text>
@@ -79,7 +75,7 @@ const Footer = () => {
           </Hidden>
 
           {/* Notice */}
-          <Grid className={classes.notice} item md={3} sm={3} xs={4}>
+          <Grid className={classes.notice} item md={3} sm={3} xs={12}>
             <Hidden xsDown>
               <Text>이용약관</Text>
               <Text>개인정보취급방침</Text>
@@ -97,10 +93,6 @@ const Footer = () => {
             </Hidden>
           </Grid>
         </Grid>
-
-        {/* <Hidden smDown xsDown>
-        <Grid item md />
-      </Hidden> */}
       </Grid>
     </Container>
   )
@@ -152,33 +144,35 @@ const Text = styled.div`
 
 const useStyles = makeStyles(theme => ({
   container: {
+    // border: '3px solid blue',
+    height: '194px',
     backgroundColor: '#f1eff0',
-    marginTop: 'auto',
+    // marginTop: 'auto',
 
     [theme.breakpoints.down('sm')]: {
-      height: '198px',
+      height: '200px',
       backgroundColor: '#ffffff',
     },
   },
   content: {
-    [theme.breakpoints.down('xs')]: {
-      paddingLeft: '30px',
-      paddingTop: '22px',
-    },
+    // paddingLeft: '39px',
+    // paddingTop: '22px',
+    // [theme.breakpoints.down('xs')]: {
+    //   paddingLeft: '30px',
+    //   paddingTop: '22px',
+    // },
   },
-  icons: {
-    [theme.breakpoints.down('sm')]: {
-      paddingTop: '11px',
-    },
+  // icons: {
+  //   [theme.breakpoints.down('sm')]: {
+  //     paddingTop: '11px',
+  //   },
 
-    [theme.breakpoints.down('xs')]: {
-      padding: '6px 0',
-    },
-  },
+  //   [theme.breakpoints.down('xs')]: {
+  //     padding: '6px 0',
+  //   },
+  // },
   notice: {
     [theme.breakpoints.down('xs')]: {
-      flexBasis: '100%',
-      maxWidth: '100%',
       marginBottom: '35px',
     },
   },

@@ -5,14 +5,12 @@ import userStore from '../stores/userStore'
 
 import { observer } from 'mobx-react-lite'
 
-import Footer from '../components/Footer'
-
 import {
   Container,
+  Hidden,
   Button,
   makeStyles,
   TextField,
-  Typography,
   Grid,
   Paper,
   useMediaQuery,
@@ -21,7 +19,8 @@ import {
 
 import API from '../api/index'
 
-import loginImage from '../assets/main.jpg'
+import loginImage from '../assets/login_form_main.jpg'
+import loginTypo from '../assets/login_form_typo.png'
 
 const LoginForm = observer(() => {
   const [form, setForm] = useState({
@@ -64,108 +63,99 @@ const LoginForm = observer(() => {
   }
 
   return (
-    <>
-      <Container maxWidth="xl" style={{ padding: '0 0' }}>
-        <Grid container className={classes.container} justify="center">
-          <Grid container item md={9}>
+    <Container
+      maxWidth="xl"
+      style={{
+        padding: '0 0',
+        // border: '10px solid red',
+        // height: 'calc(100vh - 225px)',
+      }}
+    >
+      <Grid container className={classes.container} justify="center">
+        <Grid container item md={9}>
+          <Grid
+            className={classes.loginSection}
+            container
+            justify={matchesSM ? 'center' : null}
+            alignContent="center"
+            item
+            md={6}
+            sm
+            xs
+          >
+            <Hidden smDown>
+              <Grid className={classes.mainTypo} item md={9}>
+                <img
+                  src={loginTypo}
+                  alt="Phto Studio Management"
+                  style={{ width: '100%', height: '100%' }}
+                />
+              </Grid>
+            </Hidden>
+
             <Grid
-              className={classes.loginSection}
-              container
-              justify={matchesSM ? 'center' : null}
-              alignContent="center"
-              item
-              md={6}
-              sm
-              xs
+              onSubmit={handleSubmit}
+              component="form"
+              md={8}
+              justify="center"
             >
-              {/* Title */}
-              <Grid item md={8}>
-                <Typography
-                  className={classes.title}
-                  variant="h2"
-                  component="h3"
-                >
-                  Photo Studio
-                </Typography>
-                <Typography
-                  className={classes.title}
-                  variant="h2"
-                  component="h3"
-                >
-                  Management
-                </Typography>
+              <Grid container item className={classes.loginField}>
+                <TextField
+                  label="Your ID"
+                  type="text"
+                  placeholder="Enter your ID"
+                  className={classes.inputField}
+                  InputLabelProps={{
+                    shrink: true,
+                    focused: false,
+                    classes: { shrink: classes.inputField_label },
+                  }}
+                  InputProps={{
+                    classes: { underline: classes.inputOnFocued },
+                  }}
+                  value={form.email}
+                  onChange={e => setForm({ ...form, email: e.target.value })}
+                />
+
+                <TextField
+                  label="Password"
+                  type="Password"
+                  placeholder="Enter your password"
+                  className={classes.inputField}
+                  InputLabelProps={{
+                    shrink: true,
+                    focused: false,
+                    classes: { shrink: classes.inputField_label },
+                  }}
+                  InputProps={{
+                    classes: { underline: classes.inputOnFocued },
+                  }}
+                  value={form.password}
+                  onChange={e => setForm({ ...form, password: e.target.value })}
+                />
               </Grid>
 
-              {/* Login  */}
-              <Grid
-                onSubmit={handleSubmit}
-                component="form"
-                md={8}
-                justify="center"
-              >
-                <Grid container item className={classes.loginField}>
-                  <TextField
-                    label="Your ID"
-                    type="text"
-                    placeholder="Enter your ID"
-                    className={classes.inputField}
-                    InputLabelProps={{
-                      shrink: true,
-                      focused: false,
-                      classes: { shrink: classes.inputField_label },
-                    }}
-                    InputProps={{
-                      classes: { underline: classes.inputOnFocued },
-                    }}
-                    value={form.email}
-                    onChange={e => setForm({ ...form, email: e.target.value })}
-                  />
-
-                  <TextField
-                    label="Password"
-                    type="Password"
-                    placeholder="Enter your password"
-                    className={classes.inputField}
-                    InputLabelProps={{
-                      shrink: true,
-                      focused: false,
-                      classes: { shrink: classes.inputField_label },
-                    }}
-                    InputProps={{
-                      classes: { underline: classes.inputOnFocued },
-                    }}
-                    value={form.password}
-                    onChange={e =>
-                      setForm({ ...form, password: e.target.value })
-                    }
-                  />
-                </Grid>
-
-                <Grid container md={12} justify="center">
-                  <Grid item>
-                    <Button
-                      classes={{ root: classes.signInBtn }}
-                      type="submit"
-                      variant="outlined"
-                      color="primary"
-                    >
-                      Sign In
-                    </Button>
-                  </Grid>
+              <Grid container md={12} justify="center">
+                <Grid item>
+                  <Button
+                    classes={{ root: classes.signInBtn }}
+                    type="submit"
+                    variant="outlined"
+                    color="primary"
+                  >
+                    Sign In
+                  </Button>
                 </Grid>
               </Grid>
-            </Grid>
-
-            {/* Image */}
-            <Grid className={classes.imageSection} item md={6} sm={12} xs={12}>
-              <Paper className={classes.mainImage} />
             </Grid>
           </Grid>
-        </Grid>
-      </Container>
 
-      <Footer />
-    </>
+          <Grid className={classes.imageSection} item md={6} sm={12} xs={12}>
+            <Paper className={classes.mainImage} />
+          </Grid>
+        </Grid>
+      </Grid>
+    </Container>
   )
 })
 
@@ -208,6 +198,9 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       order: 1,
     },
+  },
+  mainTypo: {
+    marginBottom: '41px',
   },
   mainImage: {
     width: '100%',
