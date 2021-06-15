@@ -9,7 +9,6 @@ import {
   Paper,
   Grid,
   makeStyles,
-  useTheme,
 } from '@material-ui/core'
 
 import CanvasDraw from '../components/CanvasDraw'
@@ -18,9 +17,7 @@ import canvasBackground from '../assets/canvas.png'
 const SignatureSpace = observer(({ form, setForm, canvasRef }) => {
   const [open, setOpen] = useState(false)
   const [signURL, setSignURL] = useState(null)
-
   const classes = useStyles()
-  const theme = useTheme()
 
   const completeSign = () => {
     const signature = canvasRef.current.canvas.drawing

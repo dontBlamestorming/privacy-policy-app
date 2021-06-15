@@ -32,8 +32,7 @@ const App = observer(() => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        minHeight: 'calc(100vh - 26px)',
-        // minHeight: '100vh',
+        minHeight: 'calc(100vh - 15px)',
       }}
     >
       {userStore.user !== null ? <Header /> : null}
