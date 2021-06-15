@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import DataTable from '../components/DataTable'
 
@@ -13,12 +13,20 @@ const AgreementList = observer(() => {
 
   return (
     <>
-      <Container className={classes.container} style={{ padding: '0 0' }}>
-        <Grid item className={classes.mainImage} />
+      <Container
+        className={classes.container}
+        component="main"
+        style={{ padding: '0 0' }}
+      >
+        <Grid container>
+          <Grid container className={classes.mainImage} alignItems="center">
+            <p className={classes.paperTitle}>개인정보동의서 동의자 리스트</p>
+          </Grid>
 
-        <Grid className={classes.dataTableWrapper} container justify="center">
-          <Grid className={classes.dataTable} sm={10} xs={10}>
-            <DataTable />
+          <Grid className={classes.dataTableWrapper} container justify="center">
+            <Grid className={classes.dataTable} sm={10} xs={10}>
+              <DataTable />
+            </Grid>
           </Grid>
         </Grid>
       </Container>
@@ -28,7 +36,11 @@ const AgreementList = observer(() => {
 
 const useStyles = makeStyles(theme => ({
   container: {
-    height: 'calc(100vh - 285px)',
+    display: 'flex',
+    justifyContent: 'center',
+    minHeight: '100vh',
+    backgroundColor: '#f1eff0',
+    marginBottom: '5.625rem',
 
     [theme.breakpoints.down('sm')]: {
       height: 'calc(100vh)',
@@ -36,8 +48,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   mainImage: {
-    maxWidth: '100%',
-    height: '30%',
+    width: '100%',
+    height: '25%',
     backgroundImage: `url(${adminHomeMainImg})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
@@ -45,6 +57,21 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       padding: '0 0',
       height: '200px',
+    },
+  },
+  paperTitle: {
+    fontSize: '4rem',
+    marginLeft: '7.875rem',
+    fontWeight: 900,
+    lineHeight: 1.14,
+    letterSpacing: '-0.125rem',
+    color: '#ffffff',
+    textShadow: '0px 15px 30px rgba(35, 27, 27, 0.34)',
+
+    [theme.breakpoints.down('xs')]: {
+      marginTop: '8.938rem',
+      marginLeft: '1.75rem',
+      fontSize: '4.375rem',
     },
   },
   dataTableWrapper: {

@@ -5,8 +5,8 @@ class AgreementStore {
   /*
     formLists = {
       id: int,
-      studio: int, <- studio_id가 아니고?
-      receiver: int, <- nameing 고민하기
+      studio: int, 
+      receiver: int,
       name: str,
       email: str,
       phone: str,
@@ -14,7 +14,7 @@ class AgreementStore {
       birthday: str,
       created: str,
       sign: str,
-      files: { <- 여기서 가져올 필요는 없을듯
+      files: {
         id: int,
         file: str,
       },

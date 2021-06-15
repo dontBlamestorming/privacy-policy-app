@@ -55,7 +55,6 @@ const LoginForm = observer(() => {
     } else if (userStore.user.is_studio_manager) {
       path = '/studio'
     } else {
-      // 현재는 슈퍼유저인 경우 여기로 들어옴
       path = '/studio'
     }
 
@@ -63,15 +62,8 @@ const LoginForm = observer(() => {
   }
 
   return (
-    <Container
-      maxWidth="xl"
-      style={{
-        padding: '0 0',
-        // border: '10px solid red',
-        // height: 'calc(100vh - 225px)',
-      }}
-    >
-      <Grid container className={classes.container} justify="center">
+    <Container className={classes.container} maxWidth="xl">
+      <Grid container className={classes.wrapper} justify="center">
         <Grid container item md={9}>
           <Grid
             className={classes.loginSection}
@@ -161,8 +153,13 @@ const LoginForm = observer(() => {
 
 const useStyles = makeStyles(theme => ({
   container: {
-    // height: '100vh',
-    height: 'calc(100vh - 182px)',
+    padding: '0 0',
+    flex: 1,
+  },
+
+  wrapper: {
+    height: 'calc(100vh - 215px)',
+
     [theme.breakpoints.down('sm')]: {
       height: 'calc(100vh - 139px)',
     },
@@ -183,12 +180,6 @@ const useStyles = makeStyles(theme => ({
       display: 'none',
     },
   },
-  // loginField: {
-  //   [theme.breakpoints.down('sm')]: {
-  //     margin: '0 auto',
-  //     width: '100%',
-  //   },
-  // },
   passwordField: {
     [theme.breakpoints.down('sm')]: {
       width: '60%',

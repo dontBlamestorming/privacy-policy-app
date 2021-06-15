@@ -3,7 +3,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import {
-  Container,
   Grid,
   Button,
   makeStyles,
@@ -24,102 +23,65 @@ const StudioHome = () => {
 
   return (
     <>
-      <Container maxWidth="xl" style={{ padding: '0 0' }}>
-        <Grid container className={classes.container}>
-          <Hidden smDown>
-            <Grid item md />
-          </Hidden>
-          <Grid container item md={9}>
-            <Grid
-              container
-              className={classes.mainImage}
-              item
-              md={12}
-              sm={12}
-              xs={12}
-            >
-              <Grid item>
-                <p className={classes.paperGreeting}>
-                  Welcome
-                  {matcheSM ? <br /> : ' '}
-                  {studio},
-                </p>
-              </Grid>
-
-              <Hidden smDown>
-                <Grid container direction="column" justify="flex-end">
-                  <Grid container justify="space-evenly">
-                    <Grid>
-                      <Link to="/agreement" style={{ textDecoration: 'none' }}>
-                        <Button
-                          className={classes.button}
-                          style={{ display: 'absolute', top: '100px' }}
-                        >
-                          동의서 보기
-                        </Button>
-                      </Link>
-                    </Grid>
-                    <Grid>
-                      <Link to="/agreements" style={{ textDecoration: 'none' }}>
-                        <Button
-                          className={classes.button}
-                          style={{ display: 'absolute', top: '100px' }}
-                        >
-                          동의자 명단
-                        </Button>
-                      </Link>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Hidden>
-            </Grid>
-
-            <Grid
-              className={classes.buttonContainer}
-              container
-              item
-              md={12}
-              sm={12}
-              xs={12}
-              justify="space-evenly"
-            >
-              <Hidden mdUp>
-                <Grid item>
-                  <Link to="/agreement" style={{ textDecoration: 'none' }}>
-                    <Button className={classes.button}>동의서 보기</Button>
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link to="/agreements" style={{ textDecoration: 'none' }}>
-                    <Button className={classes.button}>동의자 명단</Button>
-                  </Link>
-                </Grid>
-              </Hidden>
+      <Grid container className={classes.container}>
+        <Hidden smDown>
+          <Grid item md />
+        </Hidden>
+        <Grid container item md={9} className={classes.wrapper}>
+          <Grid
+            container
+            className={classes.mainImage}
+            item
+            alignItems="center"
+          >
+            <Grid item>
+              <p className={classes.paperGreeting}>
+                Welcome
+                {matcheSM ? <br /> : ' '}
+                {studio},
+              </p>
             </Grid>
           </Grid>
-          <Hidden smDown>
-            <Grid item md />
-          </Hidden>
+
+          <Grid
+            className={classes.buttonContainer}
+            container
+            item
+            justify="space-evenly"
+          >
+            <Grid item>
+              <Link to="/agreement" style={{ textDecoration: 'none' }}>
+                <Button className={classes.button}>동의서 보기</Button>
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link to="/agreements" style={{ textDecoration: 'none' }}>
+                <Button className={classes.button}>동의자 명단</Button>
+              </Link>
+            </Grid>
+          </Grid>
         </Grid>
-      </Container>
+        <Hidden smDown>
+          <Grid item md />
+        </Hidden>
+      </Grid>
     </>
   )
 }
 
 const useStyles = makeStyles(theme => ({
   container: {
-    // height: 'calc(100vh - 170px)',
+    padding: '0 0',
+    flex: 1,
+    height: 'calc(100vh - 349px)',
   },
-  // wrapper: {
-  //   // maxHeight: '70%',
-  //   [theme.breakpoints.down('sm')]: {
-  //     // height: '50%',
-  //     margintLeft: '0',
-  //   },
-  // },
+  wrapper: {
+    [theme.breakpoints.down('sm')]: {
+      margintLeft: '0',
+    },
+  },
   mainImage: {
-    width: '100%',
-    height: '73%',
+    height: '70%',
     backgroundImage: `url(${adminHomeMainImg})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
@@ -132,7 +94,6 @@ const useStyles = makeStyles(theme => ({
   paperGreeting: {
     fontSize: '5rem',
     marginLeft: '7.875rem',
-    marginTop: '11.375rem',
     fontWeight: 900,
     lineHeight: 1.14,
     letterSpacing: '-0.125rem',
@@ -143,6 +104,18 @@ const useStyles = makeStyles(theme => ({
       fontSize: '4.375rem',
     },
   },
+
+  buttonContainer: {
+    [theme.breakpoints.down('sm')]: {
+      alignItems: 'center',
+      fontSize: '1.875rem',
+      marginTop: 'auto 0',
+    },
+    [theme.breakpoints.down('xs')]: {
+      maxHeight: '50%',
+    },
+  },
+
   button: {
     width: '23.688rem',
     height: '11.875rem',
@@ -152,26 +125,24 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '20px',
     fontWeight: 'bold',
     boxShadow: '0px 15px 30px 0 rgba(35, 27, 27, 0.17)',
+    display: 'absolute',
+    top: '-60%',
+
     '&:hover': {
       backgroundColor: '#30bbc3',
     },
 
     [theme.breakpoints.down('sm')]: {
+      display: 'block',
+      top: '0',
       width: '18.75rem',
       height: '9.438rem',
       fontSize: '1.875rem',
-      boxShadow: '0px 15px 30px 0 rgba(35, 27, 27, 0.17)',
     },
     [theme.breakpoints.down('xs')]: {
       width: '23.125rem',
       height: '8.75rem',
       fontSize: '1.875rem',
-      boxShadow: '0px 15px 30px 0 rgba(35, 27, 27, 0.17)',
-    },
-  },
-  buttonContainer: {
-    [theme.breakpoints.down('xs')]: {
-      maxHeight: '50%',
     },
   },
 }))

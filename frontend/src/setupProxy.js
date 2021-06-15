@@ -8,13 +8,3 @@ const backendProxyMiddleware = createProxyMiddleware({
 module.exports = function (app) {
   app.use('/api', backendProxyMiddleware)
 }
-
-// module.exports = function (app) {
-//   app.use(
-//     '/api',
-//     createProxyMiddleware({
-//       target: 'http://localhost:8000',
-//       changeOrigin: true,
-//     }),
-//   );
-// };

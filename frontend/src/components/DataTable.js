@@ -1,6 +1,6 @@
 import React, { useState, useEffect, forwardRef } from 'react'
 
-import MaterialTable, { MTableToolbar } from 'material-table'
+import MaterialTable from 'material-table'
 
 import { useHistory } from 'react-router-dom'
 
@@ -73,7 +73,6 @@ const DataTable = observer(() => {
   return (
     <>
       <MaterialTable
-        title="개인정보동의서 제공자 리스트"
         columns={headCells}
         onRowClick={(e, rowData) => getFormDatail(e, rowData)}
         data={agreementStore.formLists ? genFormLists() : []}
@@ -84,10 +83,11 @@ const DataTable = observer(() => {
           boxShadow: 'none',
         }}
         options={{
+          showTitle: false,
           doubleHorizontalScroll: true,
           paging: false,
-          minBodyHeight: '300px',
-          maxBodyHeight: '100%',
+          // minBodyHeight: '300px',
+          maxBodyHeight: '350px',
           paginationType: 'stepped',
           searchFieldStyle: {
             borderBottom: '0.5rem solid #f1eff0',
