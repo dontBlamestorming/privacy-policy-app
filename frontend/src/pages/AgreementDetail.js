@@ -6,7 +6,17 @@ import agreementStore from '../stores/agreementStore'
 import { observer } from 'mobx-react-lite'
 
 import IconButton from '@material-ui/core/IconButton'
-import { Grid, Button, Container, makeStyles } from '@material-ui/core'
+import {
+  Box,
+  Grid,
+  Button,
+  Container,
+  makeStyles,
+  Dialog,
+  DialogActions,
+} from '@material-ui/core'
+
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined'
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined'
@@ -18,6 +28,7 @@ import uploadImage from '../assets/upload_icon.png'
 import API from '../api'
 
 const AgreementDetail = observer(() => {
+  const [dialogOpen, setDialogOpen] = useState(false)
   const [files, setFiles] = useState([])
   const classes = useStyles()
   const form = agreementStore.formDetail
@@ -30,6 +41,7 @@ const AgreementDetail = observer(() => {
   }, [])
 
   const uploadFile = event => {
+    setDialogOpen(true)
     const data = new FormData()
 
     data.append('is_studio_manager', userStore.user.is_studio_manager)
@@ -45,9 +57,13 @@ const AgreementDetail = observer(() => {
         if (res.status === 201) {
           const uploadedFile = res.data
           setFiles([...files, uploadedFile])
+          setDialogOpen(false)
         }
       })
-      .catch(error => console.log(error))
+      .catch(error => {
+        console.log(error)
+        setDialogOpen(false)
+      })
   }
 
   const downloadFile = ({ id }) => {
@@ -80,56 +96,70 @@ const AgreementDetail = observer(() => {
   }
 
   return (
-    <>
-      <Container className={classes.container}>
-        <Grid className={classes.mainImage} />
-        <Grid className={classes.content} container>
-          {/* File Manage Field */}
-          <Grid
-            className={classes.content__fileManageField}
-            container
-            item
-            justify="center"
-            md={6}
-            sm={12}
-            xs={12}
-          >
-            <FileManageField
-              files={files}
-              uploadFile={uploadFile}
-              deleteFile={deleteFile}
-              downloadFile={downloadFile}
-            />
-          </Grid>
+    <Container className={classes.container}>
+      <Grid className={classes.mainImage} />
+      <Grid className={classes.content} container>
+        {/* File Manage Field */}
+        <Grid
+          className={classes.content__fileManageField}
+          container
+          item
+          justify="center"
+          md={6}
+          sm={12}
+          xs={12}
+        >
+          <FileManageField
+            files={files}
+            uploadFile={uploadFile}
+            deleteFile={deleteFile}
+            downloadFile={downloadFile}
+          />
+        </Grid>
 
-          {/* Form Detail */}
+        {/* Form Detail */}
+        <Grid
+          className={classes.content__formDetailField}
+          container
+          justify="center"
+          item
+          md={6}
+          sm={12}
+          xs={12}
+        >
           <Grid
-            className={classes.content__formDetailField}
+            className={classes.infoField}
             container
-            justify="center"
-            item
-            md={6}
-            sm={12}
-            xs={12}
+            alignItems="center"
+            md={11}
+            sm={10}
+            xs={11}
           >
-            <Grid
-              className={classes.infoField}
-              container
-              alignItems="center"
-              md={11}
-              sm={10}
-              xs={11}
-            >
-              <Field title="성명" text={name} />
-              <Field title="전화번호" text={phone} />
-              <Field title="성별" text={gender} />
-              <Field title="이메일" text={email} />
-              <Field title="생년월일" text={birthday} />
-            </Grid>
+            <Field title="성명" text={name} />
+            <Field title="전화번호" text={phone} />
+            <Field title="성별" text={gender} />
+            <Field title="이메일" text={email} />
+            <Field title="생년월일" text={birthday} />
           </Grid>
         </Grid>
-      </Container>
-    </>
+      </Grid>
+
+      <Dialog
+        dialogOpen={dialogOpen}
+        style={{ backdropFilter: 'blur(5px)' }}
+        PaperComponent={Box}
+      >
+        <DialogActions>
+          <CircularProgress
+            style={{
+              color: '#37d5de',
+              width: '6.25rem',
+              height: '6.25rem',
+            }}
+          />
+        </DialogActions>
+      </Dialog>
+    </Container>
   )
 })
 
@@ -283,7 +313,6 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '0.625',
     margin: '0 0',
   },
-
   uploadedList: {
     borderRadius: '10px',
     backgroundColor: '#ffffff',
