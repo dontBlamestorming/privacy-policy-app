@@ -37,7 +37,7 @@ const initialForm = {
   gender: '',
   birthDay: '',
   phone: '',
-  signature: '',
+  signature: null,
   collectingPrivacy: false,
   providingPrivacy: false,
 }
@@ -51,6 +51,14 @@ const Agreement = observer(() => {
   const onSubmit = e => {
     e.preventDefault()
 
+    if (!form.collectingPrivacy || !form.providingPrivacy) {
+      alert('개인정보 수집이용 및 정보제공 동의를 부탁드립니다.')
+      return
+    } else if (!form.signature) {
+      alert('서명은 필수입니다.')
+      return
+    }
+
     const data = new FormData()
 
     data.append('receiver', userStore.user.id)
@@ -62,23 +70,19 @@ const Agreement = observer(() => {
     data.append('phone', form.phone)
     data.append('sign', form.signature, 'sign.png')
 
-    if (form.collectingPrivacy && form.providingPrivacy) {
-      API.post('/forms', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+    API.post('/forms', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then(res => {
+        if (res.status === 201) {
+          alert('정상적으로 제출되었습니다. 감사합니다.')
+          setForm(initialForm)
+          canvasRef.current.clear()
+        }
       })
-        .then(res => {
-          if (res.status === 201) {
-            alert('정상적으로 제출되었습니다. 감사합니다.')
-            setForm(initialForm)
-            canvasRef.current.clear()
-          }
-        })
-        .catch(error => console.log(error))
-    } else {
-      alert('개인정보 수집이용 및 정보제공 동의를 부탁드립니다.')
-    }
+      .catch(error => console.log(error))
   }
 
   /*
@@ -343,7 +347,7 @@ const Agreement = observer(() => {
                     </Grid>
 
                     <Grid item md={8}>
-                      <FormControl component="fieldset" required>
+                      <FormControl component="fieldset">
                         <RadioGroup
                           classes={{ root: classes.root }}
                           name="gender"
@@ -517,7 +521,6 @@ const useStyles = makeStyles(theme => ({
     color: '#ffffff',
     backgroundColor: '#30bbc3',
   },
-  test: {},
 }))
 
 export default Agreement
