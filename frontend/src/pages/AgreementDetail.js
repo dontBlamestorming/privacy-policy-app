@@ -145,18 +145,12 @@ const AgreementDetail = observer(() => {
       </Grid>
 
       <Dialog
-        dialogOpen={dialogOpen}
+        open={dialogOpen}
         style={{ backdropFilter: 'blur(5px)' }}
         PaperComponent={Box}
       >
         <DialogActions>
-          <CircularProgress
-            style={{
-              color: '#37d5de',
-              width: '6.25rem',
-              height: '6.25rem',
-            }}
-          />
+          <CircularProgress className={classes.loadingProgress} />
         </DialogActions>
       </Dialog>
     </Container>
@@ -353,6 +347,7 @@ const useStyles = makeStyles(theme => ({
       paddingRight: '1.5rem',
     },
   },
+  loadingProgress: { color: '#37d5de', width: '6.25rem', height: '6.25rem' },
 }))
 
 export default AgreementDetail
