@@ -1,11 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import userStore from '../stores/userStore'
-import agreementStore from '../stores/agreementStore'
-
 import { observer } from 'mobx-react-lite'
 
-import IconButton from '@material-ui/core/IconButton'
 import {
   Box,
   Grid,
@@ -15,9 +11,8 @@ import {
   Dialog,
   DialogActions,
 } from '@material-ui/core'
-
+import IconButton from '@material-ui/core/IconButton'
 import CircularProgress from '@material-ui/core/CircularProgress'
-
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined'
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined'
 import GetAppIcon from '@material-ui/icons/GetApp'
@@ -27,36 +22,39 @@ import uploadImage from '../assets/upload_icon.png'
 
 import API from '../api'
 
-const AgreementDetail = observer(() => {
+const AgreementDetail = observer(({ location }) => {
+  const [formDetail, setFormDetail] = useState([])
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [files, setFiles] = useState([])
   const classes = useStyles()
-  const form = agreementStore.formDetail
-  const { name, phone, gender, email, birthday } = form
 
   useEffect(() => {
-    const files = agreementStore.formDetail.files
-
-    setFiles(files)
+    const id = location.state.id
+    API.get(`/agreement/forms/${id}`)
+      .then(res => {
+        setFormDetail(res.data)
+      })
+      .catch(error => console.log(error))
   }, [])
 
   const uploadFile = event => {
     setDialogOpen(true)
+
     const data = new FormData()
 
-    data.append('is_studio_manager', userStore.user.is_studio_manager)
-    data.append('form', agreementStore.formDetail.id)
+    data.append('form', formDetail.id)
     data.append('file', event.target.files[0])
+    console.log(event.target.files[0])
 
-    API.post('/forms/image', data, {
+    API.post('/agreement/image', data, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'multipart/form-data; charset=utf-8',
       },
     })
       .then(res => {
         if (res.status === 201) {
-          const uploadedFile = res.data
-          setFiles([...files, uploadedFile])
+          const file = res.data
+          console.log('Response', file)
+          setFormDetail({ ...formDetail, files: [...formDetail.files, file] })
           setDialogOpen(false)
         }
       })
@@ -67,11 +65,9 @@ const AgreementDetail = observer(() => {
   }
 
   const downloadFile = ({ id }) => {
-    API.get(`/forms/download/${id}`)
+    API.get(`/agreement/download/${id}`)
       .then(res => {
         const url = res.data[0].file
-        console.log('File URL', url)
-
         const link = document.createElementNS(
           'http://www.w3.org/1999/xhtml',
           'a',
@@ -87,10 +83,13 @@ const AgreementDetail = observer(() => {
   }
 
   const deleteFile = ({ id }) => {
-    API.delete(`/forms/image/${id}`)
+    API.delete(`/agreement/image/${id}`)
       .then(res => {
-        const updatedFiles = files.filter(file => file.id !== id)
-        setFiles(updatedFiles)
+        const leftFiles = formDetail.files.filter(file => file.id !== id)
+        setFormDetail({
+          ...formDetail,
+          files: leftFiles,
+        })
       })
       .catch(error => console.log(error))
   }
@@ -110,7 +109,7 @@ const AgreementDetail = observer(() => {
           xs={12}
         >
           <FileManageField
-            files={files}
+            files={formDetail.files ? formDetail.files : []}
             uploadFile={uploadFile}
             deleteFile={deleteFile}
             downloadFile={downloadFile}
@@ -135,11 +134,11 @@ const AgreementDetail = observer(() => {
             sm={10}
             xs={11}
           >
-            <Field title="성명" text={name} />
-            <Field title="전화번호" text={phone} />
-            <Field title="성별" text={gender} />
-            <Field title="이메일" text={email} />
-            <Field title="생년월일" text={birthday} />
+            <Field title="성명" text={formDetail.name} />
+            <Field title="전화번호" text={formDetail.phone} />
+            <Field title="성별" text={formDetail.gender} />
+            <Field title="이메일" text={formDetail.email} />
+            <Field title="생년월일" text={formDetail.birthday} />
           </Grid>
         </Grid>
       </Grid>
@@ -201,9 +200,9 @@ const FileManageField = ({ files, uploadFile, deleteFile, downloadFile }) => {
 
       {/* File List Field */}
       <Grid item md={11} sm={10} xs={10}>
-        {files.map(image => (
+        {files.map(file => (
           <Item
-            image={image}
+            fileInfo={file}
             deleteFile={deleteFile}
             downloadFile={downloadFile}
           />
@@ -213,9 +212,10 @@ const FileManageField = ({ files, uploadFile, deleteFile, downloadFile }) => {
   )
 }
 
-const Item = ({ image, deleteFile, downloadFile }) => {
+const Item = ({ fileInfo, deleteFile, downloadFile }) => {
   const classes = useStyles()
-  const filename = image.file.split('/').pop()
+  const filename = fileInfo.file.split('/').pop().split('_')
+  const _filename = filename.slice(0, filename.length - 1)
 
   return (
     <Grid
@@ -229,13 +229,13 @@ const Item = ({ image, deleteFile, downloadFile }) => {
         <IconButton>
           <InsertPhotoOutlinedIcon className={classes.uploaded_icon} />
         </IconButton>
-        <span>{filename}</span>
+        <span>{_filename.toString() + '.psd'}</span>
       </Grid>
       <Grid item style={{ marginRight: '30px' }}>
-        <IconButton onClick={() => downloadFile(image)}>
+        <IconButton onClick={() => downloadFile(fileInfo)}>
           <GetAppIcon className={classes.uploaded_icon} />
         </IconButton>
-        <IconButton onClick={() => deleteFile(image)}>
+        <IconButton onClick={() => deleteFile(fileInfo)}>
           <DeleteForeverOutlinedIcon className={classes.uploaded_icon} />
         </IconButton>
       </Grid>

@@ -1,71 +1,82 @@
-import React, { useState, useEffect, forwardRef } from 'react'
+import React, { useCallback, useState, useEffect, forwardRef } from 'react'
 
 import MaterialTable from 'material-table'
 
 import { useHistory } from 'react-router-dom'
 
-import agreementStore from '../stores/agreementStore'
-
-import { observer } from 'mobx-react-lite'
-
 import API from '../api/index'
-import { useTheme, useMediaQuery } from '@material-ui/core'
+
+import { useTheme, useMediaQuery, makeStyles } from '@material-ui/core'
+
 import SearchIcon from '@material-ui/icons/Search'
 import ClearIcon from '@material-ui/icons/Clear'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import ImageSearchIcon from '@material-ui/icons/ImageSearch'
-import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 
-const DataTable = observer(() => {
-  /* headCells를 일반 변수에 선언 후 columns에 넣는 경우 브라우저 FrezzUp */
-  const [headCells, setHeadCells] = useState([
-    { title: 'date', field: 'date', align: 'center' },
-    { title: 'name', field: 'name', align: 'center', sorting: 'false' },
-    { title: 'phone', field: 'phone', align: 'center' },
-    { title: 'gender', field: 'gender', align: 'center' },
-    { title: 'email', field: 'email', align: 'center' },
-    { title: 'upload', field: 'upload', align: 'center' },
-  ])
-  const tableIcons = {
-    Search: forwardRef((props, ref) => <SearchIcon {...props} ref={ref} />),
-    ResetSearch: forwardRef((props, ref) => <ClearIcon {...props} ref={ref} />),
-    SortArrow: forwardRef((props, ref) => (
-      <ExpandMoreIcon {...props} ref={ref} style={{ color: '#30bbc3' }} />
-    )),
-  }
-  const history = useHistory()
+import UploadButton from '../assets/upload_button_icon.png'
+import ReloadButton from '../assets/reload_button_icon.png'
+
+const tableIcons = {
+  Search: forwardRef((props, ref) => <SearchIcon {...props} ref={ref} />),
+  ResetSearch: forwardRef((props, ref) => <ClearIcon {...props} ref={ref} />),
+  SortArrow: forwardRef((props, ref) => (
+    <ExpandMoreIcon {...props} ref={ref} style={{ color: '#30bbc3' }} />
+  )),
+}
+
+const DataTable = () => {
+  // const [tableHeadCells, setTableHeadCells] = useState([tableHeadCells])
   const theme = useTheme()
   const matcheSM = useMediaQuery(theme.breakpoints.down('sm'))
+  const matcheXS = useMediaQuery(theme.breakpoints.down('xs'))
+  const tableHeadCells = [
+    { title: 'date', field: 'date', align: 'center' },
+    { title: 'name', field: 'name', align: 'center', sorting: 'false' },
+    { title: 'gender', field: 'gender', align: 'center', hidden: matcheXS },
+    { title: 'phone', field: 'phone', align: 'center', hidden: matcheSM },
+    { title: 'email', field: 'email', align: 'center', hidden: matcheSM },
+    { title: 'upload', field: 'upload', align: 'center' },
+  ]
+  const [tableData, setTableData] = useState([])
+  const history = useHistory()
 
-  const genFormLists = () => {
-    const data = agreementStore.formLists.map(form => ({
-      id: form.id,
-      date: form.created,
-      name: form.name,
-      phone: form.phone,
-      gender: form.gender,
-      email: form.email,
-      upload: form.files.length ? (
-        <ImageSearchIcon style={{ color: '#30bbc3' }} />
-      ) : (
-        <CloudUploadIcon style={{ color: '#30bbc3' }} />
-      ),
-    }))
-
-    return data
-  }
-
-  const getFormDatail = (e, rowData) => {
-    const detail = agreementStore.formLists[rowData['id'] - 1]
-
-    agreementStore.setFormDetails(detail)
-    history.push('/studio/agreement/detail')
-  }
+  const getDetailForm = useCallback(
+    (e, rowData) => {
+      history.push({
+        pathname: '/studio/agreement/detail',
+        state: { id: rowData.id },
+      })
+    },
+    [history],
+  )
 
   useEffect(() => {
-    API.get('/forms')
+    API.get('agreement/forms')
       .then(res => {
-        agreementStore.setFormLists(res.data)
+        /* 이 컴포넌트에서 사용할 Data만 가져올 것 */
+        /* server에서 file에 값이 있는지 없는지를 체크해서 보낼 것 */
+        setTableData(
+          res.data.map(form => ({
+            id: form.id,
+            date: form.created.slice(0, 10),
+            name: form.name,
+            phone: form.phone,
+            gender: form.gender,
+            email: form.email,
+            // upload: form.files.length ? (
+            //   <img
+            //     className={classes.uploadCell}
+            //     src={ReloadButton}
+            //     alt="업로드 버튼"
+            //   />
+            // ) : (
+            //   <img
+            //     className={classes.uploadCell}
+            //     src={UploadButton}
+            //     alt="재업로드 버튼"
+            //   />
+            // ),
+          })),
+        )
       })
       .catch(error => console.log(error))
   }, [])
@@ -73,9 +84,9 @@ const DataTable = observer(() => {
   return (
     <>
       <MaterialTable
-        columns={headCells}
-        onRowClick={(e, rowData) => getFormDatail(e, rowData)}
-        data={agreementStore.formLists ? genFormLists() : []}
+        columns={tableHeadCells}
+        onRowClick={getDetailForm}
+        data={tableData}
         icons={tableIcons}
         style={{
           padding: '0 0',
@@ -86,7 +97,7 @@ const DataTable = observer(() => {
           showTitle: false,
           doubleHorizontalScroll: true,
           paging: false,
-          // minBodyHeight: '300px',
+          minBodyHeight: '300px',
           maxBodyHeight: '350px',
           paginationType: 'stepped',
           searchFieldStyle: {
@@ -110,6 +121,13 @@ const DataTable = observer(() => {
       />
     </>
   )
-})
+}
+
+const useStyles = makeStyles(theme => ({
+  uploadCell: {
+    width: '100px',
+    height: '24px',
+  },
+}))
 
 export default DataTable

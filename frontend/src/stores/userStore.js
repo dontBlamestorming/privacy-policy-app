@@ -4,7 +4,8 @@ import API from '../api/index'
 import appStore from './appStore'
 
 const TOKEN_KEY = 'AUTH_TOKEN'
-const storage = sessionStorage
+// const storage = sessionStorage
+const storage = localStorage
 
 class UserStore {
   user = null

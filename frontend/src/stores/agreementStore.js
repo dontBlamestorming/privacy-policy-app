@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 
 class AgreementStore {
-  formLists = null
+  formLists = []
   /*
     formLists = {
       id: int,
