@@ -9,8 +9,6 @@ from django.contrib.auth.models import (
 
 
 class AccountManager(BaseUserManager):
-    # use_in_migrations = True
-
     def create_superuser(self, email, name, password, **other_fields):
         other_fields.setdefault("is_staff", True)
         other_fields.setdefault("is_active", True)
