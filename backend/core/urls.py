@@ -3,7 +3,8 @@ from . import views
 
 router = routers.SimpleRouter()
 
-router.register(r"", views.FormViewSet)
+
+router.register(r"forms", views.FormViewSet)
 router.register(r"image", views.FormImageView)
 router.register(r"download", views.ImageView)
 

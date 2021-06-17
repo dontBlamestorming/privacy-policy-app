@@ -1,35 +1,33 @@
-from django.http import FileResponse
-from os import name
-from rest_framework import viewsets, status
-from rest_framework.decorators import action
-from rest_framework.generics import get_object_or_404
+from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
+from .models import PrivacyPolicyForm, Image
+from .permissions import IsStudioManager
 from rest_framework.mixins import (
     CreateModelMixin,
     DestroyModelMixin,
     ListModelMixin,
     RetrieveModelMixin,
 )
-from rest_framework.response import Response
-
-from .models import PrivacyPolicyForm, Image
 from .serializers import (
-    FormFilesSerializer,
-    FormSerializer,
+    FormCreateSerializer,
+    FormListSerializer,
+    FormDetailSerializer,
     CreateImageSerializer,
     ImageViewSerailizer,
 )
-from .permissions import IsStudioManager
 
 
 class FormViewSet(
     ListModelMixin,
     CreateModelMixin,
+    RetrieveModelMixin,
     viewsets.GenericViewSet,
 ):
-    """개인정보이용동의서 생성 및 Lists 불러오기"""
+    """개인정보이용동의서 List(생성, 조회) && Detail(조회)"""
 
     queryset = PrivacyPolicyForm.objects.all()
-    serializer_class = FormSerializer
+    serializer_class = FormListSerializer
 
     def get_permissions(self):
         if self.action == "list":
@@ -41,7 +39,17 @@ class FormViewSet(
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
+
         return PrivacyPolicyForm.objects.filter(studio=self.request.user.studio)
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return FormDetailSerializer
+
+        if self.action == "create":
+            return FormCreateSerializer
+
+        return super().get_serializer_class()
 
 
 class FormImageView(
@@ -49,11 +57,16 @@ class FormImageView(
     DestroyModelMixin,
     viewsets.GenericViewSet,
 ):
-    """PSD files 조회 및 생성 및 삭제"""
+    """PSD file 조회 및 생성 및 삭제"""
 
     queryset = Image.objects.all()
     serializer_class = CreateImageSerializer
     permission_classes = [IsStudioManager]
+    parser_classes = (
+        MultiPartParser,
+        FormParser,
+        JSONParser,
+    )
 
     def filter_queryset(self, queryset):
         form_pk = self.request.query_params.get("form")
@@ -79,4 +92,7 @@ class ImageView(viewsets.GenericViewSet):
         queryset = self.queryset.filter(id=pk)
         serializer = self.get_serializer(queryset, many=True)
 
-        return Response(serializer.data, content_type="image/*")
+        return Response(
+            serializer.data,
+            content_type=("image/*"),
+        )

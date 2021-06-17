@@ -5,7 +5,6 @@ from .models import User
 
 
 class AuthTokenSerializer(serializers.Serializer):
-    # studio 이름도 필요
     email = serializers.EmailField(label=_("E-mail"), write_only=True)
     password = serializers.CharField(
         label=_("Password"),
@@ -13,8 +12,6 @@ class AuthTokenSerializer(serializers.Serializer):
         trim_whitespace=False,
         write_only=True,
     )
-    # name = serializers.CharField(lable=_("Name"), read_only=True)
-    # is_studio_manager = serializers.BooleanField(label=_("IsManager", read_only=True))
     token = serializers.CharField(label=_("Token"), read_only=True)
 
     def validate(self, attrs):
@@ -26,8 +23,6 @@ class AuthTokenSerializer(serializers.Serializer):
                 request=self.context.get("request"), email=email, password=password
             )
 
-            # The authenticate call simply returns None for is_active=False
-            # users. (Assuming the default ModelBackend authentication backend.)
             if not user:
                 msg = _("Unable to log in with provided credentials.")
                 raise serializers.ValidationError(msg, code="authorization")

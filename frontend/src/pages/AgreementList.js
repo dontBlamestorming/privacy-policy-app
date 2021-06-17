@@ -2,13 +2,12 @@ import React from 'react'
 
 import DataTable from '../components/DataTable'
 
-import { observer } from 'mobx-react-lite'
-
 import { Container, Grid, makeStyles } from '@material-ui/core'
 
 import adminHomeMainImg from '../assets/admin_home_2x.png'
+import agreementTypo from '../assets/agreementList_typo.png'
 
-const AgreementList = observer(() => {
+const AgreementList = React.memo(() => {
   const classes = useStyles()
 
   return (
@@ -19,8 +18,19 @@ const AgreementList = observer(() => {
         style={{ padding: '0 0' }}
       >
         <Grid container>
-          <Grid container className={classes.mainImage} alignItems="center">
-            <p className={classes.paperTitle}>개인정보동의서 동의자 리스트</p>
+          <Grid
+            container
+            className={classes.mainImage}
+            justify="center"
+            alignItems="center"
+          >
+            <Grid item md={6} sm={8}>
+              <img
+                src={agreementTypo}
+                alt="개인정보동의서 동의자 리스트"
+                style={{ width: '100%', height: '100%' }}
+              />
+            </Grid>
           </Grid>
 
           <Grid className={classes.dataTableWrapper} container justify="center">

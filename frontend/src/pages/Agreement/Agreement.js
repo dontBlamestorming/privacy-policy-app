@@ -35,7 +35,7 @@ const initialForm = {
   name: '',
   email: '',
   gender: '',
-  birthDay: '',
+  birthday: '',
   phone: '',
   signature: null,
   collectingPrivacy: false,
@@ -66,7 +66,7 @@ const Agreement = observer(() => {
     data.append('name', form.name)
     data.append('email', form.email)
     data.append('gender', form.gender)
-    data.append('birthDay', form.birthDay)
+    data.append('birthday', form.birthday)
     data.append('phone', form.phone)
     data.append('sign', form.signature, 'sign.png')
 
@@ -85,49 +85,16 @@ const Agreement = observer(() => {
       .catch(error => console.log(error))
   }
 
-  /*
-    setForm - state update 시 obj의 ket값을 동적으로 할당 할 수 있으면 중복컴포넌트를 단일화 가능할 듯
-    const InputField = ({ inputTitle, name, value, placeholder }) => {
-      return (
-        <Grid item md={12} xs={12}>
-          <Paper className={classes.inputBox}>
-            <Grid
-              className={classes.inputBoxWrapper}
-              container
-              justify="space-evenly"
-              alignItems="center"
-              md={12}
-              sm={12}
-              xs={12}
-            >
-              <Grid className={classes.inputBoxTitle} item md={4} sm={4} xs={4}>
-                <span>{inputTitle}</span>
-              </Grid>
-              <Grid className={classes.inputField} item md={8} sm={8} xs={8}>
-                <Input
-                  className={classes.test}
-                  style={{
-                    fontSize: '1.375rem',
-                    width: '100%',
-                    textAlign: 'right',
-                  }}
-                  value={value}
-                  autoComplete="name"
-                  disableUnderline
-                  name={name}
-                  placeholder={placeholder}
-                  required
-                  onChange={e =>
-                    setForm({ ...form, [`${name}`]: e.target.value })
-                  }
-                />
-              </Grid>
-            </Grid>
-          </Paper>
-        </Grid>
-      )
-    }
-  */
+  const changeDate = value => {
+    const year = value.getFullYear()
+    const month = ('0' + (1 + value.getMonth())).slice(-2)
+    const day = ('0' + value.getDate()).slice(-2)
+    setForm({
+      ...form,
+      birthday: `${year}-${month}-${day}`,
+    })
+    handleDateChange(value)
+  }
 
   return (
     <>
@@ -228,15 +195,9 @@ const Agreement = observer(() => {
                     >
                       <span>성명</span>
                     </Grid>
-                    <Grid
-                      className={classes.inputField}
-                      item
-                      md={8}
-                      sm={8}
-                      xs={8}
-                    >
+                    <Grid item md={8} sm={8} xs={8}>
                       <Input
-                        style={{ fontSize: '1.375rem' }}
+                        className={classes.inputField}
                         value={form.name}
                         autoComplete="name"
                         disableUnderline
@@ -252,7 +213,7 @@ const Agreement = observer(() => {
                 </Paper>
               </Grid>
               {/* 생년월일 */}
-              <Grid item md={12} xs={12}>
+              <Grid item md={12} sm={12} xs={12}>
                 <Paper className={classes.inputBox}>
                   <Grid
                     className={classes.inputBoxWrapper}
@@ -260,31 +221,26 @@ const Agreement = observer(() => {
                     justify="space-evenly"
                     alignItems="center"
                   >
-                    <Grid item md={3}>
+                    <Grid
+                      className={classes.inputBoxTitle}
+                      item
+                      md={4}
+                      sm={4}
+                      xs={4}
+                    >
                       <span>생년월일</span>
                     </Grid>
-                    <Grid item md={8}>
+                    <Grid item md={8} sm={8} xs={8}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ko}>
                         <DatePicker
+                          className={classes.inputField}
                           disableFuture
                           inputVariant="standard"
                           openTo="year"
                           format="yyyy/MM/dd"
                           views={['year', 'month', 'date']}
-                          // variant="inline"
                           value={selectedDate}
-                          onChange={value => {
-                            const year = value.getFullYear()
-                            const month = ('0' + (1 + value.getMonth())).slice(
-                              -2,
-                            )
-                            const day = ('0' + value.getDate()).slice(-2)
-                            setForm({
-                              ...form,
-                              birthDay: `${year}-${month}-${day}`,
-                            })
-                            handleDateChange(value)
-                          }}
+                          onChange={changeDate}
                         />
                       </MuiPickersUtilsProvider>
                     </Grid>
@@ -310,15 +266,9 @@ const Agreement = observer(() => {
                     >
                       <span>휴대폰 번호</span>
                     </Grid>
-                    <Grid
-                      className={classes.inputField}
-                      item
-                      md={8}
-                      sm={8}
-                      xs={8}
-                    >
+                    <Grid item md={8} sm={8} xs={8}>
                       <Input
-                        style={{ fontSize: '1.375rem' }}
+                        className={classes.inputField}
                         value={form.phone}
                         autoComplete="phone"
                         disableUnderline
@@ -334,7 +284,7 @@ const Agreement = observer(() => {
                 </Paper>
               </Grid>
               {/* 성별 */}
-              <Grid item md={12} xs={12}>
+              <Grid item md={12} sm={12} xs={12}>
                 <Paper className={classes.inputBox}>
                   <Grid
                     className={classes.inputBoxWrapper}
@@ -342,12 +292,21 @@ const Agreement = observer(() => {
                     justify="space-evenly"
                     alignItems="center"
                   >
-                    <Grid item md={3}>
+                    <Grid
+                      className={classes.inputBoxTitle}
+                      item
+                      md={4}
+                      sm={4}
+                      xs={4}
+                    >
                       <span>성별</span>
                     </Grid>
 
-                    <Grid item md={8}>
-                      <FormControl component="fieldset">
+                    <Grid item md={8} sm={8} xs={8}>
+                      <FormControl
+                        component="fieldset"
+                        className={classes.inputField}
+                      >
                         <RadioGroup
                           classes={{ root: classes.root }}
                           name="gender"
@@ -399,7 +358,7 @@ const Agreement = observer(() => {
                 </Paper>
               </Grid>
               {/* 이메일 주소 */}
-              <Grid item md={12} xs={12}>
+              <Grid item md={12} sm={12} xs={12}>
                 <Paper className={classes.inputBox}>
                   <Grid
                     className={classes.inputBoxWrapper}
@@ -407,12 +366,18 @@ const Agreement = observer(() => {
                     justify="space-evenly"
                     alignItems="center"
                   >
-                    <Grid item md={3}>
+                    <Grid
+                      className={classes.inputBoxTitle}
+                      item
+                      md={4}
+                      sm={4}
+                      xs={4}
+                    >
                       <span>이메일 주소</span>
                     </Grid>
-                    <Grid item md={8}>
+                    <Grid item md={8} sm={8} xs={8}>
                       <Input
-                        style={{ fontSize: '1.375rem' }}
+                        className={classes.inputField}
                         value={form.email}
                         autoComplete="email"
                         disableUnderline
@@ -444,7 +409,6 @@ const Agreement = observer(() => {
                   <Button
                     classes={{ root: classes.backgroundBtn }}
                     type="submit"
-                    variant="contained"
                   >
                     제출하기
                   </Button>
@@ -497,6 +461,7 @@ const useStyles = makeStyles(theme => ({
   inputField: {
     textAlign: 'right',
     paddingRight: '60px',
+    fontSize: '1.375rem',
 
     [theme.breakpoints.down('sm')]: {
       paddingRight: '10px',

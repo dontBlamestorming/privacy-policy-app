@@ -7,11 +7,6 @@ class UserAdminClass(admin.ModelAdmin):
     list_filter = ("receiver", "name", "email", "birthday", "gender", "phone", "sign")
     list_display = ("receiver", "name", "email", "birthday", "gender", "phone", "sign")
 
-    # fieldsets = (
-    #     (None, {'fields': ("email", "user_name", "studio_name")}),
-    #     ('Permissions', {'fields': ('is_staff', 'is_active')}),
-    # )
-
 
 class ImagesClass(admin.ModelAdmin):
     model = Image

@@ -14,9 +14,7 @@ class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    # Todo list_dispaly && fieldsets need update!!!
     list_display = ("email", "name", "studio", "is_studio_manager", "is_studio_staff")
-    # list_filter = ('is_admin',)
 
     fieldsets = (
         (None, {"fields": ("email", "name", "password", "studio")}),
