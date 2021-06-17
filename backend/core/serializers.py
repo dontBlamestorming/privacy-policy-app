@@ -1,23 +1,8 @@
-from django.db.models import fields
-from django.core.validators import URLValidator
-from django.core.files.base import ContentFile
+import pytz
+from django.db import models
+from django.utils import timezone
 from rest_framework import serializers
 from .models import Image, PrivacyPolicyForm
-
-
-# class FileUrlField(serializers.FileField):
-#     def to_internal_value(self, data):
-#         try:
-#             URLValidator()(data)
-#         except ValidationError as e:
-#             raise ValidationError("Invalid Url")
-
-#         # download the contents from the URL
-#         file, http_message = urlretrieve(data)
-#         file = File(open(file, "rb"))
-#         return super(FileUrlField, self).to_internal_value(
-#             ContentFile(file.read(), name=file.name)
-#         )
 
 
 class FormFilesSerializer(serializers.ModelSerializer):
@@ -26,12 +11,24 @@ class FormFilesSerializer(serializers.ModelSerializer):
         fields = ["id", "file"]
 
 
-class FormSerializer(serializers.ModelSerializer):
+class FormCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PrivacyPolicyForm
+        fields = "__all__"
+
+
+class FormListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PrivacyPolicyForm
+        fields = ["id", "name", "email", "phone", "gender", "created"]
+
+
+class FormDetailSerializer(serializers.ModelSerializer):
     files = FormFilesSerializer(source="image_set.all", many=True, required=False)
 
     class Meta:
         model = PrivacyPolicyForm
-        fields = "__all__"
+        fields = ["id", "name", "email", "phone", "gender", "birthday", "files"]
 
 
 class CreateImageSerializer(serializers.ModelSerializer):
@@ -40,15 +37,15 @@ class CreateImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = "__all__"
-        extra_kwargs = {"file": {"required": True}}  # file 없을경우 !
+        extra_kwargs = {"file": {"required": True}}
 
     def validate(self, attrs):
         super().validate(attrs)
         user = attrs.get("user")
         form = attrs.get("form")
 
-        if form.studio != user.studio:  # form의 studio가 user의 소속과 일치하지 않으면?
-            raise serializers.ValidationError("Invalid Studio")  # api error 메세지
+        if form.studio != user.studio:
+            raise serializers.ValidationError("Invalid Studio")
 
         return attrs
 
