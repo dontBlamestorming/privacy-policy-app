@@ -23,13 +23,12 @@ const Header = () => {
     <Grid
       container
       className={classes.wrapper}
-      md={12}
       justify="center"
       alignItems="center"
     >
       <Grid
         container
-        item
+        // item
         justify="space-between"
         alignItems="center"
         md={11}

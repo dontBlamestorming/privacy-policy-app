@@ -15,7 +15,6 @@ import LoginForm from './pages/LoginForm'
 import AuthRoute from './components/AuthRoute'
 import Loading from './components/Loading'
 
-import appStore from './stores/appStore'
 import userStore from './stores/userStore'
 
 const App = observer(() => {
@@ -65,8 +64,6 @@ const App = observer(() => {
         />
       </Switch>
       <Footer />
-
-      {appStore.isLoading && <Loading />}
     </div>
   )
 })

@@ -64,7 +64,11 @@ const SignatureSpace = observer(({ form, setForm, canvasRef }) => {
           <Grid item sm={6} xs={5}>
             {signURL ? (
               <Paper style={{ borderRadius: '10px' }}>
-                <img className={classes.signImage} src={`${signURL}`} />
+                <img
+                  className={classes.signImage}
+                  alt="서명"
+                  src={`${signURL}`}
+                />
               </Paper>
             ) : null}
           </Grid>
@@ -98,7 +102,6 @@ const MobileCanvas = ({ open, setOpen, completeSign, canvasRef }) => {
                 completeSign()
                 setOpen(false)
               }}
-              onClick={() => setOpen(false)}
             >
               완료
             </Button>
