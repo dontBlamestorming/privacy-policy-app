@@ -128,7 +128,7 @@ const AgreementDetail = ({ location }) => {
             alignItems="center"
             md={11}
             sm={10}
-            xs={11}
+            xs={10}
           >
             <Field title="성명" text={formDetail.name} />
             <Field title="전화번호" text={formDetail.phone} />
@@ -208,10 +208,34 @@ const FileManageField = ({ files, uploadFile, deleteFile, downloadFile }) => {
   )
 }
 
+const Field = ({ title, text }) => {
+  const classes = useStyles()
+
+  return (
+    <Grid
+      className={classes.field}
+      container
+      item
+      justify="space-between"
+      alignItems="center"
+      md={12}
+      sm={12}
+    >
+      <Grid item>
+        <span className={classes.field_title}>{title}</span>
+      </Grid>
+      <Grid item>
+        <span className={classes.field_text}>{text}</span>
+      </Grid>
+    </Grid>
+  )
+}
+
 const Item = ({ file, deleteFile, downloadFile }) => {
   const classes = useStyles()
   const filename = file.file.name.split('/').pop().split('_')
   const _filename = filename.slice(0, filename.length - 1)
+  console.log('File', file)
 
   return (
     <Grid
@@ -234,29 +258,6 @@ const Item = ({ file, deleteFile, downloadFile }) => {
         <IconButton onClick={() => deleteFile(file)}>
           <DeleteForeverOutlinedIcon className={classes.uploaded_icon} />
         </IconButton>
-      </Grid>
-    </Grid>
-  )
-}
-
-const Field = ({ title, text }) => {
-  const classes = useStyles()
-
-  return (
-    <Grid
-      className={classes.field}
-      container
-      item
-      justify="space-between"
-      alignItems="center"
-      md={12}
-      sm={12}
-    >
-      <Grid item>
-        <span className={classes.field_title}>{title}</span>
-      </Grid>
-      <Grid item>
-        <span className={classes.field_text}>{text}</span>
       </Grid>
     </Grid>
   )
@@ -287,9 +288,6 @@ const useStyles = makeStyles(theme => ({
   content: {
     height: '80%',
     backgroundColor: '#f1eff0',
-  },
-  uploadFieldWrapper: {
-    height: '40%',
   },
   uploadButton: {
     height: '200px',

@@ -6,14 +6,14 @@ import { useHistory } from 'react-router-dom'
 
 import API from '../api/index'
 
-import { useTheme, useMediaQuery } from '@material-ui/core'
+import { useTheme, useMediaQuery, makeStyles } from '@material-ui/core'
 
 import SearchIcon from '@material-ui/icons/Search'
 import ClearIcon from '@material-ui/icons/Clear'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
-// import UploadButton from '../assets/upload_button_icon.png'
-// import ReloadButton from '../assets/reload_button_icon.png'
+import UploadButton from '../assets/upload_button_icon.png'
+import ReloadButton from '../assets/reload_button_icon.png'
 
 const tableIcons = {
   Search: forwardRef((props, ref) => <SearchIcon {...props} ref={ref} />),
@@ -33,10 +33,11 @@ const DataTable = () => {
     { title: 'gender', field: 'gender', align: 'center', hidden: matcheXS },
     { title: 'phone', field: 'phone', align: 'center', hidden: matcheSM },
     { title: 'email', field: 'email', align: 'center', hidden: matcheSM },
-    // { title: 'upload', field: 'upload', align: 'center' },
+    { title: 'upload', field: 'upload', align: 'center' },
   ]
   const [tableData, setTableData] = useState([])
   const history = useHistory()
+  const classes = useStyles()
 
   const getDetailForm = useCallback(
     (e, rowData) => {
@@ -59,19 +60,19 @@ const DataTable = () => {
             phone: form.phone,
             gender: form.gender,
             email: form.email,
-            // upload: form.files.length ? (
-            //   <img
-            //     className={classes.uploadCell}
-            //     src={ReloadButton}
-            //     alt="업로드 버튼"
-            //   />
-            // ) : (
-            //   <img
-            //     className={classes.uploadCell}
-            //     src={UploadButton}
-            //     alt="재업로드 버튼"
-            //   />
-            // ),
+            upload: form.files.length ? (
+              <img
+                className={classes.uploadCell}
+                src={ReloadButton}
+                alt="업로드 버튼"
+              />
+            ) : (
+              <img
+                className={classes.uploadCell}
+                src={UploadButton}
+                alt="재업로드 버튼"
+              />
+            ),
           })),
         )
       })
@@ -119,5 +120,12 @@ const DataTable = () => {
     </>
   )
 }
+
+const useStyles = makeStyles(theme => ({
+  uploadCell: {
+    width: '100px',
+    height: '24px',
+  },
+}))
 
 export default DataTable

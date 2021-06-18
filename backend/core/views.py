@@ -64,11 +64,6 @@ class FormImageView(
     queryset = Image.objects.all()
     serializer_class = CreateImageSerializer
     permission_classes = [IsStudioManager]
-    parser_classes = (
-        MultiPartParser,
-        FormParser,
-        JSONParser,
-    )
 
     def filter_queryset(self, queryset):
         form_pk = self.request.query_params.get("form")
