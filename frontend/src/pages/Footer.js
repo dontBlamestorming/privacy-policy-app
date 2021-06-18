@@ -35,7 +35,7 @@ const Footer = () => {
         alignItems="center"
       >
         {/* Logo */}
-        <Grid container item md={3} sm={4}>
+        <Grid item md={3} sm={4}>
           <Grid item xs={8}>
             <Link to="/">{matchesXS ? <LogoMobile /> : <LogoDesktop />}</Link>
           </Grid>
@@ -56,7 +56,7 @@ const Footer = () => {
 
         {/* Info */}
         <Hidden xsDown>
-          <Grid item md={3} sm={5}>
+          <Grid item md={3} sm={4}>
             <Text>주식회사 써머캣</Text>
             <Text>사업자 등록번호 115-86-01644</Text>
             <Text>서울특별시 강남구 강남대로 310, 유니온센터 1003호</Text>
@@ -104,10 +104,18 @@ const SNSLinks = () => (
 )
 
 const LogoDesktop = React.memo(() => (
-  <img src={logoDesktop} style={{ minWidth: '100%', maxWidth: '100%' }} />
+  <img
+    src={logoDesktop}
+    alt="써머캣로고"
+    style={{ minWidth: '100%', maxWidth: '100%' }}
+  />
 ))
 const LogoMobile = React.memo(() => (
-  <img src={logoMobile} style={{ minWidth: '100%', maxWidth: '100%' }} />
+  <img
+    src={logoMobile}
+    alt="써머캣로고"
+    style={{ minWidth: '100%', maxWidth: '100%' }}
+  />
 ))
 
 const Icon = styled.img`
@@ -139,33 +147,14 @@ const Text = styled.div`
 
 const useStyles = makeStyles(theme => ({
   container: {
-    // border: '3px solid blue',
     height: '194px',
     backgroundColor: '#f1eff0',
-    // marginTop: 'auto',
 
     [theme.breakpoints.down('sm')]: {
       height: '200px',
       backgroundColor: '#ffffff',
     },
   },
-  content: {
-    // paddingLeft: '39px',
-    // paddingTop: '22px',
-    // [theme.breakpoints.down('xs')]: {
-    //   paddingLeft: '30px',
-    //   paddingTop: '22px',
-    // },
-  },
-  // icons: {
-  //   [theme.breakpoints.down('sm')]: {
-  //     paddingTop: '11px',
-  //   },
-
-  //   [theme.breakpoints.down('xs')]: {
-  //     padding: '6px 0',
-  //   },
-  // },
   notice: {
     [theme.breakpoints.down('xs')]: {
       marginBottom: '35px',

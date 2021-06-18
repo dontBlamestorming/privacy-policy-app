@@ -127,7 +127,7 @@ const LoginForm = observer(() => {
                 />
               </Grid>
 
-              <Grid container md={12} justify="center">
+              <Grid container justify="center">
                 <Grid item>
                   <Button
                     classes={{ root: classes.signInBtn }}

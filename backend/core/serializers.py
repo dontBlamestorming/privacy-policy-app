@@ -10,6 +10,12 @@ class FormFilesSerializer(serializers.ModelSerializer):
         model = Image
         fields = ["id", "file"]
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        file = {"name": instance.file.name}
+        representation["file"] = file
+        return representation
+
 
 class FormCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,9 +24,11 @@ class FormCreateSerializer(serializers.ModelSerializer):
 
 
 class FormListSerializer(serializers.ModelSerializer):
+    files = FormFilesSerializer(source="image_set.all", many=True, required=False)
+
     class Meta:
         model = PrivacyPolicyForm
-        fields = ["id", "name", "email", "phone", "gender", "created"]
+        fields = ["id", "name", "email", "phone", "gender", "created", "files"]
 
 
 class FormDetailSerializer(serializers.ModelSerializer):

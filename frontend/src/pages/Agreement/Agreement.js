@@ -443,7 +443,6 @@ const useStyles = makeStyles(theme => ({
   },
   termsInputBox: { backgroundColor: '#ffffff', borderRadius: '3.125rem' },
   inputBox: {
-    // height: '6.875rem',
     borderRadius: '0.625rem',
     fontSize: '1.5rem',
   },
@@ -470,11 +469,9 @@ const useStyles = makeStyles(theme => ({
   inputBoxIcon: { fill: '#30bbc3', fontSize: '3.125rem' },
 
   form_label: {
-    // marginLeft: '8.438rem',
     alignSelf: 'center',
     fontSize: '1.625rem',
   },
-  // 성별 입력 - FormGroup(override)
   root: {
     flexDirection: 'row',
   },
