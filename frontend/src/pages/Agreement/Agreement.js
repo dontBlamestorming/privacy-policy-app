@@ -5,6 +5,8 @@ import NoticeTable from './NoticeTable'
 
 import { makeStyles } from '@material-ui/core/styles'
 
+import { useHistory } from 'react-router-dom'
+
 import {
   Container,
   Button,
@@ -47,6 +49,7 @@ const Agreement = observer(() => {
   const [selectedDate, handleDateChange] = useState(new Date())
   const classes = useStyles()
   const canvasRef = useRef(null)
+  const history = useHistory()
 
   const onSubmit = e => {
     e.preventDefault()
@@ -78,11 +81,13 @@ const Agreement = observer(() => {
       .then(res => {
         if (res.status === 201) {
           alert('정상적으로 제출되었습니다. 감사합니다.')
-          setForm(initialForm)
-          canvasRef.current.clear()
+          history.push('/studio')
         }
       })
-      .catch(error => console.log(error))
+      .catch(error => {
+        alert('유효한 정보를 입력해주시기 바랍니다.')
+        console.log(error)
+      })
   }
 
   const changeDate = value => {
