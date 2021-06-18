@@ -3,12 +3,14 @@ from rest_framework.response import Response
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 from .models import PrivacyPolicyForm, Image
 from .permissions import IsStudioManager
+
 from rest_framework.mixins import (
     CreateModelMixin,
     DestroyModelMixin,
     ListModelMixin,
     RetrieveModelMixin,
 )
+
 from .serializers import (
     FormCreateSerializer,
     FormListSerializer,
