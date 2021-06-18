@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import {
   Box,
   Grid,
@@ -22,8 +20,9 @@ import uploadImage from '../assets/upload_icon.png'
 
 import API from '../api'
 
-const AgreementDetail = observer(({ location }) => {
+const AgreementDetail = ({ location }) => {
   const [formDetail, setFormDetail] = useState([])
+  const [update, setUpdate] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const classes = useStyles()
 
@@ -34,7 +33,7 @@ const AgreementDetail = observer(({ location }) => {
         setFormDetail(res.data)
       })
       .catch(error => console.log(error))
-  }, [])
+  }, [location.state.id, update])
 
   const uploadFile = event => {
     setDialogOpen(true)
@@ -43,7 +42,6 @@ const AgreementDetail = observer(({ location }) => {
 
     data.append('form', formDetail.id)
     data.append('file', event.target.files[0])
-    console.log(event.target.files[0])
 
     API.post('/agreement/image', data, {
       headers: {
@@ -52,9 +50,7 @@ const AgreementDetail = observer(({ location }) => {
     })
       .then(res => {
         if (res.status === 201) {
-          const file = res.data
-          console.log('Response', file)
-          setFormDetail({ ...formDetail, files: [...formDetail.files, file] })
+          setUpdate(!update)
           setDialogOpen(false)
         }
       })
@@ -154,7 +150,7 @@ const AgreementDetail = observer(({ location }) => {
       </Dialog>
     </Container>
   )
-})
+}
 
 const FileManageField = ({ files, uploadFile, deleteFile, downloadFile }) => {
   const fileInput = useRef(null)
@@ -202,7 +198,7 @@ const FileManageField = ({ files, uploadFile, deleteFile, downloadFile }) => {
       <Grid item md={11} sm={10} xs={10}>
         {files.map(file => (
           <Item
-            fileInfo={file}
+            file={file}
             deleteFile={deleteFile}
             downloadFile={downloadFile}
           />
@@ -212,9 +208,9 @@ const FileManageField = ({ files, uploadFile, deleteFile, downloadFile }) => {
   )
 }
 
-const Item = ({ fileInfo, deleteFile, downloadFile }) => {
+const Item = ({ file, deleteFile, downloadFile }) => {
   const classes = useStyles()
-  const filename = fileInfo.file.split('/').pop().split('_')
+  const filename = file.file.name.split('/').pop().split('_')
   const _filename = filename.slice(0, filename.length - 1)
 
   return (
@@ -232,10 +228,10 @@ const Item = ({ fileInfo, deleteFile, downloadFile }) => {
         <span>{_filename.toString() + '.psd'}</span>
       </Grid>
       <Grid item style={{ marginRight: '30px' }}>
-        <IconButton onClick={() => downloadFile(fileInfo)}>
+        <IconButton onClick={() => downloadFile(file)}>
           <GetAppIcon className={classes.uploaded_icon} />
         </IconButton>
-        <IconButton onClick={() => deleteFile(fileInfo)}>
+        <IconButton onClick={() => deleteFile(file)}>
           <DeleteForeverOutlinedIcon className={classes.uploaded_icon} />
         </IconButton>
       </Grid>
@@ -294,8 +290,6 @@ const useStyles = makeStyles(theme => ({
   },
   uploadFieldWrapper: {
     height: '40%',
-
-    [theme.breakpoints.down('sm')]: {},
   },
   uploadButton: {
     height: '200px',
@@ -324,8 +318,6 @@ const useStyles = makeStyles(theme => ({
     height: '16%',
     backgroundColor: '#ffffff',
     borderRadius: '1.625rem',
-
-    [theme.breakpoints.down('sm')]: {},
   },
   field_title: {
     paddingLeft: '3.5rem',
