@@ -70,7 +70,7 @@ const Agreement = observer(() => {
     data.append('phone', form.phone)
     data.append('sign', form.signature, 'sign.png')
 
-    API.post('/forms', data, {
+    API.post('agreement/forms', data, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -169,7 +169,7 @@ const Agreement = observer(() => {
 
               {/* Terms Notice */}
               <Grid item xs={12}>
-                <p style={{ textAlign: 'center', fontSize: '1.375rem' }}>
+                <p className={classes.noticeText}>
                   ※ 위 개인정보수집·이용에 대한 동의를 거부할 권리가 있습니다.{' '}
                   <br />
                   거부 시 무료촬영 이벤트가 진행되지 않습니다. (일반촬영으로
@@ -471,6 +471,14 @@ const useStyles = makeStyles(theme => ({
   form_label: {
     alignSelf: 'center',
     fontSize: '1.625rem',
+  },
+  noticeText: {
+    textAlign: 'center',
+    fontSize: '1.375rem',
+
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1.1rem',
+    },
   },
   root: {
     flexDirection: 'row',

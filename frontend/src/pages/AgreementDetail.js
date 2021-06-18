@@ -235,7 +235,6 @@ const Item = ({ file, deleteFile, downloadFile }) => {
   const classes = useStyles()
   const filename = file.file.name.split('/').pop().split('_')
   const _filename = filename.slice(0, filename.length - 1)
-  console.log('File', file)
 
   return (
     <Grid
