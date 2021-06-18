@@ -49,16 +49,10 @@ const StudioHome = () => {
             item
             justify="space-evenly"
           >
-            <Grid item>
-              <Link to="/agreement" style={{ textDecoration: 'none' }}>
-                <Button className={classes.button}>동의서 보기</Button>
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link to="/agreements" style={{ textDecoration: 'none' }}>
-                <Button className={classes.button}>동의자 명단</Button>
-              </Link>
-            </Grid>
+            <RouteButton path="agreement" name="동의서 보기" />
+            {!userStore.user.is_studio_staff ? (
+              <RouteButton path="agreements" name="동의자 명단" />
+            ) : null}
           </Grid>
         </Grid>
         <Hidden smDown>
@@ -66,6 +60,18 @@ const StudioHome = () => {
         </Hidden>
       </Grid>
     </>
+  )
+}
+
+const RouteButton = ({ path, name }) => {
+  const classes = useStyles()
+
+  return (
+    <Grid item>
+      <Link to={path} style={{ textDecoration: 'none' }}>
+        <Button className={classes.button}>{name}</Button>
+      </Link>
+    </Grid>
   )
 }
 

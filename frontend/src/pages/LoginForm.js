@@ -48,15 +48,7 @@ const LoginForm = observer(() => {
   }
 
   if (userStore.user) {
-    let path
-
-    if (userStore.user.is_studio_staff) {
-      path = '/agreement'
-    } else if (userStore.user.is_studio_manager) {
-      path = '/studio'
-    } else {
-      path = '/studio'
-    }
+    let path = '/studio'
 
     return <Redirect to={path} />
   }
@@ -79,7 +71,7 @@ const LoginForm = observer(() => {
               <Grid className={classes.mainTypo} item md={9}>
                 <img
                   src={loginTypo}
-                  alt="Phto Studio Management"
+                  alt="Agreement Management"
                   style={{ width: '100%', height: '100%' }}
                 />
               </Grid>

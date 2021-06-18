@@ -16,7 +16,8 @@ class UserStore {
       name: str,
       studio: str,
       studio_id: int,
-      is_studio_manager: bool
+      is_studio_manager: bool,
+      is_studio_staff: bool
     }
   */
 
