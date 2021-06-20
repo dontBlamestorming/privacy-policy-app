@@ -95,8 +95,8 @@ const DataTable = () => {
           showTitle: false,
           doubleHorizontalScroll: true,
           paging: false,
-          minBodyHeight: '300px',
-          maxBodyHeight: '350px',
+          // minBodyHeight: '300px',
+          maxBodyHeight: '60vh',
           paginationType: 'stepped',
           searchFieldStyle: {
             borderBottom: '0.5rem solid #f1eff0',
