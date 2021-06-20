@@ -77,45 +77,26 @@ const LoginForm = observer(() => {
               </Grid>
             </Hidden>
 
-            <Grid
-              onSubmit={handleSubmit}
-              component="form"
-              md={8}
-              justify="center"
-            >
-              <Grid container item className={classes.loginField}>
-                <TextField
+            <Grid onSubmit={handleSubmit} component="form" md={8} sm={7}>
+              <Grid className={classes.loginField}>
+                <InputBox
+                  name="email"
                   label="Your ID"
                   type="text"
-                  placeholder="Enter your ID"
-                  className={classes.inputField}
-                  InputLabelProps={{
-                    shrink: true,
-                    focused: false,
-                    classes: { shrink: classes.inputField_label },
-                  }}
-                  InputProps={{
-                    classes: { underline: classes.inputOnFocued },
-                  }}
+                  placeholder="Enterh your ID"
                   value={form.email}
-                  onChange={e => setForm({ ...form, email: e.target.value })}
+                  form={form}
+                  setForm={setForm}
                 />
 
-                <TextField
-                  label="Password"
-                  type="Password"
+                <InputBox
+                  name="password"
+                  label="password"
+                  type="password"
                   placeholder="Enter your password"
-                  className={classes.inputField}
-                  InputLabelProps={{
-                    shrink: true,
-                    focused: false,
-                    classes: { shrink: classes.inputField_label },
-                  }}
-                  InputProps={{
-                    classes: { underline: classes.inputOnFocued },
-                  }}
                   value={form.password}
-                  onChange={e => setForm({ ...form, password: e.target.value })}
+                  form={form}
+                  setForm={setForm}
                 />
               </Grid>
 
@@ -134,7 +115,7 @@ const LoginForm = observer(() => {
             </Grid>
           </Grid>
 
-          <Grid className={classes.imageSection} item md={6} sm={12} xs={12}>
+          <Grid className={classes.imageSection} item md={6} xs={12}>
             <Paper className={classes.mainImage} />
           </Grid>
         </Grid>
@@ -142,6 +123,38 @@ const LoginForm = observer(() => {
     </Container>
   )
 })
+
+const InputBox = ({ name, label, type, placeholder, form, setForm, value }) => {
+  const classes = useStyles()
+
+  const onChange = event => {
+    const {
+      target: { name, value },
+    } = event
+
+    setForm({ ...form, [name]: value })
+  }
+
+  return (
+    <TextField
+      name={name}
+      label={label}
+      type={type}
+      placeholder={placeholder}
+      className={classes.inputField}
+      InputLabelProps={{
+        shrink: true,
+        focused: false,
+        classes: { shrink: classes.inputField_label },
+      }}
+      InputProps={{
+        classes: { underline: classes.inputOnFocued },
+      }}
+      value={value}
+      onChange={onChange}
+    />
+  )
+}
 
 const useStyles = makeStyles(theme => ({
   container: {

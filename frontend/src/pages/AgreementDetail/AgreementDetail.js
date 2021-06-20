@@ -1,24 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+
+import FileManageBox from './FileManageBox'
+import adminHomeMainImg from '../../assets/admin_home_2x.png'
 
 import {
   Box,
   Grid,
-  Button,
   Container,
   makeStyles,
   Dialog,
   DialogActions,
 } from '@material-ui/core'
-import IconButton from '@material-ui/core/IconButton'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined'
-import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined'
-import GetAppIcon from '@material-ui/icons/GetApp'
 
-import adminHomeMainImg from '../assets/admin_home_2x.png'
-import uploadImage from '../assets/upload_icon.png'
-
-import API from '../api'
+import API from '../../api'
 
 const AgreementDetail = ({ location }) => {
   const [formDetail, setFormDetail] = useState([])
@@ -28,6 +23,7 @@ const AgreementDetail = ({ location }) => {
 
   useEffect(() => {
     const id = location.state.id
+
     API.get(`/agreement/forms/${id}`)
       .then(res => {
         setFormDetail(res.data)
@@ -94,9 +90,9 @@ const AgreementDetail = ({ location }) => {
     <Container className={classes.container}>
       <Grid className={classes.mainImage} />
       <Grid className={classes.content} container>
-        {/* File Manage Field */}
         <Grid
           className={classes.content__fileManageField}
+          style={{ height: '50%' }}
           container
           item
           justify="center"
@@ -104,17 +100,17 @@ const AgreementDetail = ({ location }) => {
           sm={12}
           xs={12}
         >
-          <FileManageField
-            files={formDetail.files ? formDetail.files : []}
+          <FileManageBox
+            files={formDetail.files}
             uploadFile={uploadFile}
             deleteFile={deleteFile}
             downloadFile={downloadFile}
           />
         </Grid>
 
-        {/* Form Detail */}
         <Grid
           className={classes.content__formDetailField}
+          style={{ height: '50%' }}
           container
           justify="center"
           item
@@ -140,71 +136,15 @@ const AgreementDetail = ({ location }) => {
       </Grid>
 
       <Dialog
+        PaperComponent={Box}
         open={dialogOpen}
         style={{ backdropFilter: 'blur(5px)' }}
-        PaperComponent={Box}
       >
         <DialogActions>
           <CircularProgress className={classes.loadingProgress} />
         </DialogActions>
       </Dialog>
     </Container>
-  )
-}
-
-const FileManageField = ({ files, uploadFile, deleteFile, downloadFile }) => {
-  const fileInput = useRef(null)
-  const classes = useStyles()
-
-  return (
-    <>
-      {/* Upload Field */}
-      <Grid container justify="center" alignItems="center">
-        <Grid className={classes.uploadButton} md={4} sm={4} xs={6} item>
-          <Button
-            style={{ height: '100%' }}
-            fullWidth
-            onClick={() => fileInput.current.click()}
-          >
-            <Grid container>
-              <Grid item md={12} sm={12} xs={12}>
-                <img src={uploadImage} alt="업로드 아이콘" />
-              </Grid>
-              <Grid
-                className={classes.uploadButton__text}
-                item
-                md={12}
-                sm={12}
-                xs={12}
-              >
-                PSD 파일 업로드
-              </Grid>
-            </Grid>
-          </Button>
-
-          <input
-            id="upload"
-            accept="image/psd"
-            multiple
-            type="file"
-            style={{ display: 'none' }}
-            onChange={event => uploadFile(event)}
-            ref={fileInput}
-          />
-        </Grid>
-      </Grid>
-
-      {/* File List Field */}
-      <Grid item md={11} sm={10} xs={10}>
-        {files.map(file => (
-          <Item
-            file={file}
-            deleteFile={deleteFile}
-            downloadFile={downloadFile}
-          />
-        ))}
-      </Grid>
-    </>
   )
 }
 
@@ -231,49 +171,20 @@ const Field = ({ title, text }) => {
   )
 }
 
-const Item = ({ file, deleteFile, downloadFile }) => {
-  const classes = useStyles()
-  const filename = file.file.name.split('/').pop().split('_')
-  const _filename = filename.slice(0, filename.length - 1)
-
-  return (
-    <Grid
-      className={classes.uploadedList}
-      container
-      md={12}
-      sm={12}
-      justify="space-between"
-    >
-      <Grid item style={{ marginLeft: '30px' }}>
-        <IconButton>
-          <InsertPhotoOutlinedIcon className={classes.uploaded_icon} />
-        </IconButton>
-        <span>{_filename.toString() + '.psd'}</span>
-      </Grid>
-      <Grid item style={{ marginRight: '30px' }}>
-        <IconButton onClick={() => downloadFile(file)}>
-          <GetAppIcon className={classes.uploaded_icon} />
-        </IconButton>
-        <IconButton onClick={() => deleteFile(file)}>
-          <DeleteForeverOutlinedIcon className={classes.uploaded_icon} />
-        </IconButton>
-      </Grid>
-    </Grid>
-  )
-}
-
 const useStyles = makeStyles(theme => ({
   container: {
-    height: 'calc(100vh - 285px)',
+    display: 'flex',
+    flexDirection: 'column',
+    height: 'calc(100vh - 342px)',
+    padding: '0 0',
 
     [theme.breakpoints.down('sm')]: {
-      height: 'calc(100vh)',
-      padding: '0 0',
+      minHeight: '120vh',
     },
   },
   mainImage: {
-    maxWidth: '100%',
-    height: '20%',
+    width: '100%',
+    height: '25%',
     backgroundImage: `url(${adminHomeMainImg})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
@@ -285,27 +196,14 @@ const useStyles = makeStyles(theme => ({
     },
   },
   content: {
-    height: '80%',
+    height: '75%',
     backgroundColor: '#f1eff0',
   },
-  uploadButton: {
-    height: '200px',
-    backgroundColor: '#ffffff',
-    borderRadius: '10px',
+  content__fileManageField: {
+    height: '50%',
   },
-  uploadButton__text: {
-    fontSize: '1.375rem',
-    borderRadius: '0.625',
-    margin: '0 0',
-  },
-  uploadedList: {
-    borderRadius: '10px',
-    backgroundColor: '#ffffff',
-    marginBottom: '10px',
-  },
-  uploaded_icon: {
-    color: '#30bbc3',
-    fontSize: '2rem',
+  content__formDetailField: {
+    height: '50%',
   },
   infoField: {
     height: '100%',

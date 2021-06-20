@@ -14,64 +14,34 @@ const NoticeTable = () => {
             CR 스튜디오 개인정보 수집·이용 및 제 3자 제공 동의서
           </Grid>
           <Grid container>
-            {/* Line 2 */}
             <Grid container style={{ marginTop: '1.563rem' }}>
-              <Grid container justify="center" xs sm>
-                <Grid item className={classes.subTitle}>
-                  <span className={classes.subTitle_text}>제공받는 자</span>
-                </Grid>
-                <Grid item className={classes.description}>
-                  <span className={classes.description_text}>
-                    CR스튜디오
-                    <br />
-                    써머캣
-                  </span>
-                </Grid>
-              </Grid>
+              <NoticeCell
+                title="제공받는 자"
+                description={{ text: 'CR 스튜디오', _text: '써머캣' }}
+              />
 
-              <Grid container justify="center" xs sm>
-                <Grid item className={classes.subTitle}>
-                  <span className={classes.subTitle_text}>수집·이용 목적</span>
-                </Grid>
-                <Grid item className={classes.description}>
-                  <span className={classes.description_text}>
-                    사진정보 : AI 사진보정연구
-                    <br />
-                    파일전송
-                  </span>
-                </Grid>
-              </Grid>
+              <NoticeCell
+                title="수집·이용 목적"
+                description={{
+                  text: '사진정보 : AI 사진보정연구',
+                  _text: '파일전송',
+                }}
+              />
             </Grid>
 
-            {/* Line 3 */}
             <Grid container style={{ marginTop: '1.563rem' }}>
-              <Grid container justify="center" xs sm>
-                <Grid item className={classes.subTitle}>
-                  <span className={classes.subTitle_text}>수집·이용 항목</span>
-                </Grid>
-                <Grid item className={classes.description}>
-                  <span className={classes.description_text}>
-                    사진정보
-                    <br />
-                    개인정보
-                  </span>
-                </Grid>
-              </Grid>
+              <NoticeCell
+                title="수집·이용 항목"
+                description={{ text: '사진정보', _text: '개인정보' }}
+              />
 
-              <Grid container justify="center" xs sm>
-                <Grid item className={classes.subTitle}>
-                  <span className={classes.subTitle_text}>
-                    보유 및 이용기간
-                  </span>
-                </Grid>
-                <Grid item className={classes.description}>
-                  <span className={classes.description_text}>
-                    사진파일 제외 개인정보는 1년
-                    <br />
-                    AI 연구용 사진파일은 귀속
-                  </span>
-                </Grid>
-              </Grid>
+              <NoticeCell
+                title="보유 및 이용기간"
+                description={{
+                  text: '사진파일 제외 개인정보는 1년',
+                  _text: 'AI 연구용 사진파일은 귀속',
+                }}
+              />
             </Grid>
           </Grid>
 
@@ -85,11 +55,29 @@ const NoticeTable = () => {
               </p>
             </div>
           </Grid>
-
-          <Grid container></Grid>
         </Grid>
       </Paper>
     </>
+  )
+}
+
+const NoticeCell = ({ title, description }) => {
+  const { text, _text } = description
+  const classes = useStyles()
+
+  return (
+    <Grid container justify="center" xs sm>
+      <Grid item className={classes.subTitle}>
+        <span className={classes.subTitle_text}>{title}</span>
+      </Grid>
+      <Grid item className={classes.description}>
+        <span className={classes.description_text}>
+          {text}
+          <br />
+          {_text}
+        </span>
+      </Grid>
+    </Grid>
   )
 }
 
