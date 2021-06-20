@@ -155,6 +155,11 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: '#ffffff',
     },
   },
+  content: {
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: '30px',
+    },
+  },
   notice: {
     [theme.breakpoints.down('xs')]: {
       marginBottom: '35px',
