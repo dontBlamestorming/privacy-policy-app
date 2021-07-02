@@ -14,7 +14,7 @@ class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ("email", "name", "studio", "is_studio_manager", "is_studio_staff")
+    list_display = ("email", "name", "studio", "is_studio_manager", "is_studio_member")
 
     fieldsets = (
         (None, {"fields": ("email", "name", "password", "studio")}),
@@ -25,7 +25,7 @@ class UserAdmin(BaseUserAdmin):
                     "is_active",
                     "is_staff",
                     "is_studio_manager",
-                    "is_studio_staff",
+                    "is_studio_member",
                 )
             },
         ),
@@ -41,7 +41,7 @@ class UserAdmin(BaseUserAdmin):
         ),
     )
 
-    search_fields = ("email", "name", "studio", "is_studio_manager", "is_studio_staff")
+    search_fields = ("email", "name", "studio", "is_studio_manager", "is_studio_member")
     ordering = ("studio",)
     filter_horizontal = ()
 

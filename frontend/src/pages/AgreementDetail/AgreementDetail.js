@@ -14,6 +14,7 @@ import {
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 import API from '../../api'
+import { saveAs } from 'file-saver'
 
 const AgreementDetail = ({ location }) => {
   const [formDetail, setFormDetail] = useState([])
@@ -47,30 +48,46 @@ const AgreementDetail = ({ location }) => {
       .then(res => {
         if (res.status === 201) {
           setUpdate(!update)
-          setDialogOpen(false)
         }
       })
       .catch(error => {
         console.log(error)
+      })
+      .finally(() => {
         setDialogOpen(false)
       })
   }
 
+  const extactFilename = id => {
+    let filename
+    const files = Object.values(formDetail.files)
+
+    files.map(file => {
+      if (file.id === id) {
+        const text = file.file.name
+
+        filename = text.split('_')[0].slice(4)
+      }
+    })
+
+    return filename
+  }
+
   const downloadFile = ({ id }) => {
-    API.get(`/agreement/download/${id}`)
+    setDialogOpen(true)
+
+    API.get(`/agreement/download/${id}`, { responseType: 'blob' })
       .then(res => {
-        const url = res.data[0].file
-        const link = document.createElementNS(
-          'http://www.w3.org/1999/xhtml',
-          'a',
-        )
-        link.href = url
-        link.download = url.split('/').pop()
-        link.click()
-        link.remove()
+        const filename = extactFilename(id)
+        const image = res.data
+
+        saveAs(image, filename)
       })
       .catch(error => {
         throw error
+      })
+      .finally(() => {
+        setDialogOpen(false)
       })
   }
 
