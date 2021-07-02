@@ -9,7 +9,7 @@ import Footer from './pages/Footer'
 import StudioHome from './pages/StudioHome'
 import Agreement from './pages/Agreement/Agreement'
 import AgreementList from './pages/AgreementList'
-import AgreementDetail from './pages/AgreementDetail'
+import AgreementDetail from './pages/AgreementDetail/AgreementDetail'
 import LoginForm from './pages/LoginForm'
 
 import AuthRoute from './components/AuthRoute'
