@@ -21,6 +21,6 @@ class ProfileView(APIView):
                 "studio_id": request.user.studio_id,
                 "studio": request.user.studio.name if request.user.studio else "",
                 "is_studio_manager": request.user.is_studio_manager,
-                "is_studio_staff": request.user.is_studio_staff,
+                "is_studio_member": request.user.is_studio_member,
             }
         )

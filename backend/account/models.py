@@ -39,7 +39,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(_("User name"), max_length=32, unique=True)
     date_joined = models.DateTimeField(_("Date joined"), default=timezone.now)
     is_studio_manager = models.BooleanField(_("Studio manager"), default=False)
-    is_studio_staff = models.BooleanField(_("Studio staff"), default=False)
+    is_studio_member = models.BooleanField(_("Studio member"), default=False)
     is_staff = models.BooleanField(_("Is staff"), default=False)
     is_active = models.BooleanField(_("Is active"), default=True)
 
