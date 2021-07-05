@@ -1,3 +1,4 @@
+from django.http import FileResponse
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
@@ -32,6 +33,7 @@ class FormViewSet(
     serializer_class = FormListSerializer
 
     def get_permissions(self):
+        print(self.action)
         if self.action == "list":
             permission_classes = [
                 IsStudioManager,
@@ -85,11 +87,12 @@ class ImageView(viewsets.GenericViewSet):
     serializer_class = ImageViewSerailizer
     permission_classes = [IsStudioManager]
 
-    def retrieve(self, request, pk=None):
-        queryset = self.queryset.filter(id=pk)
-        serializer = self.get_serializer(queryset, many=True)
+    parser_classes = (
+        MultiPartParser,
+        FormParser,
+        JSONParser,
+    )
 
-        return Response(
-            serializer.data,
-            content_type=("image/*"),
-        )
+    def retrieve(self, request, pk=None):
+        image = self.get_object()
+        return FileResponse(image.file)

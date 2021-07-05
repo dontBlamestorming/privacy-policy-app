@@ -9,7 +9,7 @@ volumes:
 services:
   # to build DB
   mysql: 
-    # platform: linux/x86_64
+    platform: linux/x86_64
     image: mysql:8.0.23
     restart: always
     environment: 
@@ -23,7 +23,7 @@ services:
   # to build backend
   backend:
     build:
-        context: ./backend
+        context: ../backend
     image: praivacy_policy_app_backend
     restart: unless-stopped
     environment:
@@ -41,25 +41,8 @@ services:
   # to build front
   frontend:
     build:
-        context: ./frontend
+        context: ../frontend
     image:  praivacy_policy_app_frontend
     restart: on-failure
     volumes:
         - front-build:/front/build
-
-  nginx:
-    image: nginx
-    restart: unless-stopped
-    volumes:
-        - /etc/letsencrypt:/etc/letsencrypt
-        - /var/www/summercat.co:/var/www/summercat.co
-        - ./nginx.conf:/etc/nginx/conf.d/default.conf
-        - server-static:/server-static
-        - server-media:/server-media
-        - front-build:/front-build
-    ports:
-        - 80:80
-        - 443:443
-    depends_on:
-        - backend
-        - frontend

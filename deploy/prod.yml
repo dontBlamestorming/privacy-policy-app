@@ -23,7 +23,7 @@ services:
   # to build backend
   backend:
     build:
-        context: ./backend
+        context: ../backend
     image: praivacy_policy_app_backend
     restart: unless-stopped
     environment:
@@ -41,7 +41,7 @@ services:
   # to build front
   frontend:
     build:
-        context: ./frontend
+        context: ../frontend
     image:  praivacy_policy_app_frontend
     restart: on-failure
     volumes:
