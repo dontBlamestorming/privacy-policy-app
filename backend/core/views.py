@@ -33,6 +33,7 @@ class FormViewSet(
     serializer_class = FormListSerializer
 
     def get_permissions(self):
+        print(self.action)
         if self.action == "list":
             permission_classes = [
                 IsStudioManager,
