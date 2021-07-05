@@ -13,7 +13,7 @@ import {
 
 import userStore from '../stores/userStore'
 
-import adminHomeMainImg from '../assets/admin_home_2x.png'
+import adminHomeMainImg from '../assets/studio_home.png'
 
 const StudioHome = () => {
   const studio = userStore.user ? userStore.user.studio : ''

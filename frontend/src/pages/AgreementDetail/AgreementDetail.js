@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import FileManageBox from './FileManageBox'
-import adminHomeMainImg from '../../assets/admin_home_2x.png'
+import adminHomeMainImg from '../../assets/studio_home.png'
 
 import {
   Box,

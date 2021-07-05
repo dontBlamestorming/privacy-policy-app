@@ -4,7 +4,7 @@ import DataTable from '../components/DataTable'
 
 import { Container, Grid, makeStyles } from '@material-ui/core'
 
-import adminHomeMainImg from '../assets/admin_home_2x.png'
+import adminHomeMainImg from '../assets/studio_home.png'
 import agreementTypo from '../assets/agreementList_typo.png'
 
 const AgreementList = React.memo(() => {
