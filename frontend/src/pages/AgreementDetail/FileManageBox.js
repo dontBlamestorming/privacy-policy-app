@@ -64,8 +64,14 @@ const FileManageBox = ({
 
 const Item = ({ file, deleteFile, downloadFile }) => {
   const classes = useStyles()
-  const filename = file.file.name.split('/').pop().split('_')
-  const _filename = filename.slice(0, filename.length - 1)
+  const splitedFilename = file.file.name.split('/').pop().split('_')
+  let filename
+
+  if (splitedFilename.length === 1) {
+    filename = splitedFilename[0].slice(0)
+  } else {
+    filename = splitedFilename.slice(0, splitedFilename.length - 1) + '.psd'
+  }
 
   return (
     <Grid
@@ -79,7 +85,7 @@ const Item = ({ file, deleteFile, downloadFile }) => {
         <IconButton>
           <InsertPhotoOutlinedIcon className={classes.uploaded_icon} />
         </IconButton>
-        <span>{_filename.toString() + '.psd'}</span>
+        <span>{filename}</span>
       </Grid>
       <Grid item style={{ marginRight: '30px' }}>
         <IconButton onClick={() => downloadFile(file)}>
