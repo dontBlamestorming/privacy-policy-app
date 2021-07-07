@@ -60,7 +60,6 @@
     url('assets/fonts/NotoSansKR-Black.otf') format('truetype');
 }
 
-
 html {
   font-size: 16px;
 }
@@ -73,7 +72,13 @@ html {
 
 @media (max-width: 480px) {
   html {
-    font-size: 12px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 320px) {
+  html {
+    font-size: 8px;
   }
 }
 
