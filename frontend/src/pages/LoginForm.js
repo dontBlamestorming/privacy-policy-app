@@ -24,7 +24,7 @@ import loginTypo from '../assets/login_form_typo.png'
 
 const LoginForm = observer(() => {
   const [form, setForm] = useState({
-    email: '',
+    username: '',
     password: '',
   })
   const classes = useStyles()
@@ -80,11 +80,11 @@ const LoginForm = observer(() => {
             <Grid onSubmit={handleSubmit} component="form" md={8} sm={7}>
               <Grid className={classes.loginField}>
                 <InputBox
-                  name="email"
+                  name="username"
                   label="Your ID"
                   type="text"
                   placeholder="Enterh your ID"
-                  value={form.email}
+                  value={form.username}
                   form={form}
                   setForm={setForm}
                 />

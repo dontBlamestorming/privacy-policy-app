@@ -1,25 +1,35 @@
 from django.contrib import admin
-from .models import *
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+
+from django.utils.translation import ugettext_lazy as _
+
+from .models import *
 from .forms import (
-    UserChangeForm,
-    UserCreationForm,
     StudioCreationForm,
     StudioChangeForm,
 )
 
 
 class UserAdmin(BaseUserAdmin):
-    form = UserChangeForm
-    add_form = UserCreationForm
 
-    list_display = ("email", "name", "studio", "is_studio_manager", "is_studio_member")
+    list_display = (
+        "username",
+        "first_name",
+        "studio",
+        "is_studio_manager",
+        "is_studio_member",
+        "is_active",
+        "is_staff",
+    )
 
     fieldsets = (
-        (None, {"fields": ("email", "name", "password", "studio")}),
+          (
+            None,
+            {"fields": ("first_name", "password", "studio")},
+        ),
         (
-            "Permissions",
+            _("Permissions"),
             {
                 "fields": (
                     "is_active",
@@ -29,6 +39,7 @@ class UserAdmin(BaseUserAdmin):
                 )
             },
         ),
+      
     )
 
     add_fieldsets = (
@@ -36,14 +47,19 @@ class UserAdmin(BaseUserAdmin):
             None,
             {
                 "classes": ("wide",),
-                "fields": ("email", "password1", "password2", "name", "studio"),
+                "fields": (
+                    "username",
+                    "first_name",
+                    "password1",
+                    "password2",
+                    "studio",
+                ),
             },
         ),
     )
 
-    search_fields = ("email", "name", "studio", "is_studio_manager", "is_studio_member")
-    ordering = ("studio",)
-    filter_horizontal = ()
+    search_fields = ("user", "studio", "is_studio_manager", "is_studio_member")
+    ordering = ("is_staff",)
 
 
 class StudioClass(admin.ModelAdmin):
@@ -56,5 +72,4 @@ class StudioClass(admin.ModelAdmin):
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Studio, StudioClass)
-
 admin.site.unregister(Group)

@@ -1,6 +1,5 @@
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 
@@ -17,7 +16,7 @@ class ProfileView(APIView):
         return Response(
             {
                 "id": request.user.id,
-                "name": request.user.name,
+                "name": request.user.first_name,
                 "studio_id": request.user.studio_id,
                 "studio": request.user.studio.name if request.user.studio else "",
                 "is_studio_manager": request.user.is_studio_manager,
