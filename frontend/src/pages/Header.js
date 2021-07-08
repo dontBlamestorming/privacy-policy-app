@@ -11,7 +11,7 @@ import {
 
 import { Link } from 'react-router-dom'
 
-import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import LogoutIcon from '../assets/header_logout.png'
 import HomeIcon from '@material-ui/icons/Home'
 
 import userStore from '../stores/userStore'
@@ -61,7 +61,11 @@ const Header = () => {
             onClick={() => userStore.logout()}
           >
             <span className={classes.text_mobile}>LOGOUT</span>
-            <ExitToAppIcon className={classes.icon} />
+            <img
+              className={classes.icon}
+              src={LogoutIcon}
+              alt="로그아웃 버튼"
+            />
           </IconButton>
         </Hidden>
       </Grid>
