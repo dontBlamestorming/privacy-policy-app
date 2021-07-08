@@ -79,6 +79,10 @@ const useStyles = makeStyles(theme => ({
   form_label: {
     alignSelf: 'center',
     fontSize: '1.625rem',
+
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '1.3rem',
+    },
   },
   noticeText: {
     textAlign: 'center',

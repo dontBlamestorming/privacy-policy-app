@@ -17,7 +17,7 @@ import userStore from '../../stores/userStore'
 
 import API from '../../api/index'
 
-const initialForm = {
+const initialFormData = {
   name: '',
   email: '',
   gender: '',
@@ -29,7 +29,7 @@ const initialForm = {
 }
 
 const Agreement = observer(() => {
-  const [form, setForm] = useState(initialForm)
+  const [form, setForm] = useState(initialFormData)
   const classes = useStyles()
   const canvasRef = useRef(null)
   const history = useHistory()
@@ -179,14 +179,19 @@ const InputBox = ({ type, title, name, value, placeholder, form, setForm }) => {
           container
           justify="space-evenly"
           alignItems="center"
-          md={12}
-          sm={12}
-          xs={12}
         >
           <Grid className={classes.inputBoxTitle} item md={4} sm={4} xs={4}>
             <span>{title}</span>
           </Grid>
-          <Grid className={classes.inputField} item md={8} sm={8} xs={8}>
+          <Grid
+            className={classes.inputField}
+            container
+            justify="flex-end"
+            item
+            md={8}
+            sm={8}
+            xs={8}
+          >
             {type === 'TextField' ? (
               <TextField
                 name={name}
@@ -238,9 +243,10 @@ const useStyles = makeStyles(theme => ({
   },
   inputBoxTitle: {
     textAlign: 'left',
-    paddingLeft: '60px',
+    paddingLeft: '12%',
 
     [theme.breakpoints.down('xs')]: {
+      fontSize: '1.2rem',
       paddingLeft: '30px',
     },
   },

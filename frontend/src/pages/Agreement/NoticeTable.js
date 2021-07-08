@@ -87,11 +87,15 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
   },
   title: {
-    fontSize: '1.90rem',
+    fontSize: '2rem',
     letterSpacing: '-0.041rem',
     color: '#000000',
     marginTop: '1.625rem',
     fontWeight: 'bold',
+
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '1.6rem',
+    },
   },
   subTitle: {
     marginTop: '1.25rem',
@@ -119,6 +123,13 @@ const useStyles = makeStyles(theme => ({
   },
   notice_text: {
     lineHeight: 1.45,
+
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1.3rem',
+    },
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '1rem',
+    },
   },
 }))
 

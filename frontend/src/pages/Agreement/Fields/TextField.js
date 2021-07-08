@@ -7,12 +7,17 @@ const TextField = ({ name, value, placeholder, onChange }) => {
     <Input
       name={name}
       value={value}
-      style={{ fontSize: '1.375rem' }}
+      style={{
+        fontSize: '1.2rem',
+        width: '100%',
+        paddingRight: '20%',
+      }}
       autoComplete="name"
       disableUnderline
       placeholder={placeholder}
       required
       onChange={onChange}
+      inputProps={{ style: { textAlign: 'right' } }}
     />
   )
 }
