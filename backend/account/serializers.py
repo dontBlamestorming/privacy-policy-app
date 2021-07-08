@@ -1,18 +1,17 @@
 from django.contrib.auth import authenticate
-from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from .models import User
 
 
 class AuthTokenSerializer(serializers.Serializer):
-    username = serializers.CharField(label=_("Username"), write_only=True)
+    username = serializers.CharField(label="Username", write_only=True)
     password = serializers.CharField(
-        label=_("Password"),
+        label="Password",
         style={"input_type": "password"},
         trim_whitespace=False,
         write_only=True,
     )
-    token = serializers.CharField(label=_("Token"), read_only=True)
+    token = serializers.CharField(label="Token", read_only=True)
 
     def validate(self, attrs):
         username = attrs.get("username")

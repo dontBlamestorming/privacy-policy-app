@@ -12,6 +12,7 @@ class LoginView(ObtainAuthToken):
 
 
 class ProfileView(APIView):
+    # serializer로 바꿀 것
     def get(self, request):
         return Response(
             {

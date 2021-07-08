@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from django.utils.translation import ugettext_lazy as _
 
 from .models import *
 from .forms import (
@@ -24,12 +23,12 @@ class UserAdmin(BaseUserAdmin):
     )
 
     fieldsets = (
-          (
+        (
             None,
             {"fields": ("first_name", "password", "studio")},
         ),
         (
-            _("Permissions"),
+            "Permissions",
             {
                 "fields": (
                     "is_active",
@@ -39,7 +38,6 @@ class UserAdmin(BaseUserAdmin):
                 )
             },
         ),
-      
     )
 
     add_fieldsets = (
