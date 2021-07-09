@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
-import { makeStyles, createMuiTheme } from '@material-ui/core'
-import { ThemeProvider } from '@material-ui/styles'
+import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core'
 
 import DateFnsUtils from '@date-io/date-fns'
 import ko from 'date-fns/locale/ko'
 
-const DateField = ({ form, setForm }) => {
+const DateField = React.memo(({ form, setForm }) => {
   const [selectedDate, setSelectedDate] = useState(new Date())
   const classes = useStyles()
 
@@ -40,7 +39,7 @@ const DateField = ({ form, setForm }) => {
       </MuiPickersUtilsProvider>
     </ThemeProvider>
   )
-}
+})
 
 const useStyles = makeStyles(theme => ({
   inputField: {

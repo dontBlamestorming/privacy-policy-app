@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import { Grid, Paper, Radio, makeStyles } from '@material-ui/core'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 
-const Term = ({ form, setForm }) => {
+const Term = React.memo(({ form, setForm }) => {
   const classes = useStyles()
 
   return (
@@ -37,41 +37,46 @@ const Term = ({ form, setForm }) => {
       </Grid>
     </>
   )
-}
+})
 
-const TermInputField = ({ name, form, setForm, title, isChecked }) => {
-  const classes = useStyles()
+const TermInputField = React.memo(
+  ({ name, form, setForm, title, isChecked }) => {
+    const classes = useStyles()
 
-  const onClick = event => {
-    const {
-      target: { name, value },
-    } = event
+    const onClick = useCallback(
+      event => {
+        const {
+          target: { name, value },
+        } = event
 
-    setForm({ ...form, [name]: !JSON.parse(value) })
-  }
+        setForm({ ...form, [name]: !JSON.parse(value) })
+      },
+      [form, setForm],
+    )
 
-  return (
-    <Paper className={classes.termsInputBox}>
-      <Grid container justify="space-evenly">
-        <Grid item md={2}>
-          <Radio
-            name={name}
-            value={isChecked}
-            icon={<CheckCircleOutlineIcon className={classes.inputBoxIcon} />}
-            checkedIcon={<CheckCircleIcon className={classes.inputBoxIcon} />}
-            required
-            checked={isChecked}
-            onClick={onClick}
-          />
+    return (
+      <Paper className={classes.termsInputBox}>
+        <Grid container justify="space-evenly">
+          <Grid item md={2}>
+            <Radio
+              name={name}
+              value={isChecked}
+              icon={<CheckCircleOutlineIcon className={classes.inputBoxIcon} />}
+              checkedIcon={<CheckCircleIcon className={classes.inputBoxIcon} />}
+              required
+              checked={isChecked}
+              onClick={onClick}
+            />
+          </Grid>
+
+          <Grid className={classes.form_label} item md={9}>
+            <span>{title}</span>
+          </Grid>
         </Grid>
-
-        <Grid className={classes.form_label} item md={9}>
-          <span>{title}</span>
-        </Grid>
-      </Grid>
-    </Paper>
-  )
-}
+      </Paper>
+    )
+  },
+)
 
 const useStyles = makeStyles(theme => ({
   termsInputBox: { backgroundColor: '#ffffff', borderRadius: '3.125rem' },

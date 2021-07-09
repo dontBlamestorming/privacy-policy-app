@@ -1,19 +1,17 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useCallback } from 'react'
 
-import { TextField, DateField, RadioField } from './Fields'
 import SignatureSpace from '../../components/SignatureSpace'
-import NoticeTable from './NoticeTable'
+import { TextField, DateField, RadioField } from './Fields'
 import Term from './Term'
+import NoticeTable from './NoticeTable'
 
-import { makeStyles } from '@material-ui/core/styles'
-
-import { useHistory } from 'react-router-dom'
-
-import { Container, Button, Grid, Paper } from '@material-ui/core'
+import userStore from '../../stores/userStore'
 
 import { observer } from 'mobx-react-lite'
 
-import userStore from '../../stores/userStore'
+import { useHistory } from 'react-router-dom'
+
+import { Container, Button, Grid, Paper, makeStyles } from '@material-ui/core'
 
 import API from '../../api/index'
 
@@ -160,60 +158,65 @@ const Agreement = observer(() => {
   )
 })
 
-const InputBox = ({ type, title, name, value, placeholder, form, setForm }) => {
-  const classes = useStyles()
+const InputBox = React.memo(
+  ({ type, title, name, value, placeholder, form, setForm }) => {
+    const classes = useStyles()
 
-  const onChange = event => {
-    const {
-      target: { name, value },
-    } = event
+    const onChange = useCallback(
+      event => {
+        let {
+          target: { name, value },
+        } = event
 
-    setForm({ ...form, [name]: value })
-  }
+        setForm({ ...form, [name]: value })
+      },
+      [form, setForm],
+    )
 
-  return (
-    <Grid item md={12} xs={12}>
-      <Paper className={classes.inputBox}>
-        <Grid
-          className={classes.inputBoxWrapper}
-          container
-          justify="space-evenly"
-          alignItems="center"
-        >
-          <Grid className={classes.inputBoxTitle} item md={4} sm={4} xs={4}>
-            <span>{title}</span>
-          </Grid>
+    return (
+      <Grid item md={12} xs={12}>
+        <Paper className={classes.inputBox}>
           <Grid
-            className={classes.inputField}
+            className={classes.inputBoxWrapper}
             container
-            justify="flex-end"
-            item
-            md={8}
-            sm={8}
-            xs={8}
+            justify="space-evenly"
+            alignItems="center"
           >
-            {type === 'TextField' ? (
-              <TextField
-                name={name}
-                value={value}
-                placeholder={placeholder}
-                onChange={onChange}
-              />
-            ) : null}
+            <Grid className={classes.inputBoxTitle} item md={4} sm={4} xs={4}>
+              <span>{title}</span>
+            </Grid>
+            <Grid
+              className={classes.inputField}
+              container
+              justify="flex-end"
+              item
+              md={8}
+              sm={8}
+              xs={8}
+            >
+              {type === 'TextField' ? (
+                <TextField
+                  name={name}
+                  value={value}
+                  placeholder={placeholder}
+                  onChange={onChange}
+                />
+              ) : null}
 
-            {type === 'DateField' ? (
-              <DateField form={form} setForm={setForm} />
-            ) : null}
+              {type === 'DateField' ? (
+                <DateField form={form} setForm={setForm} />
+              ) : null}
 
-            {type === 'RadioField' ? (
-              <RadioField form={form} onChange={onChange} />
-            ) : null}
+              {type === 'RadioField' ? (
+                <RadioField form={form} onChange={onChange} />
+              ) : null}
+            </Grid>
           </Grid>
-        </Grid>
-      </Paper>
-    </Grid>
-  )
-}
+        </Paper>
+      </Grid>
+    )
+  },
+)
 
 const useStyles = makeStyles(theme => ({
   container: {

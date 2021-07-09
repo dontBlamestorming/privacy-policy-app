@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Redirect } from 'react-router-dom'
 
 import userStore from '../stores/userStore'
@@ -12,7 +12,6 @@ import {
   makeStyles,
   TextField,
   Grid,
-  Paper,
   useMediaQuery,
   useTheme,
 } from '@material-ui/core/'
@@ -124,37 +123,42 @@ const LoginForm = observer(() => {
   )
 })
 
-const InputBox = ({ name, label, type, placeholder, form, setForm, value }) => {
-  const classes = useStyles()
+const InputBox = React.memo(
+  ({ name, label, type, placeholder, form, setForm, value }) => {
+    const classes = useStyles()
 
-  const onChange = event => {
-    const {
-      target: { name, value },
-    } = event
+    const onChange = useCallback(
+      event => {
+        const {
+          target: { name, value },
+        } = event
 
-    setForm({ ...form, [name]: value })
-  }
+        setForm({ ...form, [name]: value })
+      },
+      [form, setForm],
+    )
 
-  return (
-    <TextField
-      name={name}
-      label={label}
-      type={type}
-      placeholder={placeholder}
-      className={classes.inputField}
-      InputLabelProps={{
-        shrink: true,
-        focused: false,
-        classes: { shrink: classes.inputField_label },
-      }}
-      InputProps={{
-        classes: { underline: classes.inputOnFocued },
-      }}
-      value={value}
-      onChange={onChange}
-    />
-  )
-}
+    return (
+      <TextField
+        name={name}
+        label={label}
+        type={type}
+        placeholder={placeholder}
+        className={classes.inputField}
+        InputLabelProps={{
+          shrink: true,
+          focused: false,
+          classes: { shrink: classes.inputField_label },
+        }}
+        InputProps={{
+          classes: { underline: classes.inputOnFocued },
+        }}
+        value={value}
+        onChange={onChange}
+      />
+    )
+  },
+)
 
 const useStyles = makeStyles(theme => ({
   container: {

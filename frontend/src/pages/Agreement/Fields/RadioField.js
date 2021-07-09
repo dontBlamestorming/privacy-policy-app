@@ -14,7 +14,7 @@ import styled from 'styled-components'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 
-const RadioField = ({ form, onChange }) => {
+const RadioField = React.memo(({ form, onChange }) => {
   return (
     <>
       <Container>
@@ -41,7 +41,7 @@ const RadioField = ({ form, onChange }) => {
       </Container>
     </>
   )
-}
+})
 
 const Radio = React.memo(props => {
   const classes = useStyles()
@@ -74,9 +74,9 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Container = styled.div`
+const Container = React.memo(styled.div`
   width: 100%;
   padding-left: 10%;
-`
+`)
 
 export default RadioField

@@ -1,9 +1,8 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Grid, Paper } from '@material-ui/core/'
+import { Grid, Paper, makeStyles } from '@material-ui/core/'
 
-const NoticeTable = () => {
+const NoticeTable = React.memo(() => {
   const classes = useStyles()
 
   return (
@@ -59,9 +58,9 @@ const NoticeTable = () => {
       </Paper>
     </>
   )
-}
+})
 
-const NoticeCell = ({ title, description }) => {
+const NoticeCell = React.memo(({ title, description }) => {
   const { text, _text } = description
   const classes = useStyles()
 
@@ -79,7 +78,7 @@ const NoticeCell = ({ title, description }) => {
       </Grid>
     </Grid>
   )
-}
+})
 
 const useStyles = makeStyles(theme => ({
   container: {

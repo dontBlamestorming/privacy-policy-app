@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import FileManageBox from './FileManageBox'
 import adminHomeMainImg from '../../assets/studio_home.png'
@@ -16,7 +16,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import API from '../../api'
 import { saveAs } from 'file-saver'
 
-const AgreementDetail = ({ location }) => {
+const AgreementDetail = React.memo(({ location }) => {
   const [formDetail, setFormDetail] = useState([])
   const [update, setUpdate] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -38,76 +38,89 @@ const AgreementDetail = ({ location }) => {
       .catch(error => console.log(error))
   }, [location.state.id, update])
 
-  const uploadFile = event => {
-    setDialogOpen(true)
+  const uploadFile = useCallback(
+    event => {
+      setDialogOpen(true)
 
-    const data = new FormData()
+      const data = new FormData()
 
-    data.append('form', formDetail.id)
-    data.append('file', event.target.files[0])
+      data.append('form', formDetail.id)
+      data.append('file', event.target.files[0])
 
-    API.post('/agreement/image', data, {
-      headers: {
-        'Content-Type': 'multipart/form-data; charset=utf-8',
-      },
-    })
-      .then(res => {
-        if (res.status === 201) {
-          setUpdate(!update)
+      API.post('/agreement/image', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data; charset=utf-8',
+        },
+      })
+        .then(res => {
+          if (res.status === 201) {
+            setUpdate(!update)
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        })
+        .finally(() => {
+          setDialogOpen(false)
+        })
+    },
+    [formDetail.id, update],
+  )
+
+  const extactFilename = useCallback(
+    id => {
+      let filename
+      const files = Object.values(formDetail.files)
+
+      files.map(file => {
+        if (file.id === id) {
+          const text = file.file.name
+
+          filename = text.split('_')[0].slice(4)
         }
       })
-      .catch(error => {
-        console.log(error)
-      })
-      .finally(() => {
-        setDialogOpen(false)
-      })
-  }
 
-  const extactFilename = id => {
-    let filename
-    const files = Object.values(formDetail.files)
+      return filename
+    },
+    [formDetail.files],
+  )
 
-    files.map(file => {
-      if (file.id === id) {
-        const text = file.file.name
+  const downloadFile = useCallback(
+    ({ id }) => {
+      setDialogOpen(true)
 
-        filename = text.split('_')[0].slice(4)
-      }
-    })
+      API.get(`/agreement/download/${id}`, { responseType: 'blob' })
+        .then(res => {
+          const filename = extactFilename(id)
+          const image = res.data
 
-    return filename
-  }
-
-  const downloadFile = ({ id }) => {
-    setDialogOpen(true)
-
-    API.get(`/agreement/download/${id}`, { responseType: 'blob' })
-      .then(res => {
-        const filename = extactFilename(id)
-        const image = res.data
-
-        saveAs(image, filename)
-      })
-      .catch(error => {
-        throw error
-      })
-      .finally(() => {
-        setDialogOpen(false)
-      })
-  }
-
-  const deleteFile = ({ id }) => {
-    API.delete(`/agreement/image/${id}`)
-      .then(res => {
-        const leftFiles = formDetail.files.filter(file => file.id !== id)
-        setFormDetail({
-          ...formDetail,
-          files: leftFiles,
+          saveAs(image, filename)
         })
-      })
-      .catch(error => console.log(error))
-  }
+        .catch(error => {
+          throw error
+        })
+        .finally(() => {
+          setDialogOpen(false)
+        })
+    },
+    [extactFilename],
+  )
+
+  const deleteFile = useCallback(
+    ({ id }) => {
+      API.delete(`/agreement/image/${id}`)
+        .then(res => {
+          const leftFiles = formDetail.files.filter(file => file.id !== id)
+
+          setFormDetail({
+            ...formDetail,
+            files: leftFiles,
+          })
+        })
+        .catch(error => console.log(error))
+    },
+    [formDetail, setFormDetail],
+  )
 
   return (
     <Container className={classes.container}>
@@ -167,9 +180,9 @@ const AgreementDetail = ({ location }) => {
       </Dialog>
     </Container>
   )
-}
+})
 
-const Field = ({ title, text }) => {
+const Field = React.memo(({ title, text }) => {
   const classes = useStyles()
 
   return (
@@ -190,7 +203,7 @@ const Field = ({ title, text }) => {
       </Grid>
     </Grid>
   )
-}
+})
 
 const useStyles = makeStyles(theme => ({
   container: {

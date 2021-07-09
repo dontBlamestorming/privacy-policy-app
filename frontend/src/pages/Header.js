@@ -16,7 +16,7 @@ import HomeIcon from '@material-ui/icons/Home'
 
 import userStore from '../stores/userStore'
 
-const Header = () => {
+const Header = React.memo(() => {
   const classes = useStyles()
 
   return (
@@ -28,7 +28,6 @@ const Header = () => {
     >
       <Grid
         container
-        // item
         justify="space-between"
         alignItems="center"
         md={11}
@@ -71,7 +70,7 @@ const Header = () => {
       </Grid>
     </Grid>
   )
-}
+})
 
 const useStyles = makeStyles(theme => ({
   container: { padding: '0 0' },

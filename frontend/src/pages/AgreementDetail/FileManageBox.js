@@ -7,62 +7,59 @@ import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined'
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined'
 import GetAppIcon from '@material-ui/icons/GetApp'
 
-const FileManageBox = ({
-  files = [],
-  uploadFile,
-  downloadFile,
-  deleteFile,
-}) => {
-  const fileInput = useRef(null)
-  const classes = useStyles()
+const FileManageBox = React.memo(
+  ({ files = [], uploadFile, downloadFile, deleteFile }) => {
+    const fileInput = useRef(null)
+    const classes = useStyles()
 
-  return (
-    <>
-      <Grid container justify="center" alignItems="center">
-        <Grid className={classes.uploadButtonBox} item md={4} sm={4} xs={6}>
-          <Button fullWidth onClick={() => fileInput.current.click()}>
-            <Grid container>
-              <Grid item md={12} sm={12} xs={12}>
-                <img src={uploadImage} alt="업로드 아이콘" />
+    return (
+      <>
+        <Grid container justify="center" alignItems="center">
+          <Grid className={classes.uploadButtonBox} item md={4} sm={4} xs={6}>
+            <Button fullWidth onClick={() => fileInput.current.click()}>
+              <Grid container>
+                <Grid item md={12} sm={12} xs={12}>
+                  <img src={uploadImage} alt="업로드 아이콘" />
+                </Grid>
+                <Grid
+                  className={classes.uploadButton__text}
+                  item
+                  md={12}
+                  sm={12}
+                  xs={12}
+                >
+                  PSD 파일 업로드
+                </Grid>
               </Grid>
-              <Grid
-                className={classes.uploadButton__text}
-                item
-                md={12}
-                sm={12}
-                xs={12}
-              >
-                PSD 파일 업로드
-              </Grid>
-            </Grid>
-          </Button>
+            </Button>
 
-          <input
-            id="upload"
-            accept="image/psd"
-            multiple
-            type="file"
-            style={{ display: 'none' }}
-            onChange={event => uploadFile(event)}
-            ref={fileInput}
-          />
+            <input
+              id="upload"
+              accept="image/psd"
+              multiple
+              type="file"
+              style={{ display: 'none' }}
+              onChange={event => uploadFile(event)}
+              ref={fileInput}
+            />
+          </Grid>
         </Grid>
-      </Grid>
 
-      <Grid className={classes.fileListBox} item md={11} sm={10} xs={10}>
-        {files.map(file => (
-          <Item
-            file={file}
-            deleteFile={deleteFile}
-            downloadFile={downloadFile}
-          />
-        ))}
-      </Grid>
-    </>
-  )
-}
+        <Grid className={classes.fileListBox} item md={11} sm={10} xs={10}>
+          {files.map(file => (
+            <Item
+              file={file}
+              deleteFile={deleteFile}
+              downloadFile={downloadFile}
+            />
+          ))}
+        </Grid>
+      </>
+    )
+  },
+)
 
-const Item = ({ file, deleteFile, downloadFile }) => {
+const Item = React.memo(({ file, deleteFile, downloadFile }) => {
   const classes = useStyles()
   const splitedFilename = file.file.name.split('/').pop().split('_')
   let filename
@@ -97,7 +94,7 @@ const Item = ({ file, deleteFile, downloadFile }) => {
       </Grid>
     </Grid>
   )
-}
+})
 
 const useStyles = makeStyles(theme => ({
   uploadButtonBox: {

@@ -19,7 +19,7 @@ import twitIcon from '../assets/sns_twitter.png'
 import naverIcon from '../assets/sns_naver.png'
 import pintIcon from '../assets/sns_pinterest.png'
 
-const Footer = () => {
+const Footer = React.memo(() => {
   const classes = useStyles()
   const theme = useTheme()
   const matchesXS = useMediaQuery(theme.breakpoints.down('xs'))
@@ -91,9 +91,9 @@ const Footer = () => {
       </Grid>
     </Grid>
   )
-}
+})
 
-const SNSLinks = () => (
+const SNSLinks = React.memo(() => (
   <>
     <Icon src={fbIcon} alt="페이스북 로고" />
     <Icon src={instaIcon} alt="인스타그램 로고" />
@@ -101,7 +101,7 @@ const SNSLinks = () => (
     <Icon src={naverIcon} alt="네이버 블로그 로고" />
     <Icon src={pintIcon} alt="핀터레스트 로고" />
   </>
-)
+))
 
 const LogoDesktop = React.memo(() => (
   <img
@@ -118,7 +118,7 @@ const LogoMobile = React.memo(() => (
   />
 ))
 
-const Icon = styled.img`
+const Icon = React.memo(styled.img`
   width: 1.4rem;
   height: 1.4rem;
   margin: 0.825rem;
@@ -136,9 +136,9 @@ const Icon = styled.img`
     margin-top: 12px;
     opacity: 0.7;
   }
-`
+`)
 
-const Text = styled.div`
+const Text = React.memo(styled.div`
   font-size: 0.9rem;
   margin-bottom: 5px;
   color: #767676;
@@ -148,7 +148,7 @@ const Text = styled.div`
     color: #111e3f;
     opacity: 0.5;
   }
-`
+`)
 
 const useStyles = makeStyles(theme => ({
   container: {
