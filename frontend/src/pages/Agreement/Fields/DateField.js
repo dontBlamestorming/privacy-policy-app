@@ -45,6 +45,10 @@ const DateField = ({ form, setForm }) => {
 const useStyles = makeStyles(theme => ({
   inputField: {
     paddingRight: '20%',
+
+    [theme.breakpoints.down('xs')]: {
+      paddingRight: '25%',
+    },
   },
 }))
 

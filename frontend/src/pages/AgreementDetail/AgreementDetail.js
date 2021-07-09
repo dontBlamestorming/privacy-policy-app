@@ -109,7 +109,6 @@ const AgreementDetail = ({ location }) => {
       <Grid className={classes.content} container>
         <Grid
           className={classes.content__fileManageField}
-          style={{ height: '50%' }}
           container
           item
           justify="center"
@@ -127,7 +126,6 @@ const AgreementDetail = ({ location }) => {
 
         <Grid
           className={classes.content__formDetailField}
-          style={{ height: '50%' }}
           container
           justify="center"
           item
@@ -213,14 +211,26 @@ const useStyles = makeStyles(theme => ({
     },
   },
   content: {
-    height: '75%',
+    height: '70%',
     backgroundColor: '#f1eff0',
+
+    [theme.breakpoints.down('md')]: {
+      height: '75%',
+    },
   },
   content__fileManageField: {
-    height: '50%',
+    height: '100%',
+
+    [theme.breakpoints.down('md')]: {
+      height: '50%',
+    },
   },
   content__formDetailField: {
-    height: '50%',
+    height: '100%',
+
+    [theme.breakpoints.down('md')]: {
+      height: '50%',
+    },
   },
   infoField: {
     height: '100%',
