@@ -116,7 +116,7 @@ const LoginForm = observer(() => {
           </Grid>
 
           <Grid className={classes.imageSection} item md={6} xs={12}>
-            <Paper className={classes.mainImage} />
+            <div className={classes.mainImage} />
           </Grid>
         </Grid>
       </Grid>
@@ -200,7 +200,7 @@ const useStyles = makeStyles(theme => ({
   },
   mainImage: {
     width: '100%',
-    height: '100%',
+    height: '101%',
     backgroundImage: `url(${loginImage})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
