@@ -12,8 +12,8 @@ import SearchIcon from '@material-ui/icons/Search'
 import ClearIcon from '@material-ui/icons/Clear'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
+import DoneIcon from '@material-ui/icons/Done'
 import UploadButton from '../assets/upload_button_icon.png'
-import ReloadButton from '../assets/reload_button_icon.png'
 
 const tableIcons = {
   Search: forwardRef((props, ref) => <SearchIcon {...props} ref={ref} />),
@@ -61,11 +61,7 @@ const DataTable = () => {
             gender: form.gender,
             email: form.email,
             upload: form.files.length ? (
-              <img
-                className={classes.uploadCell}
-                src={ReloadButton}
-                alt="업로드 버튼"
-              />
+              <DoneIcon style={{ color: '#30bbc3', fontSize: '2rem' }} />
             ) : (
               <img
                 className={classes.uploadCell}
@@ -95,7 +91,6 @@ const DataTable = () => {
           showTitle: false,
           doubleHorizontalScroll: true,
           paging: false,
-          // minBodyHeight: '300px',
           maxBodyHeight: '60vh',
           paginationType: 'stepped',
           searchFieldStyle: {
@@ -123,8 +118,8 @@ const DataTable = () => {
 
 const useStyles = makeStyles(theme => ({
   uploadCell: {
-    width: '100px',
-    height: '24px',
+    width: '6.25rem',
+    height: '1.5rem',
   },
 }))
 
