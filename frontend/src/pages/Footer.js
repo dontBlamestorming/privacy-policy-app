@@ -119,16 +119,21 @@ const LogoMobile = React.memo(() => (
 ))
 
 const Icon = styled.img`
-  width: 1.313rem;
-  height: 1.313rem;
-  margin: 0.625rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  margin: 0.825rem;
 
   &:hover {
     filter: invert(59%) sepia(90%) saturate(498%) hue-rotate(163deg)
       brightness(104%) contrast(102%);
   }
 
+  @media only screen and (max-width: 960px) {
+    margin-top: 20px;
+  }
+
   @media only screen and (max-width: 480px) {
+    margin-top: 12px;
     opacity: 0.7;
   }
 `
