@@ -10,16 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-import os
-import json
 from pathlib import Path
-from datetime import timedelta
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-print("BASE DIR", BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -38,8 +31,8 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
     # for local dev
     "django.contrib.admin",
-    "django.contrib.auth",  # Core authentication framework and its default models.
-    "django.contrib.contenttypes",  # Django content type system (allows permissions to be associated with models).
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
@@ -53,10 +46,10 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",  # Manages sessions across requests
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",  # Associates users with requests using sessions.
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]

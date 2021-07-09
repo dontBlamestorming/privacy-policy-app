@@ -46,10 +46,6 @@ const useStyles = makeStyles(theme => ({
   inputField: {
     width: '100%',
     paddingRight: '20%',
-
-    // [theme.breakpoints.down('xs')]: {
-    //   paddingRight: '10%',
-    // },
   },
 }))
 
