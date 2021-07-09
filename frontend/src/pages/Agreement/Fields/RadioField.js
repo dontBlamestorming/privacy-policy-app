@@ -6,6 +6,7 @@ import {
   FormControlLabel,
   FormControl,
   makeStyles,
+  Grid,
 } from '@material-ui/core'
 
 import styled from 'styled-components'
@@ -19,8 +20,14 @@ const RadioField = ({ form, onChange }) => {
       <Container>
         <FormControl component="fieldset" required>
           <RadioGroup row name="gender" value={form.gender} onChange={onChange}>
-            <FormControlLabel value="male" control={<Radio />} label="남자" />
-            <FormControlLabel value="female" control={<Radio />} label="여자" />
+            <Grid container>
+              <FormControlLabel value="male" control={<Radio />} label="남자" />
+              <FormControlLabel
+                value="female"
+                control={<Radio />}
+                label="여자"
+              />
+            </Grid>
           </RadioGroup>
         </FormControl>
       </Container>

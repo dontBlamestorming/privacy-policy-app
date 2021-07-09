@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
     paddingRight: '20%',
 
     [theme.breakpoints.down('xs')]: {
-      paddingRight: '25%',
+      paddingRight: '15%', //////////////
     },
   },
 }))
