@@ -27,6 +27,12 @@ const AgreementDetail = ({ location }) => {
 
     API.get(`/agreement/forms/${id}`)
       .then(res => {
+        if (res.data.gender === 'male') {
+          res.data.gender = '남자'
+        } else if (res.data.gender === 'female') {
+          res.data.gender = '여자'
+        }
+
         setFormDetail(res.data)
       })
       .catch(error => console.log(error))
