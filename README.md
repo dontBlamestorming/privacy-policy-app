@@ -72,3 +72,36 @@
 ### frontend
 - Components Tree 및 state management에 대한 대략적인 개괄도입니다.
 ![privacy-policy-frontend](https://user-images.githubusercontent.com/41932978/143682388-efe37aae-b578-427d-b397-e278f6d50a61.png)
+
+### backend(API endpoints)
+### GET - api/account/[option]
+| Option | Required | Parameter | Type | Description |
+| --- | --- | --- | --- | --- |
+| `login` | required | { email: "", password: ""} | string | Database 조회 후 일치하는 값이 있는 경우 Token 발행 |
+| `profile` | required | header: { Authorization: `Token [token]`}  | string | 해당 Token이 유효한지 검증 |
+
+### GET - api/forms/[option]
+| Option | Required | Parameter | Type | Description |
+| --- | --- | --- | --- | --- |
+| `default` | required | |  | 개인정보제공 동의서 list 조회  |
+| `id` | optional | | number | 특정 개인정보제공동의서 id값으로 조회  |
+
+### POST - api/forms/
+| Option | Required | Parameter | Type | Description |
+| --- | --- | --- | --- | --- |
+| `default` | required | formData | object | agreement의 form데이터를 parameter로하여 요청 시 개인정보제공동의서 생성(id - auto increment)  |
+
+### GET - api/image/[option]
+| Option | Required | Parameter | Type | Description |
+| --- | --- | --- | --- | --- |
+| `id` | required | | number | 특정 PSD image 다운로드  |
+
+### DELETE - api/image/[option]
+| Option | Required | Parameter | Type | Description |
+| --- | --- | --- | --- | --- |
+| `id` | required | | number | 특정 PSD image 삭제 |
+
+### POST - api/image/
+| Option | Required | Parameter | Type | Description |
+| --- | --- | --- | --- | --- |
+| `default` | required | `agreement id, PSD file` | object |  이미 수급한 개인정보제공동의서에 PSD image file 업로드 |
