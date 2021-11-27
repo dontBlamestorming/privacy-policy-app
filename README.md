@@ -67,3 +67,8 @@
 └── nginx.conf
 ```
 ***
+
+## Architecture
+### frontend
+- Global state management
+![privacy-policy-frontend](https://user-images.githubusercontent.com/41932978/143682388-efe37aae-b578-427d-b397-e278f6d50a61.png)
