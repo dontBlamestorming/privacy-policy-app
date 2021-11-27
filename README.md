@@ -69,9 +69,10 @@
 ***
 
 ## Architecture
-### frontend
-- Components Tree 및 state management에 대한 대략적인 개괄도입니다.
+### frontend(Global state management)
 ![privacy-policy-frontend](https://user-images.githubusercontent.com/41932978/143682388-efe37aae-b578-427d-b397-e278f6d50a61.png)
+- Components Tree 및 state management에 대략적인 개괄도입니다.
+- 전역적으로 관리하지 않아도 되는 states는 각 컴포넌트에서 관리하고있으며 최대 1 depth의 종속관계를 유지하고 있습니다. 
 
 ### backend(API endpoints)
 ### GET - api/account/[option]
@@ -105,3 +106,10 @@
 | Option | Required | Parameter | Type | Description |
 | --- | --- | --- | --- | --- |
 | `default` | required | `agreement id, PSD file` | object |  이미 수급한 개인정보제공동의서에 PSD image file 업로드 |
+
+### deploy
+![privacy-policy-deploy](https://user-images.githubusercontent.com/41932978/143686769-a5491cdd-6862-4079-95e0-a3e9e89aa455.png)
+- https letsencrypt 인증기관을 이용했습니다.
+- :80 port로 접근할 시 자동으로 :443 port로 redirecting 됩니다.
+- WAS의 static 및 media file은 docker volume에 바인딩되어 있습니다.
+- Database에 저장된 데이터는 일정 시간마다 EC2에 dump됩니다.
